@@ -94,7 +94,6 @@
 		88408AB2151964970035A6A7 /* Game Timer */ = {
 			isa = PBXGroup;
 			children = (
-				88408ACF151968520035A6A7 /* New Group */,
 				88408ABB151964970035A6A7 /* AppDelegate.h */,
 				88408ABC151964970035A6A7 /* AppDelegate.m */,
 				88408ABE151964970035A6A7 /* MainStoryboard_iPhone.storyboard */,
@@ -104,6 +103,7 @@
 				88090EF81519704600200A4D /* MainWindowViewController.h */,
 				88090EF91519704600200A4D /* MainWindowViewController.m */,
 				88408AB3151964970035A6A7 /* Supporting Files */,
+				88408ACF151968520035A6A7 /* Media */,
 			);
 			path = "Game Timer";
 			sourceTree = "<group>";
@@ -119,7 +119,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		88408ACF151968520035A6A7 /* New Group */ = {
+		88408ACF151968520035A6A7 /* Media */ = {
 			isa = PBXGroup;
 			children = (
 				88408ADA1519696C0035A6A7 /* camera.png */,
@@ -129,7 +129,7 @@
 				88408AE2151969BB0035A6A7 /* plus.png */,
 				88408AD0151968650035A6A7 /* Readme */,
 			);
-			name = "New Group";
+			name = Media;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

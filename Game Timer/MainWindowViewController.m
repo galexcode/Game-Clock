@@ -32,13 +32,20 @@
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
     NSInteger tag = [item tag];
+
     NSLog(@"Dropped a %d BIITCH!!!!", tag);
+    
+    [self performSegueWithIdentifier:@"Create" sender:item];
+    
+
 }
 
 - (void) viewDidLoad
 {
     NSLog(@"loaded hoe!");
-    [tabBar setSelectedItem:[[tabBar items] objectAtIndex:1]];
+    NSArray * items = [tabBar items];
+    [tabBar setSelectedItem:[items objectAtIndex:1]];
+    [[items objectAtIndex:0] setEnabled:false];
     NSLog(@"Enabled 1");
 }
 
