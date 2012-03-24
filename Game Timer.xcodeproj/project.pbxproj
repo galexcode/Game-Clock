@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		88090EFA1519704600200A4D /* MainWindowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88090EF91519704600200A4D /* MainWindowViewController.m */; };
+		88090F07151C09B000200A4D /* TimerSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88090F06151C09B000200A4D /* TimerSettingsController.m */; };
 		88408AAD151964970035A6A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88408AAC151964970035A6A7 /* UIKit.framework */; };
 		88408AAF151964970035A6A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88408AAE151964970035A6A7 /* Foundation.framework */; };
 		88408AB1151964970035A6A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88408AB0151964970035A6A7 /* CoreGraphics.framework */; };
@@ -28,6 +29,8 @@
 /* Begin PBXFileReference section */
 		88090EF81519704600200A4D /* MainWindowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowViewController.h; sourceTree = "<group>"; };
 		88090EF91519704600200A4D /* MainWindowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowViewController.m; sourceTree = "<group>"; };
+		88090F05151C09B000200A4D /* TimerSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerSettingsController.h; sourceTree = "<group>"; };
+		88090F06151C09B000200A4D /* TimerSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerSettingsController.m; sourceTree = "<group>"; };
 		88408AA8151964970035A6A7 /* Game Timer.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Game Timer.1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		88408AAC151964970035A6A7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		88408AAE151964970035A6A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -98,6 +101,8 @@
 				88408ABC151964970035A6A7 /* AppDelegate.m */,
 				88408ABE151964970035A6A7 /* MainStoryboard_iPhone.storyboard */,
 				88408AC1151964970035A6A7 /* MainStoryboard_iPad.storyboard */,
+				88090F05151C09B000200A4D /* TimerSettingsController.h */,
+				88090F06151C09B000200A4D /* TimerSettingsController.m */,
 				88408AC4151964970035A6A7 /* ViewController.h */,
 				88408AC5151964970035A6A7 /* ViewController.m */,
 				88090EF81519704600200A4D /* MainWindowViewController.h */,
@@ -205,6 +210,7 @@
 				88408ABD151964970035A6A7 /* AppDelegate.m in Sources */,
 				88408AC6151964970035A6A7 /* ViewController.m in Sources */,
 				88090EFA1519704600200A4D /* MainWindowViewController.m in Sources */,
+				88090F07151C09B000200A4D /* TimerSettingsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

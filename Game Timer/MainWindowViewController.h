@@ -7,9 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 
-@interface MainWindowViewController : UIViewController {
+@interface MainWindowViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource> {
     IBOutlet UITabBar * tabBar;
+    
+    IBOutlet UITextField * mainHour;
+    IBOutlet UITextField * mainMinute;
+    IBOutlet UITextField * mainSecond;
+    IBOutlet UITextField * overtimeMinute;
+    IBOutlet UITextField * overtimeSecond;
+    IBOutlet UITextField * overtimePeriod;
+    
+    IBOutlet UIPickerView * mainTimePicker;
+    IBOutlet UIPickerView * overtimeMinutesSeconds;
+    IBOutlet UIPickerView * numberOfPeriods;
+    
+    AppDelegate * appDelegate;
 }
 
 - (IBAction)selectNewTimer:(id)sender;
