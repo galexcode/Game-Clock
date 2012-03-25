@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="11D50b" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="Kf1-1q-bGP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="11D50b" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="KyB-Qi-HDW">
     <dependencies>
         <development defaultVersion="4200" identifier="xcode"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="933"/>
@@ -10,96 +10,237 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ium-TE-aKj" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="Base" id="KyB-Qi-HDW" customClass="MainWindowViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tQe-lV-CVE">
-                        <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                        <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tabBar contentMode="scaleToFill" id="Yot-9J-425">
-                                <rect key="frame" x="-2" y="912" width="768" height="49"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <items>
-                                    <tabBarItem enabled="NO" title="Resume" image="play.png" id="run-PX-mL8"/>
-                                    <tabBarItem tag="1" title="New" image="plus.png" id="L1l-pQ-56x"/>
-                                    <tabBarItem tag="2" systemItem="history" id="SMz-un-D9S"/>
-                                    <tabBarItem tag="3" systemItem="favorites" id="7fy-Bk-Fzr"/>
-                                    <tabBarItem tag="4" systemItem="featured" id="fvb-PW-Ryl"/>
-                                    <tabBarItem tag="5" title="Prefs" image="preferences.png" id="1Bs-eQ-Yjm"/>
-                                </items>
-                                <connections>
-                                    <outlet property="delegate" destination="KyB-Qi-HDW" id="WU3-4M-Dhd"/>
-                                </connections>
-                            </tabBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="SEa-ci-N8y">
-                                <rect key="frame" x="60" y="95" width="187" height="490"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableView>
-                            <pickerView contentMode="right" id="NHE-nX-Phc">
-                                <rect key="frame" x="391" y="157" width="200" height="216"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="KyB-Qi-HDW" id="4aR-li-KIs"/>
-                                    <outlet property="delegate" destination="KyB-Qi-HDW" id="8Dr-EP-jDf"/>
-                                </connections>
-                            </pickerView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="biB-10-TMh">
-                                <rect key="frame" x="408" y="381" width="50" height="31"/>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" id="Dxa-Gg-e3J">
+                                <rect key="frame" x="20" y="20" width="182" height="366"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                                <connections>
-                                    <outlet property="delegate" destination="tQe-lV-CVE" id="2Hj-qL-T9M"/>
-                                </connections>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="jkP-z6-RXt">
-                                <rect key="frame" x="466" y="381" width="50" height="31"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" indicatorStyle="black" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Bvg-U9-ZGn">
+                                        <rect key="frame" x="20" y="57" width="142" height="289"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="KyB-Qi-HDW" id="zGY-ES-C4u"/>
+                                            <outlet property="delegate" destination="KyB-Qi-HDW" id="vsj-de-pIQ"/>
+                                        </connections>
+                                    </tableView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Style" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" id="NcL-9q-TMx">
+                                        <rect key="frame" x="20" y="20" width="142" height="29"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" id="dmY-pb-182">
+                                <rect key="frame" x="210" y="20" width="240" height="366"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="uhY-1Z-CIB">
+                                        <rect key="frame" x="153" y="315" width="50" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="jkP-z6-RXt">
+                                        <rect key="frame" x="95" y="315" width="50" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                    </textField>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text=":" lineBreakMode="tailTruncation" minimumFontSize="10" id="4aH-bq-RqV">
+                                        <rect key="frame" x="146" y="320" width="9" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <pickerView contentMode="right" id="NHE-nX-Phc">
+                                        <rect key="frame" x="20" y="91" width="200" height="216"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="KyB-Qi-HDW" id="4aR-li-KIs"/>
+                                            <outlet property="delegate" destination="KyB-Qi-HDW" id="8Dr-EP-jDf"/>
+                                        </connections>
+                                    </pickerView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text=":" lineBreakMode="tailTruncation" minimumFontSize="10" id="BID-gW-q3I">
+                                        <rect key="frame" x="88" y="319" width="9" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="H" lineBreakMode="tailTruncation" minimumFontSize="10" id="5cX-e2-jt8">
+                                        <rect key="frame" x="56" y="62" width="13" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Main Time" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" id="CUb-dk-aNI">
+                                        <rect key="frame" x="20" y="20" width="200" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="M" lineBreakMode="tailTruncation" minimumFontSize="10" id="0VQ-YQ-cDn">
+                                        <rect key="frame" x="114" y="62" width="15" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="S" lineBreakMode="tailTruncation" minimumFontSize="10" id="rvu-uu-RQo">
+                                        <rect key="frame" x="172" y="62" width="13" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="biB-10-TMh">
+                                        <rect key="frame" x="37" y="315" width="50" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="tQe-lV-CVE" id="2Hj-qL-T9M"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" id="Um9-I8-pM1">
+                                <rect key="frame" x="458" y="20" width="290" height="366"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="uhY-1Z-CIB">
-                                <rect key="frame" x="524" y="381" width="50" height="31"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text=":" lineBreakMode="tailTruncation" minimumFontSize="10" id="P8b-XA-A4k">
+                                        <rect key="frame" x="196" y="319" width="9" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <pickerView contentMode="right" id="3ui-pz-0w5">
+                                        <rect key="frame" x="128" y="91" width="142" height="216"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="KyB-Qi-HDW" id="bnr-nS-Rxu"/>
+                                            <outlet property="delegate" destination="KyB-Qi-HDW" id="EcZ-2O-rkD"/>
+                                        </connections>
+                                    </pickerView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="S" lineBreakMode="tailTruncation" minimumFontSize="10" id="QKO-7F-UQ3">
+                                        <rect key="frame" x="222" y="62" width="13" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <pickerView contentMode="right" id="P1O-fb-DYG">
+                                        <rect key="frame" x="20" y="91" width="83" height="216"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="KyB-Qi-HDW" id="z96-8t-YyY"/>
+                                            <outlet property="delegate" destination="KyB-Qi-HDW" id="ccP-Op-h6p"/>
+                                        </connections>
+                                    </pickerView>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="SSq-7m-fDz">
+                                        <rect key="frame" x="39" y="315" width="50" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="tQe-lV-CVE" id="Wo7-tO-3KF"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="Czj-IR-MpH">
+                                        <rect key="frame" x="145" y="315" width="50" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                    </textField>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="x" lineBreakMode="tailTruncation" minimumFontSize="10" id="WLU-un-Sik">
+                                        <rect key="frame" x="111" y="188" width="9" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="M" lineBreakMode="tailTruncation" minimumFontSize="10" id="xZo-84-v8z">
+                                        <rect key="frame" x="163" y="62" width="15" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Periods" lineBreakMode="tailTruncation" minimumFontSize="10" id="Jlf-Zs-Rol">
+                                        <rect key="frame" x="32" y="62" width="58" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="drm-WI-w5q">
+                                        <rect key="frame" x="203" y="315" width="50" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                    </textField>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Overtime" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" id="BdG-PD-605">
+                                        <rect key="frame" x="20" y="20" width="250" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="OCn-vb-qVM">
+                                <rect key="frame" x="195" y="405" width="123" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                            </textField>
-                            <pickerView contentMode="right" id="3ui-pz-0w5">
-                                <rect key="frame" x="449" y="431" width="142" height="216"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="KyB-Qi-HDW" id="bnr-nS-Rxu"/>
-                                    <outlet property="delegate" destination="KyB-Qi-HDW" id="EcZ-2O-rkD"/>
-                                </connections>
-                            </pickerView>
-                            <pickerView contentMode="right" id="P1O-fb-DYG">
-                                <rect key="frame" x="358" y="431" width="83" height="216"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="KyB-Qi-HDW" id="z96-8t-YyY"/>
-                                    <outlet property="delegate" destination="KyB-Qi-HDW" id="ccP-Op-h6p"/>
-                                </connections>
-                            </pickerView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="SSq-7m-fDz">
-                                <rect key="frame" x="377" y="655" width="50" height="31"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Save Settings">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="l9R-vm-IEP">
+                                <rect key="frame" x="381" y="405" width="123" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                                <connections>
-                                    <outlet property="delegate" destination="tQe-lV-CVE" id="Wo7-tO-3KF"/>
-                                </connections>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="Czj-IR-MpH">
-                                <rect key="frame" x="466" y="655" width="50" height="31"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Launch Timer">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <view contentMode="scaleToFill" id="DUr-uf-Kvt">
+                                <rect key="frame" x="20" y="464" width="728" height="520"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="drm-WI-w5q">
-                                <rect key="frame" x="524" y="655" width="50" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                            </textField>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Qnt-qv-snS">
+                                        <rect key="frame" x="175" y="20" width="533" height="480"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </tableView>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ZCU-SD-9xD">
+                                        <rect key="frame" x="20" y="20" width="142" height="480"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </tableView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                     </view>
@@ -107,38 +248,27 @@
                         <barButtonItem key="backBarButtonItem" title="Return" id="WI3-Us-eBM"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="categoriesTable" destination="ZCU-SD-9xD" id="D6f-CR-Sau"/>
                         <outlet property="mainHour" destination="biB-10-TMh" id="pqV-rd-FSO"/>
                         <outlet property="mainMinute" destination="jkP-z6-RXt" id="AhO-vM-XXX"/>
                         <outlet property="mainSecond" destination="uhY-1Z-CIB" id="BAD-Ku-J1C"/>
                         <outlet property="mainTimePicker" destination="NHE-nX-Phc" id="BIh-CM-JCd"/>
+                        <outlet property="maintimeView" destination="dmY-pb-182" id="gcf-Ft-y4C"/>
                         <outlet property="numberOfPeriods" destination="P1O-fb-DYG" id="KR9-zN-xIT"/>
                         <outlet property="overtimeMinute" destination="Czj-IR-MpH" id="0rb-CD-UAS"/>
                         <outlet property="overtimeMinutesSeconds" destination="3ui-pz-0w5" id="OQC-Ay-Mvm"/>
                         <outlet property="overtimePeriod" destination="SSq-7m-fDz" id="qUX-zf-Lsb"/>
                         <outlet property="overtimeSecond" destination="drm-WI-w5q" id="Oir-KT-tSN"/>
-                        <outlet property="tabBar" destination="Yot-9J-425" id="pUt-Ci-OSu"/>
-                        <segue destination="5X1-1j-wax" kind="push" identifier="Create" id="oxV-Oc-VdL"/>
+                        <outlet property="overtimeView" destination="Um9-I8-pM1" id="V4h-to-FOb"/>
+                        <outlet property="savedTimersTable" destination="Qnt-qv-snS" id="m9p-88-Vy3"/>
+                        <outlet property="timerTablesView" destination="DUr-uf-Kvt" id="kDK-fR-SWs"/>
+                        <outlet property="timerTypesTable" destination="Bvg-U9-ZGn" id="bNU-Bw-aLJ"/>
+                        <outlet property="typesView" destination="Dxa-Gg-e3J" id="9f0-7m-Itw"/>
+                        <segue destination="dEg-JG-D7v" kind="modal" identifier="Junk" id="W9r-mP-bdU"/>
                     </connections>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="1635" y="198"/>
-        </scene>
-        <scene sceneID="dWj-Sf-1pj">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ocn-zT-Z3c" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController storyboardIdentifier="Stuff" wantsFullScreenLayout="YES" id="5X1-1j-wax" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="jw1-9H-euk">
-                        <rect key="frame" x="0.0" y="64" width="768" height="960"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="D9Q-Bk-Hwo">
-                        <barButtonItem key="backBarButtonItem" title="Return" id="XtX-xy-iYd"/>
-                    </navigationItem>
-                    <value key="contentSizeForViewInPopover" type="size" width="768" height="960"/>
-                </viewController>
-            </objects>
-            <point key="canvasLocation" x="3063" y="-1066"/>
         </scene>
         <scene sceneID="vLT-Pi-RA4">
             <objects>
@@ -225,9 +355,6 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <segue destination="Kf1-1q-bGP" kind="modal" id="8l4-gL-W9u"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
@@ -238,42 +365,29 @@
             </objects>
             <point key="canvasLocation" x="1968" y="1516"/>
         </scene>
-        <scene sceneID="TGj-Fn-z6E">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sjE-Y7-KNm" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationController storyboardIdentifier="Back door" definesPresentationContext="YES" id="Kf1-1q-bGP" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="At4-gk-3HS">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="KyB-Qi-HDW" kind="relationship" relationship="rootViewController" id="faj-ux-BAv"/>
-                    </connections>
-                </navigationController>
-            </objects>
-            <point key="canvasLocation" x="740" y="198"/>
-        </scene>
     </scenes>
-    <resources>
-        <image name="play.png" width="26" height="26"/>
-        <image name="plus.png" width="26" height="26"/>
-        <image name="preferences.png" width="26" height="26"/>
-    </resources>
     <classes>
         <class className="MainWindowViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MainWindowViewController.h"/>
             <relationships>
                 <relationship kind="action" name="selectFavorites:"/>
                 <relationship kind="action" name="selectNewTimer:"/>
+                <relationship kind="outlet" name="categoriesTable" candidateClass="UITableView"/>
                 <relationship kind="outlet" name="mainHour" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="mainMinute" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="mainSecond" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="mainTimePicker" candidateClass="UIPickerView"/>
+                <relationship kind="outlet" name="maintimeView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="numberOfPeriods" candidateClass="UIPickerView"/>
                 <relationship kind="outlet" name="overtimeMinute" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="overtimeMinutesSeconds" candidateClass="UIPickerView"/>
                 <relationship kind="outlet" name="overtimePeriod" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="overtimeSecond" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="tabBar" candidateClass="UITabBar"/>
+                <relationship kind="outlet" name="overtimeView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="savedTimersTable" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="timerTablesView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="timerTypesTable" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="typesView" candidateClass="UIView"/>
             </relationships>
         </class>
     </classes>
@@ -282,4 +396,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="W9r-mP-bdU"/>
+    </inferredMetricsTieBreakers>
 </document>

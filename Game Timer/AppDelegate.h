@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TimerSettings.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
+@property (retain) TimerSettings * settings;
 @property (strong, nonatomic) UIWindow *window;
 
 @end

@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		88090EFA1519704600200A4D /* MainWindowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88090EF91519704600200A4D /* MainWindowViewController.m */; };
-		88090F07151C09B000200A4D /* TimerSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88090F06151C09B000200A4D /* TimerSettingsController.m */; };
+		88090F16151E7F2C00200A4D /* TimerSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 88090F15151E7F2C00200A4D /* TimerSettings.m */; };
+		88090F19151EA19E00200A4D /* TimerSupply.m in Sources */ = {isa = PBXBuildFile; fileRef = 88090F18151EA19E00200A4D /* TimerSupply.m */; };
 		88408AAD151964970035A6A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88408AAC151964970035A6A7 /* UIKit.framework */; };
 		88408AAF151964970035A6A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88408AAE151964970035A6A7 /* Foundation.framework */; };
 		88408AB1151964970035A6A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88408AB0151964970035A6A7 /* CoreGraphics.framework */; };
@@ -17,7 +18,6 @@
 		88408ABD151964970035A6A7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 88408ABC151964970035A6A7 /* AppDelegate.m */; };
 		88408AC0151964970035A6A7 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88408ABE151964970035A6A7 /* MainStoryboard_iPhone.storyboard */; };
 		88408AC3151964970035A6A7 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88408AC1151964970035A6A7 /* MainStoryboard_iPad.storyboard */; };
-		88408AC6151964970035A6A7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88408AC5151964970035A6A7 /* ViewController.m */; };
 		88408AD1151968650035A6A7 /* Readme in Resources */ = {isa = PBXBuildFile; fileRef = 88408AD0151968650035A6A7 /* Readme */; };
 		88408ADE1519696D0035A6A7 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 88408ADA1519696C0035A6A7 /* camera.png */; };
 		88408ADF1519696D0035A6A7 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 88408ADB1519696C0035A6A7 /* clock.png */; };
@@ -29,8 +29,10 @@
 /* Begin PBXFileReference section */
 		88090EF81519704600200A4D /* MainWindowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowViewController.h; sourceTree = "<group>"; };
 		88090EF91519704600200A4D /* MainWindowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowViewController.m; sourceTree = "<group>"; };
-		88090F05151C09B000200A4D /* TimerSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerSettingsController.h; sourceTree = "<group>"; };
-		88090F06151C09B000200A4D /* TimerSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerSettingsController.m; sourceTree = "<group>"; };
+		88090F14151E7F2C00200A4D /* TimerSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerSettings.h; sourceTree = "<group>"; };
+		88090F15151E7F2C00200A4D /* TimerSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerSettings.m; sourceTree = "<group>"; };
+		88090F17151EA19E00200A4D /* TimerSupply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerSupply.h; sourceTree = "<group>"; };
+		88090F18151EA19E00200A4D /* TimerSupply.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerSupply.m; sourceTree = "<group>"; };
 		88408AA8151964970035A6A7 /* Game Timer.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Game Timer.1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		88408AAC151964970035A6A7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		88408AAE151964970035A6A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -43,8 +45,6 @@
 		88408ABC151964970035A6A7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		88408ABF151964970035A6A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		88408AC2151964970035A6A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
-		88408AC4151964970035A6A7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		88408AC5151964970035A6A7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		88408AD0151968650035A6A7 /* Readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme; sourceTree = "<group>"; };
 		88408ADA1519696C0035A6A7 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
 		88408ADB1519696C0035A6A7 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
@@ -70,6 +70,8 @@
 		88408A9D151964970035A6A7 = {
 			isa = PBXGroup;
 			children = (
+				88090F14151E7F2C00200A4D /* TimerSettings.h */,
+				88090F15151E7F2C00200A4D /* TimerSettings.m */,
 				88408AB2151964970035A6A7 /* Game Timer */,
 				88408AAB151964970035A6A7 /* Frameworks */,
 				88408AA9151964970035A6A7 /* Products */,
@@ -101,12 +103,10 @@
 				88408ABC151964970035A6A7 /* AppDelegate.m */,
 				88408ABE151964970035A6A7 /* MainStoryboard_iPhone.storyboard */,
 				88408AC1151964970035A6A7 /* MainStoryboard_iPad.storyboard */,
-				88090F05151C09B000200A4D /* TimerSettingsController.h */,
-				88090F06151C09B000200A4D /* TimerSettingsController.m */,
-				88408AC4151964970035A6A7 /* ViewController.h */,
-				88408AC5151964970035A6A7 /* ViewController.m */,
 				88090EF81519704600200A4D /* MainWindowViewController.h */,
 				88090EF91519704600200A4D /* MainWindowViewController.m */,
+				88090F17151EA19E00200A4D /* TimerSupply.h */,
+				88090F18151EA19E00200A4D /* TimerSupply.m */,
 				88408AB3151964970035A6A7 /* Supporting Files */,
 				88408ACF151968520035A6A7 /* Media */,
 			);
@@ -208,9 +208,9 @@
 			files = (
 				88408AB9151964970035A6A7 /* main.m in Sources */,
 				88408ABD151964970035A6A7 /* AppDelegate.m in Sources */,
-				88408AC6151964970035A6A7 /* ViewController.m in Sources */,
 				88090EFA1519704600200A4D /* MainWindowViewController.m in Sources */,
-				88090F07151C09B000200A4D /* TimerSettingsController.m in Sources */,
+				88090F16151E7F2C00200A4D /* TimerSettings.m in Sources */,
+				88090F19151EA19E00200A4D /* TimerSupply.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

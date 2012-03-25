@@ -11,10 +11,17 @@
 @implementation AppDelegate
 
 @synthesize window = _window;
+@synthesize settings;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    /**
+     * Load the last settings
+     */
+    settings = [[TimerSettings alloc] init];
+    
     return YES;
 }
 							

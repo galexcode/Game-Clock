@@ -7,11 +7,33 @@
 //
 
 #import "MainWindowViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 const int MAX_HOURS   = 10;
 const int MAX_PERIODS = 30;
 
 @implementation MainWindowViewController
+
+
+- (void) timeSettingsChanged
+{
+}
+
+
+- (void) populateSettings:(TimerSettings *) settings
+{
+    [mainHour   setText:[NSString stringWithFormat:@"%d", [settings hours]]];
+    [mainMinute setText:[NSString stringWithFormat:@"%02d", [settings minutes]]];
+    [mainSecond setText:[NSString stringWithFormat:@"%02d", [settings seconds]]];
+    
+    [self textFieldDidChange:mainHour];
+    [self textFieldDidChange:mainMinute];
+    [self textFieldDidChange:mainSecond];
+    
+    
+
+}
+
 
 - (void) viewDidLoad
 {
@@ -26,6 +48,19 @@ const int MAX_PERIODS = 30;
 	[mainHour   addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 	[mainMinute addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 	[mainSecond addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
+    // round the corners
+    
+    [maintimeView.layer setCornerRadius:5.0f];
+    [maintimeView.layer setMasksToBounds:YES];
+    [overtimeView.layer setCornerRadius:5.0f];
+    [overtimeView.layer setMasksToBounds:YES];
+    [typesView.layer setCornerRadius:5.0f];
+    [typesView.layer setMasksToBounds:YES];
+    [timerTablesView.layer setCornerRadius:5.0f];
+    [timerTablesView.layer setMasksToBounds:YES];
+    
+    // set defaults for the pickers
 }
 
 - (IBAction)selectNewTimer:(id)sender
@@ -47,17 +82,21 @@ const int MAX_PERIODS = 30;
     // Release any cached data, images, etc that aren't in use.
 }
 
+// ========================== TAB BAR METHODS ====================================
+
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
     NSInteger tag = [item tag];
-
-    NSLog(@"Dropped a %d BIITCH!!!!", tag);
+    NSLog(@"Selected %d", tag);
     
-    [self performSegueWithIdentifier:@"Create" sender:item];
 }
 
-// text box delegate method
 
+// ========================== TEXT FIELD METHODS ====================================
+
+/**
+ * When the text is entered via keyboard, update the appropriate picker
+ */
 - (void)textFieldDidChange:(UITextField *) textField
 {
     NSInteger value = [[textField text] intValue];
@@ -83,16 +122,21 @@ const int MAX_PERIODS = 30;
         [mainTimePicker selectRow:value inComponent:1 animated:NO];
     else if (textField == mainSecond) 
         [mainTimePicker selectRow:value inComponent:2 animated:NO];
+    
+    [self timeSettingsChanged];
 }
 
-// picker delegate method
+// ========================== PICKER METHODS ====================================
+
+/**
+ * When the picker is set, update the corresponding text box.
+ */
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    // set corresponding text box string
+{    
     if (pickerView == mainTimePicker)
     {
         if (component == 0)
-            [mainHour setText:[NSString stringWithFormat:@"%02d", row]];
+            [mainHour setText:[NSString stringWithFormat:@"%d", row]];
         else if (component == 1)
             [mainMinute setText:[NSString stringWithFormat:@"%02d", row]];
         else
@@ -110,10 +154,11 @@ const int MAX_PERIODS = 30;
     {
         [overtimePeriod setText:[NSString stringWithFormat:@"%d", row]];
     }
+    
+    [self timeSettingsChanged];
 }
 
 // Time picker datasource methods
-
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
     if (pickerView == mainTimePicker)
@@ -150,13 +195,82 @@ const int MAX_PERIODS = 30;
 	label.font = [UIFont boldSystemFontOfSize:20];
 
     
-    if (pickerView == numberOfPeriods)
+    if (pickerView == numberOfPeriods || 
+        (pickerView == mainTimePicker && component == 0))
         label.text = [NSString stringWithFormat:@"%d", row];
     else
         label.text = [NSString stringWithFormat:@"%02d", row];
         
     return label;
 }
+
+
+// ========================== TABLEVIEW METHODS ====================================
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGRect frame = CGRectMake(0, 0, 200, 37);
+    
+    UITableViewCell * cell   = [[UITableViewCell alloc] initWithFrame:frame];
+    cell.backgroundColor     = [UIColor clearColor];
+    cell.textLabel.textColor = [UIColor whiteColor];
+    
+    if (tableView == timerTypesTable)
+        cell.textLabel.text = [[TimerSettings TimerTypes] objectAtIndex:[indexPath indexAtPosition:1]];
+    else
+        cell.textLabel.text = @"Placeholder";
+
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (tableView == timerTypesTable)
+        return [[TimerSettings TimerTypes] count];
+    if (tableView == categoriesTable) {
+        return 0;
+    }
+    
+    return 0;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == timerTypesTable) {
+        NSUInteger row = [indexPath indexAtPosition:1];
+        NSLog(@"Got %d", row);
+    }
+}
+
+// ========================== VISABILITY METHODS ====================================
+
+
+- (void) disablePeriodControls
+{
+    numberOfPeriods.hidden = YES;
+    overtimePeriod.hidden  = YES;
+}
+
+- (void) disableOvertimeControls
+{
+    overtimeMinute.hidden = YES;
+    overtimeSecond.hidden = YES;
+    overtimeMinutesSeconds.hidden = YES;
+}
+
+- (void) enablePeriodControls
+{
+    numberOfPeriods.hidden = NO;
+    overtimePeriod.hidden  = NO;
+}
+
+- (void) enableOvertimeControls
+{
+    overtimeMinute.hidden = NO;
+    overtimeSecond.hidden = NO;
+    overtimeMinutesSeconds.hidden = NO;
+}
+
 
 @end
 

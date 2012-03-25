@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "TimerSettings.h"
 
-@interface MainWindowViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource> {
-    IBOutlet UITabBar * tabBar;
-    
+@interface MainWindowViewController : UIViewController 
+<UIPickerViewDelegate, 
+ UIPickerViewDataSource,
+ UITableViewDelegate,
+ UITableViewDataSource>
+{
     IBOutlet UITextField * mainHour;
     IBOutlet UITextField * mainMinute;
     IBOutlet UITextField * mainSecond;
@@ -23,13 +27,32 @@
     IBOutlet UIPickerView * overtimeMinutesSeconds;
     IBOutlet UIPickerView * numberOfPeriods;
     
+    // round their corners
+    IBOutlet UIView * typesView;       // top left
+    IBOutlet UIView * maintimeView;    // top middle
+    IBOutlet UIView * overtimeView;    // top right
+    IBOutlet UIView * timerTablesView; // bottom
+    
+    // upper table view
+    IBOutlet UITableView * timerTypesTable;
+    
+    // lower table views
+    IBOutlet UITableView * categoriesTable;
+    IBOutlet UITableView * savedTimersTable;
+    
     AppDelegate * appDelegate;
 }
 
 - (IBAction)selectNewTimer:(id)sender;
 - (IBAction)selectFavorites:(id)sender;
 
+- (void) timeSettingsChanged;
+- (void) populateSettings:(TimerSettings *) settings;
+- (void)textFieldDidChange:(UITextField *) textField;
 
-/* Tab bar delegate methods */
-- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item;
+- (void) disablePeriodControls;
+- (void) disableOvertimeControls;
+- (void) enablePeriodControls;
+- (void) enableOvertimeControls;
+
 @end
