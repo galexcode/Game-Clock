@@ -22,13 +22,39 @@ const int MAX_PERIODS = 30;
 
 - (void) populateSettings:(TimerSettings *) settings
 {
-    [mainHour   setText:[NSString stringWithFormat:@"%d", [settings hours]]];
-    [mainMinute setText:[NSString stringWithFormat:@"%02d", [settings minutes]]];
-    [mainSecond setText:[NSString stringWithFormat:@"%02d", [settings seconds]]];
+    [mainHour   setText:[NSString stringWithFormat:@"%d",   [settings hours_]]];
+    [mainMinute setText:[NSString stringWithFormat:@"%02d", [settings minutes_]]];
+    [mainSecond setText:[NSString stringWithFormat:@"%02d", [settings seconds_]]];
+    
+    [overtimeMinute setText:[NSString stringWithFormat:@"%02d", [settings overtimeMinutes_]]];
+    [overtimeSecond setText:[NSString stringWithFormat:@"%02d", [settings overtimeSeconds_]]];
+    [overtimePeriod setText:[NSString stringWithFormat:@"%02d", [settings overtimePeriods_]]];
     
     [self textFieldDidChange:mainHour];
     [self textFieldDidChange:mainMinute];
     [self textFieldDidChange:mainSecond];
+    
+    switch ([settings type_]) {
+        case Absolute:
+            [self disableOvertimeControls];
+            [self disablePeriodControls];
+            break;
+        case Bronstein:
+        case Fischer:
+            [self disablePeriodControls];
+            [self enableOvertimeControls];
+            break;
+        case ByoYomi:
+        case Canadian:
+            [self enablePeriodControls];
+            [self enableOvertimeControls];
+            break;
+        case Hourglass:
+            [self disableOvertimeControls];
+            [self disablePeriodControls];
+            break;
+        default:;
+    }
     
     
 
@@ -61,16 +87,30 @@ const int MAX_PERIODS = 30;
     [timerTablesView.layer setMasksToBounds:YES];
     
     // set defaults for the pickers
+    
+    // who goes first (black for go, white for chess)
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSInteger firstPlayer = [prefs integerForKey:@"First Player"];
+    
+    
+    NSInteger lastTimerTableSelection = [prefs integerForKey:@"Last Timer Table Selection"];
+    
+    whiteBlack.selectedSegmentIndex = firstPlayer;
+    historySavedBuiltin.selectedSegmentIndex = lastTimerTableSelection;
 }
 
-- (IBAction)selectNewTimer:(id)sender
-{
-    NSLog(@"selected new");
-}
 
-- (IBAction)selectFavorites:(id)sender
+- (IBAction)segmentedClick:(UISegmentedControl *) sender
 {
-    NSLog(@"selected favorites");
+    NSUserDefaults * prefs = [NSUserDefaults standardUserDefaults];
+    if (sender == whiteBlack) {
+        [prefs setInteger:[sender selectedSegmentIndex] forKey:@"First Player"];
+    }
+    else {
+        [prefs setInteger:[sender selectedSegmentIndex] forKey:@"Last Timer Table Selection"];
+        //TODO: history/saved/builtin => change table view
+    }
+    [prefs synchronize];
 }
 
 
@@ -81,16 +121,6 @@ const int MAX_PERIODS = 30;
     
     // Release any cached data, images, etc that aren't in use.
 }
-
-// ========================== TAB BAR METHODS ====================================
-
-- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
-{
-    NSInteger tag = [item tag];
-    NSLog(@"Selected %d", tag);
-    
-}
-
 
 // ========================== TEXT FIELD METHODS ====================================
 
@@ -227,7 +257,7 @@ const int MAX_PERIODS = 30;
 {
     if (tableView == timerTypesTable)
         return [[TimerSettings TimerTypes] count];
-    if (tableView == categoriesTable) {
+    if (tableView == savedTimersTable) {
         return 0;
     }
     
@@ -236,9 +266,12 @@ const int MAX_PERIODS = 30;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSUInteger row = [indexPath indexAtPosition:1];
+    NSLog(@"Got %d", row);
     if (tableView == timerTypesTable) {
-        NSUInteger row = [indexPath indexAtPosition:1];
-        NSLog(@"Got %d", row);
+        ;
+    }
+    else if (tableView == savedTimersTable) {
     }
 }
 

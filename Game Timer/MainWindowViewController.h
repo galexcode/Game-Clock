@@ -36,15 +36,16 @@
     // upper table view
     IBOutlet UITableView * timerTypesTable;
     
-    // lower table views
-    IBOutlet UITableView * categoriesTable;
+    // lower table view
     IBOutlet UITableView * savedTimersTable;
+
+    IBOutlet UISegmentedControl * whiteBlack;
+    IBOutlet UISegmentedControl * historySavedBuiltin;
     
     AppDelegate * appDelegate;
 }
 
-- (IBAction)selectNewTimer:(id)sender;
-- (IBAction)selectFavorites:(id)sender;
+- (IBAction)segmentedClick:(UISegmentedControl *) sender;
 
 - (void) timeSettingsChanged;
 - (void) populateSettings:(TimerSettings *) settings;

@@ -8,30 +8,30 @@
 
 #import <Foundation/Foundation.h>
 
-enum TimerType {
+typedef enum  {
     Absolute,
     Bronstein,
-    ByoYumi,
+    ByoYomi,
     Canadian,
     Fischer,
     Hourglass,
-};
+} TimerType;
 
 @interface TimerSettings : NSObject
-{
-    enum TimerType type;
-    
-    unsigned hours;
-    unsigned minutes;
-    unsigned seconds;
-    
-    unsigned periods;
-    unsigned overtimeMinutes;
-    unsigned overtimeSeconds;
-}
 
-@property (assign) unsigned hours, minutes, seconds, periods, overtimeMinutes, overtimeSeconds;
-@property (assign) enum TimerType type;
+@property (assign) unsigned hours_, minutes_, seconds_, overtimePeriods_, overtimeMinutes_, overtimeSeconds_;
+@property (assign) TimerType type_;
+
+- (id) initWithHours:(unsigned)hours
+             minutes:(unsigned)minutes
+             seconds:(unsigned)seconds
+     overtimeMinutes:(unsigned)overtimeMinutes
+     overtimeSeconds:(unsigned)overtimeSeconds
+             overtimePeriods:(unsigned)overtimePeriods
+                type:(TimerType)type;
+
+- (NSDictionary *) toDictionary;
+- (id) initWithDictionary:(NSDictionary *) dict;
 
 + (NSArray *) TimerTypes;
 

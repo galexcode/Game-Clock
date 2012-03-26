@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface TimerSupply : NSObject
+{
+    NSString * categoryChoices;
+}
 
 - (NSString *) titleForCategory:(NSUInteger) row;
 - (NSString *) titleForItem:(NSUInteger) row inCategory:(NSUInteger) category;
