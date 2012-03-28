@@ -30,9 +30,13 @@ typedef enum  {
              overtimePeriods:(unsigned)overtimePeriods
                 type:(TimerType)type;
 
+- (void) populateDefaults;
 - (NSDictionary *) toDictionary;
 - (id) initWithDictionary:(NSDictionary *) dict;
 
 + (NSArray *) TimerTypes;
++ (NSString *) StringForType:(TimerType) type;
++ (NSUInteger) IndexForType:(TimerType) type;
++ (TimerSettings *) TimerForType:(TimerType) type;
 
 @end

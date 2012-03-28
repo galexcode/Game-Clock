@@ -6,22 +6,47 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+/*
+ TODO:
+ 1) define a TimerSettings object to manipulate with the pickers/table view
+ 2) set up table view delegate/datasource methods
+ 3) define more built-in timers
+ 4) Periods cannot be zero for by/canadian; have type-specific maxima/minima
+ */
+
 #import "MainWindowViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 const int MAX_HOURS   = 10;
 const int MAX_PERIODS = 30;
 
+const float DISABLED_ALPHA = 0.3f;
+const float ENABLED_ALPHA  = 1.0f;
+
 @implementation MainWindowViewController
 
 
 - (void) timeSettingsChanged
 {
+    settingsDirty_ = YES;
+    [saveButton setEnabled:YES];
+    [saveButton setAlpha:ENABLED_ALPHA];
+}
+
+- (void) timerSetFromStoredType
+{
+    settingsDirty_ = NO;
+    [saveButton setEnabled:NO];
+    [saveButton setAlpha:DISABLED_ALPHA];
 }
 
 
+/**
+ * Update the display commensurate with the settings
+ */
 - (void) populateSettings:(TimerSettings *) settings
 {
+    // update the text fields
     [mainHour   setText:[NSString stringWithFormat:@"%d",   [settings hours_]]];
     [mainMinute setText:[NSString stringWithFormat:@"%02d", [settings minutes_]]];
     [mainSecond setText:[NSString stringWithFormat:@"%02d", [settings seconds_]]];
@@ -30,36 +55,75 @@ const int MAX_PERIODS = 30;
     [overtimeSecond setText:[NSString stringWithFormat:@"%02d", [settings overtimeSeconds_]]];
     [overtimePeriod setText:[NSString stringWithFormat:@"%02d", [settings overtimePeriods_]]];
     
+    // update the time pickers
     [self textFieldDidChange:mainHour];
     [self textFieldDidChange:mainMinute];
     [self textFieldDidChange:mainSecond];
+    [self textFieldDidChange:overtimePeriod];
+    [self textFieldDidChange:overtimeMinute];
+    [self textFieldDidChange:overtimeSecond];
     
-    switch ([settings type_]) {
+    // enable/disable overtime periods/time settings as appropriate, 
+    // and select the correct element in the table
+
+    TimerType type = [settings type_];
+    switch (type) {
         case Absolute:
-            [self disableOvertimeControls];
-            [self disablePeriodControls];
+            [self selectType:type period:NO overtime:NO];
             break;
         case Bronstein:
+            [self selectType:type period:NO overtime:YES];
+            break;
         case Fischer:
-            [self disablePeriodControls];
-            [self enableOvertimeControls];
+            [self selectType:type period:NO overtime:YES];
             break;
         case ByoYomi:
+            [self selectType:type period:YES overtime:YES];
+            break;
         case Canadian:
-            [self enablePeriodControls];
-            [self enableOvertimeControls];
+            [self selectType:type period:YES overtime:YES];
             break;
         case Hourglass:
-            [self disableOvertimeControls];
-            [self disablePeriodControls];
+            [self selectType:type period:NO overtime:NO];
             break;
         default:;
     }
     
-    
-
+    [self timerSetFromStoredType];
 }
 
+
+/**
+ * Helper for populateSettings.  Selects the appropriate type in the table
+ * view and enables/disables the appropriate controls.
+ */
+- (void) selectType:(TimerType) type
+             period:(BOOL) pEnabled
+           overtime:(BOOL) oEnabled
+{
+    NSUInteger i = [TimerSettings IndexForType:type];
+    [timerTypesTable selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]
+                                 animated:NO
+                           scrollPosition:UITableViewScrollPositionNone];    
+    if (pEnabled)
+        [self enablePeriodControls];
+    else {
+        [self disablePeriodControls];
+        NSLog(@"Disabled period controls");
+    }
+    
+    if (oEnabled)
+        [self enableOvertimeControls];
+    else
+        [self disableOvertimeControls];
+}
+
+
+#define ADD_NOTIFICATION(x) \
+    [x addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+#define ROUND_CORNER(x) \
+    [x.layer setCornerRadius:5.0f]; \
+    [x.layer setMasksToBounds:YES];
 
 - (void) viewDidLoad
 {
@@ -67,37 +131,38 @@ const int MAX_PERIODS = 30;
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     // Add a "textFieldDidChange" notification method to the text fields
-	[overtimeMinute addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-	[overtimeSecond addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-	[overtimePeriod addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    ADD_NOTIFICATION(overtimeMinute);
+    ADD_NOTIFICATION(overtimeSecond);
+    ADD_NOTIFICATION(overtimePeriod);
+    ADD_NOTIFICATION(mainHour);
+    ADD_NOTIFICATION(mainMinute);
+    ADD_NOTIFICATION(mainSecond);
     
-	[mainHour   addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-	[mainMinute addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-	[mainSecond addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    
-    // round the corners
-    
-    [maintimeView.layer setCornerRadius:5.0f];
-    [maintimeView.layer setMasksToBounds:YES];
-    [overtimeView.layer setCornerRadius:5.0f];
-    [overtimeView.layer setMasksToBounds:YES];
-    [typesView.layer setCornerRadius:5.0f];
-    [typesView.layer setMasksToBounds:YES];
-    [timerTablesView.layer setCornerRadius:5.0f];
-    [timerTablesView.layer setMasksToBounds:YES];
-    
-    // set defaults for the pickers
-    
+    // round the view corners
+    ROUND_CORNER(maintimeView);
+    ROUND_CORNER(overtimeView);
+    ROUND_CORNER(typesView);
+    ROUND_CORNER(timerTablesView);
+
     // who goes first (black for go, white for chess)
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSInteger firstPlayer = [prefs integerForKey:@"First Player"];
-    
-    
-    NSInteger lastTimerTableSelection = [prefs integerForKey:@"Last Timer Table Selection"];
-    
     whiteBlack.selectedSegmentIndex = firstPlayer;
+
+    // the last selected timer table
+    NSInteger lastTimerTableSelection        = [prefs integerForKey:@"Last Timer Table Selection"];
     historySavedBuiltin.selectedSegmentIndex = lastTimerTableSelection;
+    
+    // last selected timer settings
+    NSDictionary * lastTimerDict = [prefs dictionaryForKey:@"Last Timer Settings"];
+    TimerSettings * lastTimer    = [[TimerSettings alloc] initWithDictionary:lastTimerDict];
+    
+    NSLog(@"Setting %@", lastTimer);
+    [self populateSettings:lastTimer];
 }
+
+#undef ADD_NOTIFICATION
+#undef ROUND_CORNER
 
 
 - (IBAction)segmentedClick:(UISegmentedControl *) sender
@@ -129,6 +194,12 @@ const int MAX_PERIODS = 30;
  */
 - (void)textFieldDidChange:(UITextField *) textField
 {
+    [self updatePickersFromTextField:textField];
+    [self timeSettingsChanged];
+}
+
+- (void)updatePickersFromTextField:(UITextField *) textField 
+{
     NSInteger value = [[textField text] intValue];
     if (value < 0) {
         value = 0;
@@ -152,6 +223,12 @@ const int MAX_PERIODS = 30;
         [mainTimePicker selectRow:value inComponent:1 animated:NO];
     else if (textField == mainSecond) 
         [mainTimePicker selectRow:value inComponent:2 animated:NO];
+    else if (textField == overtimePeriod)
+        [overtimePeriodPicker selectRow:value inComponent:0 animated:NO];
+    else if (textField == overtimeMinute)
+        [overtimeMinutesSeconds selectRow:value inComponent:0 animated:NO];
+    else if (textField == overtimeSecond)
+        [overtimeMinutesSeconds selectRow:value inComponent:1 animated:NO];
     
     [self timeSettingsChanged];
 }
@@ -203,7 +280,7 @@ const int MAX_PERIODS = 30;
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    if (pickerView == numberOfPeriods)
+    if (pickerView == overtimePeriodPicker)
         return MAX_PERIODS;
     
     // hours component of main time picker
@@ -225,7 +302,7 @@ const int MAX_PERIODS = 30;
 	label.font = [UIFont boldSystemFontOfSize:20];
 
     
-    if (pickerView == numberOfPeriods || 
+    if (pickerView == overtimePeriodPicker || 
         (pickerView == mainTimePicker && component == 0))
         label.text = [NSString stringWithFormat:@"%d", row];
     else
@@ -268,6 +345,7 @@ const int MAX_PERIODS = 30;
 {
     NSUInteger row = [indexPath indexAtPosition:1];
     NSLog(@"Got %d", row);
+    // TODO: Finish it!
     if (tableView == timerTypesTable) {
         ;
     }
@@ -275,33 +353,93 @@ const int MAX_PERIODS = 30;
     }
 }
 
+
+/**
+ * Make navigation between text fields easy
+ */
+- (IBAction) textFieldNextButton:(id) sender
+{
+    if (sender == mainHour) {
+        [self selectAndRespond:mainMinute];
+    }
+    else if (sender == mainMinute) {
+        [self selectAndRespond:mainSecond];
+    }
+    else if (sender == mainSecond) {
+        if (overtimePeriod.enabled)
+            [self selectAndRespond:overtimePeriod];
+        else if (overtimeMinute.enabled)
+            [self selectAndRespond:overtimeMinute];
+    }
+    else if (sender == overtimePeriod)
+        [self selectAndRespond:overtimeMinute];
+    else if (sender == overtimeSecond)
+        [sender resignFirstResponder];
+}
+
+/**
+ * Helper for textFieldNextButton
+ */
+- (void) selectAndRespond:(UITextField *) tf
+{
+    [tf selectAll:self];
+    [tf becomeFirstResponder];
+}
+
 // ========================== VISABILITY METHODS ====================================
 
 
+- (void) enableTextField:(UITextField *) tf
+{
+    [tf setAlpha:ENABLED_ALPHA];
+    [tf setEnabled:YES];
+}
+
+- (void) disableTextField:(UITextField *) tf
+{
+    [tf setAlpha:DISABLED_ALPHA];
+    [tf setEnabled:NO];
+}
+
+- (void) enablePicker:(UIPickerView *) pv
+{
+    [pv setAlpha:ENABLED_ALPHA];
+    pv.userInteractionEnabled = YES;
+}
+
+- (void) disablePicker:(UIPickerView *) pv
+{
+    [pv setAlpha:DISABLED_ALPHA];
+    pv.userInteractionEnabled = NO;
+}
+
 - (void) disablePeriodControls
 {
-    numberOfPeriods.hidden = YES;
-    overtimePeriod.hidden  = YES;
+    NSLog(@"Called %s", __FUNCTION__);
+    [self disableTextField:overtimePeriod];
+    [self disablePicker:overtimePeriodPicker];
 }
 
 - (void) disableOvertimeControls
 {
-    overtimeMinute.hidden = YES;
-    overtimeSecond.hidden = YES;
-    overtimeMinutesSeconds.hidden = YES;
+    [self disableTextField:overtimeMinute];
+    [self disableTextField:overtimeSecond];
+    
+    [self disablePicker:overtimeMinutesSeconds];
 }
 
 - (void) enablePeriodControls
 {
-    numberOfPeriods.hidden = NO;
-    overtimePeriod.hidden  = NO;
+    [self enableTextField:overtimePeriod];
+    [self enablePicker:overtimePeriodPicker];
 }
 
 - (void) enableOvertimeControls
 {
-    overtimeMinute.hidden = NO;
-    overtimeSecond.hidden = NO;
-    overtimeMinutesSeconds.hidden = NO;
+    [self enableTextField:overtimeMinute];
+    [self enableTextField:overtimeSecond];
+    
+    [self enablePicker:overtimeMinutesSeconds];
 }
 
 
