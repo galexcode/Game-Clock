@@ -13,5 +13,8 @@
 
 @property (retain) TimerSettings * settings;
 @property (strong, nonatomic) UIWindow *window;
+@property (assign) BOOL timerActive;
+
+- (void) storeCurrentSettings;
 
 @end

@@ -64,8 +64,7 @@ const float ENABLED_ALPHA  = 1.0f;
     [self textFieldDidChange:overtimeSecond];
     
     // enable/disable overtime periods/time settings as appropriate, 
-    // and select the correct element in the table
-
+    // and select the correct element in the type table
     TimerType type = [settings type_];
     switch (type) {
         case Absolute:
@@ -120,7 +119,8 @@ const float ENABLED_ALPHA  = 1.0f;
 
 
 #define ADD_NOTIFICATION(x) \
-    [x addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [x addTarget:self action:@selector(textFieldDidChange:) \
+            forControlEvents:UIControlEventEditingChanged];
 #define ROUND_CORNER(x) \
     [x.layer setCornerRadius:5.0f]; \
     [x.layer setMasksToBounds:YES];
@@ -155,9 +155,10 @@ const float ENABLED_ALPHA  = 1.0f;
     
     // last selected timer settings
     NSDictionary * lastTimerDict = [prefs dictionaryForKey:@"Last Timer Settings"];
+    
     TimerSettings * lastTimer    = [[TimerSettings alloc] initWithDictionary:lastTimerDict];
     
-    NSLog(@"Setting %@", lastTimer);
+    [appDelegate setSettings:lastTimer];
     [self populateSettings:lastTimer];
 }
 
@@ -181,10 +182,8 @@ const float ENABLED_ALPHA  = 1.0f;
 
 - (void)didReceiveMemoryWarning
 {
-    // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
+    // TODO: pause and store timer settings
 }
 
 // ========================== TEXT FIELD METHODS ====================================

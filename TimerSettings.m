@@ -99,6 +99,10 @@
     return self;
 }
 
+
+/**
+ * Give a plain-text description of the timer settings. 
+ */
 - (NSString *) description
 {
     NSMutableString * title = [NSMutableString stringWithString:[TimerSettings StringForType:type_]];
@@ -159,6 +163,22 @@
     return title;
 }
 
+- (BOOL) isEqual:(TimerSettings *) other
+{
+    return (type_    == other.type_    &&
+            hours_   == other.hours_   &&
+            minutes_ == other.minutes_ &&
+            seconds_ == other.seconds_ &&
+            overtimeMinutes_ == other.overtimeMinutes_ &&
+            overtimeSeconds_ == other.overtimeSeconds_ &&
+            overtimePeriods_ == other.overtimePeriods_
+            );
+}
+
+
+/**
+ * Converts an enum element into a string
+ */
 #define FROM_LITERAL(x) \
     if (type == x) return @#x;
 + (NSString *) StringForType:(TimerType) type
@@ -174,6 +194,9 @@
 #undef FROM_LITERAL
 
 
+/**
+ * Returns an array of strings for elements of the TimerType enum
+ */
 + (NSArray *)TimerTypes
 {
     static NSArray *data = nil;
@@ -193,10 +216,15 @@
     index += 1;
 }
 
+
+/**
+ * Returns the index of the specified type in the array returned by
+ * [TimerSettings TimerTypes]
+ */
 + (NSUInteger) IndexForType:(TimerType) type
 {
     NSString * string = [TimerSettings StringForType:type];
-    NSUInteger index = [[TimerSettings TimerTypes] indexOfObject:string];
+    NSUInteger index  = [[TimerSettings TimerTypes] indexOfObject:string];
     return index;
 }
 

@@ -11,16 +11,16 @@
 @implementation AppDelegate
 
 @synthesize window = _window;
-@synthesize settings;
+@synthesize settings, timerActive;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    timerActive = NO;
     
-    /**
-     * Load the last settings
-     */
-    settings = [[TimerSettings alloc] init];
+    // set up the timer settings using the last 
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSDictionary * lastTimerDict = [prefs dictionaryForKey:@"Last Timer Settings"];
+    settings = [[TimerSettings alloc] initWithDictionary:lastTimerDict];
     
     return YES;
 }
@@ -63,5 +63,13 @@
      See also applicationDidEnterBackground:.
      */
 }
+
+- (void) storeCurrentSettings
+{
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setValue:[settings toDictionary] forKey:@"Last Timer Settings"];
+    
+}
+
 
 @end
