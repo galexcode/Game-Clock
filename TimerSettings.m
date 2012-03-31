@@ -53,7 +53,7 @@
     overtimeSeconds_ = 30;
     overtimePeriods_ = 5;
     type_            = ByoYomi;
-    
+
 }
 
 - (id) initWithHours:(unsigned)hours
@@ -81,13 +81,13 @@
 {
     self = [super init];
     if (self) {
-        
+
         // don't choke on empty dictionaries
         if ([dict count] == 0) {
             [self populateDefaults];
             return self;
         }
-        
+
         hours_           = [[dict valueForKey:@"h"] intValue];
         minutes_         = [[dict valueForKey:@"m"] intValue];
         seconds_         = [[dict valueForKey:@"s"] intValue];
@@ -101,65 +101,66 @@
 
 
 /**
- * Give a plain-text description of the timer settings. 
+ * Give a plain-text description of the timer settings.
  */
 - (NSString *) description
 {
-    NSMutableString * title = [NSMutableString stringWithString:[TimerSettings StringForType:type_]];
+    NSString * unpadded     = [TimerSettings StringForType:type_];
+    NSMutableString * title = [NSMutableString stringWithFormat:@"%-12@",unpadded];
     
     // pretty print the main time
     if (hours_ == 0 && minutes_ == 0 && seconds_ == 0)
         [title appendString:@"No main time, "];
     else {
-        
+
         if (hours_ > 0)
             [title appendFormat:@" %d hour", hours_];
         if (hours_ > 1)
             [title appendString:@"s"];
-        
+
         if (minutes_ > 0)
             [title appendFormat:@" %d minute", minutes_];
         if (minutes_ > 1)
             [title appendFormat:@"s", minutes_];
-        
+
         if (seconds_ > 0)
             [title appendFormat:@" %d second", seconds_];
         if (seconds_ > 1)
             [title appendFormat:@"s", seconds_];
-        
+
         [title appendString:@" main time, "];
     }
-    
-    
+
+
     if (type_ == Absolute || type_ == Hourglass)
         return title;
-    
+
     // for time settings with overtime, pretty print that data
     NSMutableString * ot = [NSMutableString stringWithString:@""];
-    
+
     if (overtimeMinutes_ > 0)
         [ot appendFormat:@" %d minute", minutes_];
     if (overtimeMinutes_ > 1)
         [ot appendFormat:@"s", minutes_];
-    
+
     if (overtimeSeconds_ > 0)
         [ot appendFormat:@" %d second", seconds_];
     if (overtimeSeconds_ > 1)
         [ot appendFormat:@"s", seconds_];
-    
+
     if (type_ == ByoYomi) {
         [title appendFormat:@"%d periods with %@ each", overtimePeriods_, ot];
         return title;
     }
-    
+
     if (type_ == Canadian) {
         [title appendFormat:@"%d moves in %@", overtimePeriods_, ot];
         return title;
     }
-    
+
     // type is Fischer or Bronstein
     [title appendFormat:@"%@ per move"];
-        
+
     return title;
 }
 
@@ -236,21 +237,21 @@
 {
     if (type == Absolute)
         return [[TimerSettings alloc] initWithHours:0 minutes:15 seconds:0 overtimeMinutes:0 overtimeSeconds:0 overtimePeriods:0 type:type];
-    
+
     if (type == Bronstein ||
         type == Fischer)
         return [[TimerSettings alloc] initWithHours:0 minutes:15 seconds:0 overtimeMinutes:0 overtimeSeconds:10 overtimePeriods:0 type:type];
-    
+
     if (type == ByoYomi)
         return [[TimerSettings alloc] initWithHours:0 minutes:15 seconds:0 overtimeMinutes:0 overtimeSeconds:30 overtimePeriods:3 type:type];
-    
+
     // main time 5 minutes, with 3 minute overtime periods of 10 moves each.
     if (type == Canadian)
     return [[TimerSettings alloc] initWithHours:0 minutes:5 seconds:0 overtimeMinutes:3 overtimeSeconds:0 overtimePeriods:10 type:type];
-    
+
     if (type == Hourglass)
         return [[TimerSettings alloc] initWithHours:0 minutes:1 seconds:0 overtimeMinutes:0 overtimeSeconds:0 overtimePeriods:0 type:type];
-    
+
     return [[TimerSettings alloc] init];
 }
 

@@ -10,10 +10,15 @@
 
 @interface TimerSupply : NSObject
 {
-    NSString * categoryChoices;
+    NSUserDefaults *prefs;
+    NSDictionary * timers;
 }
 
-- (NSString *) titleForCategory:(NSUInteger) row;
-- (NSString *) titleForItem:(NSUInteger) row inCategory:(NSUInteger) category;
+- (void) createTimersFromDictionary:(NSDictionary *) dict;
+- (NSUInteger) rowsInComponent:(NSUInteger) component;
+- (NSString *) titleForItem:(NSUInteger) row inComponent:(NSUInteger) component;
+- (void) createInitialObjects;
+
++ (NSArray *) keys;
 
 @end

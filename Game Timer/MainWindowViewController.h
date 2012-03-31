@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "TimerSupply.h"
 #import "TimerSettings.h"
 
-@interface MainWindowViewController : UIViewController 
-<UIPickerViewDelegate, 
+@interface MainWindowViewController : UIViewController
+<UIPickerViewDelegate,
  UIPickerViewDataSource,
  UITableViewDelegate,
  UITableViewDataSource>
@@ -22,32 +23,37 @@
     IBOutlet UITextField * overtimeMinute;
     IBOutlet UITextField * overtimeSecond;
     IBOutlet UITextField * overtimePeriod;
-    
+
     IBOutlet UIPickerView * mainTimePicker;
     IBOutlet UIPickerView * overtimeMinutesSeconds;
     IBOutlet UIPickerView * overtimePeriodPicker;
-    
+
     // round their corners
     IBOutlet UIView * typesView;       // top left
     IBOutlet UIView * maintimeView;    // top middle
     IBOutlet UIView * overtimeView;    // top right
     IBOutlet UIView * timerTablesView; // bottom
-    
+
     // Buttons
     IBOutlet UIButton * saveButton;
     IBOutlet UIButton * launchButton;
-    
+
     // upper table view
     IBOutlet UITableView * timerTypesTable;
-    
+
     // lower table view
     IBOutlet UITableView * savedTimersTable;
+    NSUInteger selectedTableType;
+    BOOL savedTimersTableHasData;
+
+    // TimerSupply handles the lower table view's data
+    TimerSupply * timerSupply;
 
     IBOutlet UISegmentedControl * whiteBlack;
     IBOutlet UISegmentedControl * historySavedBuiltin;
-    
+
     AppDelegate * appDelegate;
-    
+
     BOOL settingsDirty_;
 }
 - (IBAction)textFieldNextButton:(id) sender;

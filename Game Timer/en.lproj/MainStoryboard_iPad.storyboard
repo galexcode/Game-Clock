@@ -215,10 +215,14 @@
                                 <rect key="frame" x="20" y="550" width="728" height="383"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Qnt-qv-snS">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Qnt-qv-snS">
                                         <rect key="frame" x="20" y="20" width="688" height="343"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="KyB-Qi-HDW" id="yFx-6X-qxU"/>
+                                            <outlet property="delegate" destination="KyB-Qi-HDW" id="Kg9-HG-GUc"/>
+                                        </connections>
                                     </tableView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
@@ -231,6 +235,9 @@
                                     <segment title="Favorites"/>
                                     <segment title="History"/>
                                 </segments>
+                                <connections>
+                                    <action selector="segmentedClick:" destination="KyB-Qi-HDW" eventType="valueChanged" id="ENP-C1-7ZC"/>
+                                </connections>
                             </segmentedControl>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="inW-97-cjf">
                                 <rect key="frame" x="20" y="499" width="275" height="44"/>
@@ -281,6 +288,7 @@
                         <barButtonItem key="backBarButtonItem" title="Return" id="WI3-Us-eBM"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="historySavedBuiltin" destination="noQ-r5-xHJ" id="Wge-3o-AfO"/>
                         <outlet property="launchButton" destination="oPa-ha-Mim" id="Vc8-8A-fMq"/>
                         <outlet property="mainHour" destination="biB-10-TMh" id="pqV-rd-FSO"/>
                         <outlet property="mainMinute" destination="jkP-z6-RXt" id="AhO-vM-XXX"/>

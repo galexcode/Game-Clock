@@ -9,9 +9,10 @@
 /*
  TODO:
  1) define a TimerSettings object to manipulate with the pickers/table view
- 2) set up table view delegate/datasource methods
+ 2) Make clicking on table elements select the timer (both timerTypesTable and selectedTimersTable
  3) define more built-in timers
  4) Periods cannot be zero for by/canadian; have type-specific maxima/minima
+ 5) 
  */
 
 #import "MainWindowViewController.h"
@@ -50,11 +51,11 @@ const float ENABLED_ALPHA  = 1.0f;
     [mainHour   setText:[NSString stringWithFormat:@"%d",   [settings hours_]]];
     [mainMinute setText:[NSString stringWithFormat:@"%02d", [settings minutes_]]];
     [mainSecond setText:[NSString stringWithFormat:@"%02d", [settings seconds_]]];
-    
+
     [overtimeMinute setText:[NSString stringWithFormat:@"%02d", [settings overtimeMinutes_]]];
     [overtimeSecond setText:[NSString stringWithFormat:@"%02d", [settings overtimeSeconds_]]];
     [overtimePeriod setText:[NSString stringWithFormat:@"%02d", [settings overtimePeriods_]]];
-    
+
     // update the time pickers
     [self textFieldDidChange:mainHour];
     [self textFieldDidChange:mainMinute];
@@ -62,8 +63,8 @@ const float ENABLED_ALPHA  = 1.0f;
     [self textFieldDidChange:overtimePeriod];
     [self textFieldDidChange:overtimeMinute];
     [self textFieldDidChange:overtimeSecond];
-    
-    // enable/disable overtime periods/time settings as appropriate, 
+
+    // enable/disable overtime periods/time settings as appropriate,
     // and select the correct element in the type table
     TimerType type = [settings type_];
     switch (type) {
@@ -87,10 +88,10 @@ const float ENABLED_ALPHA  = 1.0f;
             break;
         default:;
     }
-    
-    [self timerSetFromStoredType];
-}
 
+    [self timerSetFromStoredType];
+    [savedTimersTable reloadData];
+}
 
 /**
  * Helper for populateSettings.  Selects the appropriate type in the table
@@ -103,14 +104,14 @@ const float ENABLED_ALPHA  = 1.0f;
     NSUInteger i = [TimerSettings IndexForType:type];
     [timerTypesTable selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]
                                  animated:NO
-                           scrollPosition:UITableViewScrollPositionNone];    
+                           scrollPosition:UITableViewScrollPositionNone];
     if (pEnabled)
         [self enablePeriodControls];
     else {
         [self disablePeriodControls];
         NSLog(@"Disabled period controls");
     }
-    
+
     if (oEnabled)
         [self enableOvertimeControls];
     else
@@ -129,7 +130,7 @@ const float ENABLED_ALPHA  = 1.0f;
 {
     // Connect the application's AppDelegate instance to this view
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
+
     // Add a "textFieldDidChange" notification method to the text fields
     ADD_NOTIFICATION(overtimeMinute);
     ADD_NOTIFICATION(overtimeSecond);
@@ -137,7 +138,7 @@ const float ENABLED_ALPHA  = 1.0f;
     ADD_NOTIFICATION(mainHour);
     ADD_NOTIFICATION(mainMinute);
     ADD_NOTIFICATION(mainSecond);
-    
+
     // round the view corners
     ROUND_CORNER(maintimeView);
     ROUND_CORNER(overtimeView);
@@ -150,22 +151,27 @@ const float ENABLED_ALPHA  = 1.0f;
     whiteBlack.selectedSegmentIndex = firstPlayer;
 
     // the last selected timer table
-    NSInteger lastTimerTableSelection        = [prefs integerForKey:@"Last Timer Table Selection"];
-    historySavedBuiltin.selectedSegmentIndex = lastTimerTableSelection;
+    selectedTableType = [prefs integerForKey:@"Last Timer Table Selection"];
+    historySavedBuiltin.selectedSegmentIndex = selectedTableType;
     
+    timerSupply = [[TimerSupply alloc] init];
+    savedTimersTableHasData = YES;
+
     // last selected timer settings
     NSDictionary * lastTimerDict = [prefs dictionaryForKey:@"Last Timer Settings"];
-    
     TimerSettings * lastTimer    = [[TimerSettings alloc] initWithDictionary:lastTimerDict];
-    
+
     [appDelegate setSettings:lastTimer];
     [self populateSettings:lastTimer];
+    [savedTimersTable reloadData];
 }
 
-#undef ADD_NOTIFICATION
 #undef ROUND_CORNER
+#undef ADD_NOTIFICATION
 
-
+/**
+ * Target for segmented control clicks
+ */
 - (IBAction)segmentedClick:(UISegmentedControl *) sender
 {
     NSUserDefaults * prefs = [NSUserDefaults standardUserDefaults];
@@ -173,8 +179,9 @@ const float ENABLED_ALPHA  = 1.0f;
         [prefs setInteger:[sender selectedSegmentIndex] forKey:@"First Player"];
     }
     else {
-        [prefs setInteger:[sender selectedSegmentIndex] forKey:@"Last Timer Table Selection"];
-        //TODO: history/saved/builtin => change table view
+        selectedTableType = historySavedBuiltin.selectedSegmentIndex;
+        [prefs setInteger:selectedTableType forKey:@"Last Timer Table Selection"];
+        [savedTimersTable reloadData];
     }
     [prefs synchronize];
 }
@@ -197,30 +204,30 @@ const float ENABLED_ALPHA  = 1.0f;
     [self timeSettingsChanged];
 }
 
-- (void)updatePickersFromTextField:(UITextField *) textField 
+- (void)updatePickersFromTextField:(UITextField *) textField
 {
     NSInteger value = [[textField text] intValue];
     if (value < 0) {
         value = 0;
         [textField setText:@"0"];
     }
-    
+
     if (value > 59) {
         value = 59;
         [textField setText:@"59"];
     }
 
-    if (textField == mainHour) {            
+    if (textField == mainHour) {
         if (value > 59) {
             value = 59;
             [textField setText:@"59"];
         }
-        
+
         [mainTimePicker selectRow:value inComponent:0 animated:NO];
     }
     else if (textField == mainMinute)
         [mainTimePicker selectRow:value inComponent:1 animated:NO];
-    else if (textField == mainSecond) 
+    else if (textField == mainSecond)
         [mainTimePicker selectRow:value inComponent:2 animated:NO];
     else if (textField == overtimePeriod)
         [overtimePeriodPicker selectRow:value inComponent:0 animated:NO];
@@ -228,7 +235,7 @@ const float ENABLED_ALPHA  = 1.0f;
         [overtimeMinutesSeconds selectRow:value inComponent:0 animated:NO];
     else if (textField == overtimeSecond)
         [overtimeMinutesSeconds selectRow:value inComponent:1 animated:NO];
-    
+
     [self timeSettingsChanged];
 }
 
@@ -238,7 +245,7 @@ const float ENABLED_ALPHA  = 1.0f;
  * When the picker is set, update the corresponding text box.
  */
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{    
+{
     if (pickerView == mainTimePicker)
     {
         if (component == 0)
@@ -247,7 +254,7 @@ const float ENABLED_ALPHA  = 1.0f;
             [mainMinute setText:[NSString stringWithFormat:@"%02d", row]];
         else
             [mainSecond setText:[NSString stringWithFormat:@"%02d", row]];
-        
+
     }
     else if (pickerView == overtimeMinutesSeconds)
     {
@@ -260,7 +267,7 @@ const float ENABLED_ALPHA  = 1.0f;
     {
         [overtimePeriod setText:[NSString stringWithFormat:@"%d", row]];
     }
-    
+
     [self timeSettingsChanged];
 }
 
@@ -271,7 +278,7 @@ const float ENABLED_ALPHA  = 1.0f;
         return 3;
     if (pickerView == overtimeMinutesSeconds)
         return 2;
-    
+
     // # of periods picker
     return 1;
 }
@@ -281,18 +288,18 @@ const float ENABLED_ALPHA  = 1.0f;
 {
     if (pickerView == overtimePeriodPicker)
         return MAX_PERIODS;
-    
+
     // hours component of main time picker
     if (pickerView == mainTimePicker && component == 0)
         return MAX_HOURS;
-    
+
     // min/sec
     return 60;
 }
 
-- (UIView *)pickerView:(UIPickerView *)pickerView 
-            viewForRow:(NSInteger)row 
-          forComponent:(NSInteger)component 
+- (UIView *)pickerView:(UIPickerView *)pickerView
+            viewForRow:(NSInteger)row
+          forComponent:(NSInteger)component
            reusingView:(UIView *)view
 {
     UILabel *label        = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 37)];
@@ -300,13 +307,13 @@ const float ENABLED_ALPHA  = 1.0f;
     label.backgroundColor = [UIColor clearColor];
 	label.font = [UIFont boldSystemFontOfSize:20];
 
-    
-    if (pickerView == overtimePeriodPicker || 
+
+    if (pickerView == overtimePeriodPicker ||
         (pickerView == mainTimePicker && component == 0))
         label.text = [NSString stringWithFormat:@"%d", row];
     else
         label.text = [NSString stringWithFormat:@"%02d", row];
-        
+
     return label;
 }
 
@@ -316,15 +323,24 @@ const float ENABLED_ALPHA  = 1.0f;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGRect frame = CGRectMake(0, 0, 200, 37);
-    
+
     UITableViewCell * cell   = [[UITableViewCell alloc] initWithFrame:frame];
     cell.backgroundColor     = [UIColor clearColor];
     cell.textLabel.textColor = [UIColor whiteColor];
-    
+    NSUInteger row           = [indexPath indexAtPosition:1];
+
     if (tableView == timerTypesTable)
-        cell.textLabel.text = [[TimerSettings TimerTypes] objectAtIndex:[indexPath indexAtPosition:1]];
-    else
-        cell.textLabel.text = @"Placeholder";
+        cell.textLabel.text = [[TimerSettings TimerTypes] objectAtIndex:row];
+    else {
+        if (savedTimersTableHasData) {
+        NSString * text = [timerSupply titleForItem:row inComponent:selectedTableType];
+        cell.textLabel.text = text;
+        }
+        else {
+            NSString * table = [[TimerSupply keys] objectAtIndex:selectedTableType];
+            cell.textLabel.text = [NSString stringWithFormat:@"No %@ items exist", table];
+        }
+    }
 
     return cell;
 }
@@ -334,9 +350,15 @@ const float ENABLED_ALPHA  = 1.0f;
     if (tableView == timerTypesTable)
         return [[TimerSettings TimerTypes] count];
     if (tableView == savedTimersTable) {
-        return 0;
+        NSInteger count = [timerSupply rowsInComponent:selectedTableType];
+        if (count == 0) {
+            savedTimersTableHasData = NO;
+            return 1;
+        }
+        savedTimersTableHasData = YES;
+        return count;
     }
-    
+
     return 0;
 }
 
@@ -423,7 +445,7 @@ const float ENABLED_ALPHA  = 1.0f;
 {
     [self disableTextField:overtimeMinute];
     [self disableTextField:overtimeSecond];
-    
+
     [self disablePicker:overtimeMinutesSeconds];
 }
 
@@ -437,15 +459,10 @@ const float ENABLED_ALPHA  = 1.0f;
 {
     [self enableTextField:overtimeMinute];
     [self enableTextField:overtimeSecond];
-    
+
     [self enablePicker:overtimeMinutesSeconds];
 }
 
 
 @end
-
-
-
-
-
 

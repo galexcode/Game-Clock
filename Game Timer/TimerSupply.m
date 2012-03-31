@@ -13,30 +13,102 @@
  * Furnishes a collection of timers with categories to the large lower table
  * in the main view
  */
-
 @implementation TimerSupply
 
 -(id)init
 {
     if (self = [super init])
     {
-        categoryChoices = [NSArray arrayWithObjects:
-                           @"History", 
-                           @"Favorites",
-                           @"Junk",
-                           nil];        
+        prefs = [NSUserDefaults standardUserDefaults];
+        
+        // load preset timers
+        
+        NSDictionary * timersFromPrefs = [prefs dictionaryForKey:@"Timers"];
+        NSArray * keys  = [timersFromPrefs allKeys];
+        
+        if ([keys count] == 0)
+            [self createInitialObjects];
+        else
+            [self createTimersFromDictionary:timersFromPrefs];
+        
+        
     }
     return self;
 }
 
-- (NSString *) titleForCategory:(NSUInteger) row
+- (void) createTimersFromDictionary:(NSDictionary *) dict
 {
-    return @"";
+    if (timers)
+        return;
+    
+    // insert into mutable dictionary, and then transfer to timers
+    NSMutableDictionary * theTimers = [[NSMutableDictionary alloc] initWithCapacity:[[dict allKeys] count]];
+
+    for (NSString *class in dict)
+    {
+        NSDictionary * nameAndTimers = [dict objectForKey:class];
+        NSMutableDictionary * toAdd  = [[NSMutableDictionary alloc] initWithCapacity:[nameAndTimers count]];
+        
+        // convert each dictionary to a timer and add it to 'timers'
+        for (NSString * name in nameAndTimers)
+        {
+            TimerSettings * theTimer = [[TimerSettings alloc] initWithDictionary:[nameAndTimers objectForKey:name]];
+            [toAdd setObject:theTimer forKey:name];
+        }
+        [theTimers setObject:[NSDictionary dictionaryWithDictionary:toAdd]
+                      forKey:class];
+    }
+    
+    timers = [[NSDictionary alloc] initWithDictionary:theTimers];
 }
 
-- (NSString *) titleForItem:(NSUInteger) row inCategory:(NSUInteger) category
+
+/**
+ * Return names for the three sets of timers selectable in the main view
+ */
++ (NSArray *) keys
 {
-    return @"";
+	static NSArray * keys = nil;
+    if (!keys) 
+    {
+        keys = [NSArray arrayWithObjects:@"Builtins",
+                @"Favorites",
+                @"History",
+                nil];
+    }
+    
+	return keys;
+}
+
+
+/**
+ * Helper for the UITableView showing Builtin/Favorites/History
+ */
+- (NSUInteger) rowsInComponent:(NSUInteger) component
+{
+    // use [TimerSupply keys] to maintain correct order
+    NSString * key        = [[TimerSupply keys] objectAtIndex:component];
+    NSDictionary * nAndT = [timers objectForKey:key];
+    return [nAndT count];
+}
+
+/**
+ * Helper for the UITableView showing Builtin/Favorites/History
+ */
+- (NSString *) titleForItem:(NSUInteger) row inComponent:(NSUInteger) component
+{
+    NSString * key       = [[TimerSupply keys] objectAtIndex:component];
+    NSDictionary * nAndT = [timers objectForKey:key];
+    NSArray * types      = [nAndT allKeys];
+    return [types objectAtIndex:row];
+}
+
+- (TimerSettings *) timerForItem:(NSUInteger) row inComponent:(NSUInteger) component
+{
+    NSString * key       = [[TimerSupply keys] objectAtIndex:component];
+    NSDictionary * nAndT = [timers objectForKey:key];
+    NSArray * types      = [nAndT allKeys];
+    return [timers objectForKey:[types objectAtIndex:row]];
 }
 
 
@@ -45,23 +117,22 @@
  */
 - (void) createInitialObjects
 {
-
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        
+    
+    // create default timers
     TimerSettings * byoyomi30x5  = [[TimerSettings alloc] init];
-    TimerSettings * by3x10blitz  = [[TimerSettings alloc] initWithHours:0 
-                                                                minutes:0 
-                                                                seconds:0 
-                                                        overtimeMinutes:0 
-                                                        overtimeSeconds:10 
-                                                        overtimePeriods:3 
+    TimerSettings * by3x10blitz  = [[TimerSettings alloc] initWithHours:0
+                                                                minutes:0
+                                                                seconds:0
+                                                        overtimeMinutes:0
+                                                        overtimeSeconds:10
+                                                        overtimePeriods:3
                                                                    type:ByoYomi];
-    TimerSettings * fischer15x10 = [[TimerSettings alloc] initWithHours:0 
-                                                                minutes:15 
-                                                                seconds:0 
-                                                        overtimeMinutes:0 
-                                                        overtimeSeconds:10 
-                                                        overtimePeriods:0 
+    TimerSettings * fischer15x10 = [[TimerSettings alloc] initWithHours:0
+                                                                minutes:15
+                                                                seconds:0
+                                                        overtimeMinutes:0
+                                                        overtimeSeconds:10
+                                                        overtimePeriods:0
                                                                    type:Fischer];
     TimerSettings * blitz15      = [[TimerSettings alloc] initWithHours:0
                                                                 minutes:15
@@ -77,6 +148,8 @@
                                                         overtimeSeconds:0
                                                         overtimePeriods:0
                                                                    type:Absolute];
+    
+    // aggregate them in an array
     NSArray * builtins = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
                                                               [by3x10blitz  toDictionary],
                                                               [byoyomi30x5  toDictionary],
@@ -91,19 +164,25 @@
                                                               @"Absolute 15 minutes",
                                                               @"Absolute 10 minutes",
                                                               nil]];
-    NSDictionary * timers = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
-                                                                 builtins, 
-                                                                 [NSArray array],
-                                                                 nil]
-                                                        forKeys:[NSArray arrayWithObjects:
-                                                                 @"Builtins",
-                                                                 @"History",
-                                                                 nil]];
     
-    [prefs setObject:timers forKey:@"Timers"];
+    // create 'Timers' preference entry
+    NSDictionary * theTimers = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
+                                                                    builtins,
+                                                                    [NSArray array],
+                                                                    [NSArray array],
+                                                                    nil]
+                                                           forKeys:[NSArray arrayWithObjects:
+                                                                    @"Builtins",
+                                                                    @"Favorites",
+                                                                    @"History",
+                                                                    nil]];
     
-    
+    // store in prefs
+    [prefs setObject:theTimers forKey:@"Timers"];
     [prefs synchronize];
+    
+    // create TimerSetting objects
+    [self createTimersFromDictionary:theTimers];
 }
 
 
