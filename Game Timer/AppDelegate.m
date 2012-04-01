@@ -1,12 +1,22 @@
+// Copyright 2012 Josh Guffin
 //
-//  AppDelegate.m
-//  Game Timer
+// This file is part of Game Timer
 //
-//  Created by Josh Guffin on 3/20/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+// Game Timer is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free
+// Software Foundation, either version 3 of the License, or (at your option)
+// any later version.
 //
+// Game Timer is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// Game Timer. If not, see http://www.gnu.org/licenses/.
 
 #import "AppDelegate.h"
+#import "ActivatedTimer.h"
 
 @implementation AppDelegate
 
@@ -68,6 +78,11 @@
 {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs setValue:[settings toDictionary] forKey:@"Last Timer Settings"];
+
+}
+
+- (void) tickOccurred:(ActivatedTimer *) timer
+{
 
 }
 
