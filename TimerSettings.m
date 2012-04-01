@@ -1,27 +1,37 @@
+// Copyright 2012 Josh Guffin
 //
-//  TimerSettings.m
-//  Game Timer
+// This file is part of Game Timer
 //
-//  Created by Josh Guffin on 3/24/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+// Game Timer is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free
+// Software Foundation, either version 3 of the License, or (at your option)
+// any later version.
 //
+// Game Timer is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// Game Timer. If not, see http://www.gnu.org/licenses/.
 
 #import "TimerSettings.h"
+#import "ActivatedTimer.h"
 
 @implementation TimerSettings
 
-@synthesize hours_, minutes_, seconds_, overtimePeriods_, overtimeMinutes_, overtimeSeconds_, type_;
+@synthesize hours, minutes, seconds, overtimePeriods, overtimeMinutes, overtimeSeconds, type;
 
 - (NSDictionary *) toDictionary
 {
     return [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:
-                                                  [NSNumber numberWithInt:hours_],
-                                                  [NSNumber numberWithInt:minutes_],
-                                                  [NSNumber numberWithInt:seconds_],
-                                                  [NSNumber numberWithInt:overtimeMinutes_],
-                                                  [NSNumber numberWithInt:overtimeSeconds_],
-                                                  [NSNumber numberWithInt:overtimePeriods_],
-                                                  [NSNumber numberWithInt:type_],
+                                                  [NSNumber numberWithInt:hours],
+                                                  [NSNumber numberWithInt:minutes],
+                                                  [NSNumber numberWithInt:seconds],
+                                                  [NSNumber numberWithInt:overtimeMinutes],
+                                                  [NSNumber numberWithInt:overtimeSeconds],
+                                                  [NSNumber numberWithInt:overtimePeriods],
+                                                  [NSNumber numberWithInt:type],
                                                   nil]
                                          forKeys:[NSArray arrayWithObjects:
                                                   @"h",
@@ -46,33 +56,33 @@
 
 - (void) populateDefaults
 {
-    hours_           = 0;
-    minutes_         = 10;
-    seconds_         = 0;
-    overtimeMinutes_ = 0;
-    overtimeSeconds_ = 30;
-    overtimePeriods_ = 5;
-    type_            = ByoYomi;
+    hours           = 0;
+    minutes         = 10;
+    seconds         = 0;
+    overtimeMinutes = 0;
+    overtimeSeconds = 30;
+    overtimePeriods = 5;
+    type            = ByoYomi;
 
 }
 
-- (id) initWithHours:(unsigned)hours
-             minutes:(unsigned)minutes
-             seconds:(unsigned)seconds
-     overtimeMinutes:(unsigned)overtimeMinutes
-     overtimeSeconds:(unsigned)overtimeSeconds
-             overtimePeriods:(unsigned)overtimePeriods
-                type:(TimerType)type
+- (id) initWithHours:(unsigned)_hours
+             minutes:(unsigned)_minutes
+             seconds:(unsigned)_seconds
+     overtimeMinutes:(unsigned)_overtimeMinutes
+     overtimeSeconds:(unsigned)_overtimeSeconds
+             overtimePeriods:(unsigned)_overtimePeriods
+                type:(TimerType)_type
 {
     self = [super init];
     if (self) {
-        hours_           = hours;
-        minutes_         = minutes;
-        seconds_         = seconds;
-        overtimeMinutes_ = overtimeMinutes;
-        overtimeSeconds_ = overtimeSeconds;
-        overtimePeriods_ = overtimePeriods;
-        type_            = type;
+        hours           = _hours;
+        minutes         = _minutes;
+        seconds         = _seconds;
+        overtimeMinutes = _overtimeMinutes;
+        overtimeSeconds = _overtimeSeconds;
+        overtimePeriods = _overtimePeriods;
+        type            = _type;
     }
     return self;
 }
@@ -88,15 +98,54 @@
             return self;
         }
 
-        hours_           = [[dict valueForKey:@"h"] intValue];
-        minutes_         = [[dict valueForKey:@"m"] intValue];
-        seconds_         = [[dict valueForKey:@"s"] intValue];
-        overtimeMinutes_ = [[dict valueForKey:@"otm"] intValue];
-        overtimeSeconds_ = [[dict valueForKey:@"ots"] intValue];
-        overtimePeriods_ = [[dict valueForKey:@"otp"] intValue];
-        type_            = (TimerType)       [[dict valueForKey:@"type"] intValue];
+        hours           = [[dict valueForKey:@"h"] intValue];
+        minutes         = [[dict valueForKey:@"m"] intValue];
+        seconds         = [[dict valueForKey:@"s"] intValue];
+        overtimeMinutes = [[dict valueForKey:@"otm"] intValue];
+        overtimeSeconds = [[dict valueForKey:@"ots"] intValue];
+        overtimePeriods = [[dict valueForKey:@"otp"] intValue];
+        type            = (TimerType) [[dict valueForKey:@"type"] intValue];
     }
     return self;
+}
+
+/**
+ * Validate the timer settings.  Returns a null pointer if the timer is valid, otherwise the
+ * string contains the reason the timer is not valid.
+ */
+- (NSString*) validateSettings
+{
+    NSString * typeStr = [TimerSettings StringForType:type];
+
+    if (type == Absolute || type == Hourglass) {
+        if (overtimeMinutes > 0 || overtimeSeconds > 0 || overtimePeriods > 0)
+            return [NSString stringWithFormat:@"%@ timing cannot have overtime set.  Periods:%d, Minutes:%d, Seconds:%d",
+                 typeStr, overtimePeriods, overtimeMinutes, overtimeSeconds];
+        else if (hours == 0 && minutes == 0 && seconds == 0)
+            return [NSString stringWithFormat:@"%@ timing must have a positive main time", typeStr];
+        else
+            return nil;
+    }
+
+    if (type == Fischer || type == Bronstein) {
+        if (overtimeMinutes == 0 && overtimeSeconds == 0)
+            return [NSString stringWithFormat:@"%@ timing must have a positive overtime minutes/seconds", typeStr];
+        else if (hours == 0 && minutes == 0 && seconds == 0)
+            return [NSString stringWithFormat:@"%@ timing must have a positive main time", typeStr];
+        else
+            return nil;
+    }
+
+    if (type == ByoYomi || type == Canadian) {
+        if (overtimeMinutes == 0 && overtimeSeconds == 0)
+            return [NSString stringWithFormat:@"%@ timing must have a positive overtime minutes/seconds", typeStr];
+        else if (overtimePeriods == 0)
+            return [NSString stringWithFormat:@"%@ timing must have a positive number of overtime periods", typeStr];
+        else
+            return nil;
+    }
+
+    return @"Unknown type — Crap Pants!";
 }
 
 
@@ -105,74 +154,50 @@
  */
 - (NSString *) description
 {
-    NSString * unpadded     = [TimerSettings StringForType:type_];
-    NSMutableString * title = [NSMutableString stringWithFormat:@"%-12@",unpadded];
-    
+    NSString * unpadded     = [TimerSettings StringForType:type];
+    NSMutableString * title = [NSMutableString stringWithString:unpadded];
+
     // pretty print the main time
-    if (hours_ == 0 && minutes_ == 0 && seconds_ == 0)
-        [title appendString:@"No main time, "];
+    if (hours == 0 && minutes == 0 && seconds == 0)
+        [title appendString:@"0"];
     else {
+        if (hours > 0)
+            [title appendFormat:@"%02d:", hours];
+        if (minutes > 1)
+            [title appendFormat:@"%02d:", minutes];
 
-        if (hours_ > 0)
-            [title appendFormat:@" %d hour", hours_];
-        if (hours_ > 1)
-            [title appendString:@"s"];
-
-        if (minutes_ > 0)
-            [title appendFormat:@" %d minute", minutes_];
-        if (minutes_ > 1)
-            [title appendFormat:@"s", minutes_];
-
-        if (seconds_ > 0)
-            [title appendFormat:@" %d second", seconds_];
-        if (seconds_ > 1)
-            [title appendFormat:@"s", seconds_];
-
-        [title appendString:@" main time, "];
+        [title appendFormat:@"%02d", seconds];
     }
 
-
-    if (type_ == Absolute || type_ == Hourglass)
+    // These only have main time
+    if (type == Absolute || type == Hourglass)
         return title;
+
+    [title appendString:@" + "];
+
 
     // for time settings with overtime, pretty print that data
-    NSMutableString * ot = [NSMutableString stringWithString:@""];
+    if (type == Canadian || type == ByoYomi)
+        [title appendFormat:@"%d × ", overtimePeriods];
 
-    if (overtimeMinutes_ > 0)
-        [ot appendFormat:@" %d minute", minutes_];
-    if (overtimeMinutes_ > 1)
-        [ot appendFormat:@"s", minutes_];
+    if (overtimeMinutes > 0)
+        [title appendFormat:@"%02d:", overtimeMinutes];
 
-    if (overtimeSeconds_ > 0)
-        [ot appendFormat:@" %d second", seconds_];
-    if (overtimeSeconds_ > 1)
-        [ot appendFormat:@"s", seconds_];
-
-    if (type_ == ByoYomi) {
-        [title appendFormat:@"%d periods with %@ each", overtimePeriods_, ot];
-        return title;
-    }
-
-    if (type_ == Canadian) {
-        [title appendFormat:@"%d moves in %@", overtimePeriods_, ot];
-        return title;
-    }
-
-    // type is Fischer or Bronstein
-    [title appendFormat:@"%@ per move"];
+    if (type == Fischer || type == Bronstein)
+        [title appendString:@"/move:"];
 
     return title;
 }
 
 - (BOOL) isEqual:(TimerSettings *) other
 {
-    return (type_    == other.type_    &&
-            hours_   == other.hours_   &&
-            minutes_ == other.minutes_ &&
-            seconds_ == other.seconds_ &&
-            overtimeMinutes_ == other.overtimeMinutes_ &&
-            overtimeSeconds_ == other.overtimeSeconds_ &&
-            overtimePeriods_ == other.overtimePeriods_
+    return (type    == other.type    &&
+            hours   == other.hours   &&
+            minutes == other.minutes &&
+            seconds == other.seconds &&
+            overtimeMinutes == other.overtimeMinutes &&
+            overtimeSeconds == other.overtimeSeconds &&
+            overtimePeriods == other.overtimePeriods
             );
 }
 
@@ -233,7 +258,7 @@
 /**
  * Default timers for each type
  */
-+ (TimerSettings *) TimerForType:(TimerType) type
++ (TimerSettings *) DefaultTimerForType:(TimerType) type
 {
     if (type == Absolute)
         return [[TimerSettings alloc] initWithHours:0 minutes:15 seconds:0 overtimeMinutes:0 overtimeSeconds:0 overtimePeriods:0 type:type];
@@ -250,7 +275,7 @@
     return [[TimerSettings alloc] initWithHours:0 minutes:5 seconds:0 overtimeMinutes:3 overtimeSeconds:0 overtimePeriods:10 type:type];
 
     if (type == Hourglass)
-        return [[TimerSettings alloc] initWithHours:0 minutes:1 seconds:0 overtimeMinutes:0 overtimeSeconds:0 overtimePeriods:0 type:type];
+        return [[TimerSettings alloc] initWithHours:0 minutes:4 seconds:0 overtimeMinutes:0 overtimeSeconds:0 overtimePeriods:0 type:type];
 
     return [[TimerSettings alloc] init];
 }
