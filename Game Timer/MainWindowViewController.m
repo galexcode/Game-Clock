@@ -1,10 +1,19 @@
+// Copyright 2012 Josh Guffin
 //
-//  MainWindowViewController.m
-//  Game Timer
+// This file is part of Game Timer
 //
-//  Created by Josh Guffin on 3/20/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+// Game Timer is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free
+// Software Foundation, either version 3 of the License, or (at your option)
+// any later version.
 //
+// Game Timer is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// Game Timer. If not, see http://www.gnu.org/licenses/.
 
 /*
  TODO:
@@ -12,11 +21,13 @@
  2) Make clicking on table elements select the timer (both timerTypesTable and selectedTimersTable
  3) define more built-in timers
  4) Periods cannot be zero for by/canadian; have type-specific maxima/minima
- 5) 
+ 5)
  */
 
 #import "MainWindowViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "AppDelegate.h"
+#import "TimerSupply.h"
 
 const int MAX_HOURS   = 10;
 const int MAX_PERIODS = 30;
@@ -29,6 +40,27 @@ const float ENABLED_ALPHA  = 1.0f;
 
 - (void) timeSettingsChanged
 {
+
+    TimerSettings * timer = [appDelegate settings];
+
+    [timer setHours:[mainHour.text intValue]];
+    [timer setMinutes:[mainMinute.text intValue]];
+    [timer setSeconds:[mainSecond.text intValue]];
+
+    if (overtimePeriodPicker.userInteractionEnabled)
+        [timer setOvertimePeriods:[overtimePeriod.text intValue]];
+    else 
+        [timer setOvertimePeriods:0];
+
+    if (overtimePeriodPicker.userInteractionEnabled) {
+        [timer setOvertimeMinutes:[overtimeMinute.text intValue]];
+        [timer setOvertimeSeconds:[overtimeSecond.text intValue]];
+    }
+    else {
+        [timer setOvertimeMinutes:0];
+        [timer setOvertimeSeconds:0];
+    }
+
     settingsDirty_ = YES;
     [saveButton setEnabled:YES];
     [saveButton setAlpha:ENABLED_ALPHA];
@@ -48,13 +80,13 @@ const float ENABLED_ALPHA  = 1.0f;
 - (void) populateSettings:(TimerSettings *) settings
 {
     // update the text fields
-    [mainHour   setText:[NSString stringWithFormat:@"%d",   [settings hours_]]];
-    [mainMinute setText:[NSString stringWithFormat:@"%02d", [settings minutes_]]];
-    [mainSecond setText:[NSString stringWithFormat:@"%02d", [settings seconds_]]];
+    [mainHour   setText:[NSString stringWithFormat:@"%d",   [settings hours]]];
+    [mainMinute setText:[NSString stringWithFormat:@"%02d", [settings minutes]]];
+    [mainSecond setText:[NSString stringWithFormat:@"%02d", [settings seconds]]];
 
-    [overtimeMinute setText:[NSString stringWithFormat:@"%02d", [settings overtimeMinutes_]]];
-    [overtimeSecond setText:[NSString stringWithFormat:@"%02d", [settings overtimeSeconds_]]];
-    [overtimePeriod setText:[NSString stringWithFormat:@"%02d", [settings overtimePeriods_]]];
+    [overtimeMinute setText:[NSString stringWithFormat:@"%02d", [settings overtimeMinutes]]];
+    [overtimeSecond setText:[NSString stringWithFormat:@"%02d", [settings overtimeSeconds]]];
+    [overtimePeriod setText:[NSString stringWithFormat:@"%02d", [settings overtimePeriods]]];
 
     // update the time pickers
     [self textFieldDidChange:mainHour];
@@ -66,28 +98,9 @@ const float ENABLED_ALPHA  = 1.0f;
 
     // enable/disable overtime periods/time settings as appropriate,
     // and select the correct element in the type table
-    TimerType type = [settings type_];
-    switch (type) {
-        case Absolute:
-            [self selectType:type period:NO overtime:NO];
-            break;
-        case Bronstein:
-            [self selectType:type period:NO overtime:YES];
-            break;
-        case Fischer:
-            [self selectType:type period:NO overtime:YES];
-            break;
-        case ByoYomi:
-            [self selectType:type period:YES overtime:YES];
-            break;
-        case Canadian:
-            [self selectType:type period:YES overtime:YES];
-            break;
-        case Hourglass:
-            [self selectType:type period:NO overtime:NO];
-            break;
-        default:;
-    }
+    TimerType type = [settings type];
+
+    [self enableDisableOvertime:type];
 
     [self timerSetFromStoredType];
     [savedTimersTable reloadData];
@@ -153,7 +166,7 @@ const float ENABLED_ALPHA  = 1.0f;
     // the last selected timer table
     selectedTableType = [prefs integerForKey:@"Last Timer Table Selection"];
     historySavedBuiltin.selectedSegmentIndex = selectedTableType;
-    
+
     timerSupply = [[TimerSupply alloc] init];
     savedTimersTableHasData = YES;
 
@@ -368,7 +381,12 @@ const float ENABLED_ALPHA  = 1.0f;
     NSLog(@"Got %d", row);
     // TODO: Finish it!
     if (tableView == timerTypesTable) {
-        ;
+        TimerSettings * timer = [appDelegate settings];
+        TimerType type = (TimerType) row;
+        [timer setType:type];
+        [self enableDisableOvertime:type];
+
+        NSLog(@"Selected %@",[TimerSettings StringForType:type]);
     }
     else if (tableView == savedTimersTable) {
     }
@@ -408,6 +426,31 @@ const float ENABLED_ALPHA  = 1.0f;
 }
 
 // ========================== VISABILITY METHODS ====================================
+
+- (void) enableDisableOvertime:(TimerType) type
+{
+    switch (type) {
+        case Absolute:
+            [self selectType:type period:NO overtime:NO];
+            break;
+        case Bronstein:
+            [self selectType:type period:NO overtime:YES];
+            break;
+        case Fischer:
+            [self selectType:type period:NO overtime:YES];
+            break;
+        case ByoYomi:
+            [self selectType:type period:YES overtime:YES];
+            break;
+        case Canadian:
+            [self selectType:type period:YES overtime:YES];
+            break;
+        case Hourglass:
+            [self selectType:type period:NO overtime:NO];
+            break;
+        default:;
+    }
+}
 
 
 - (void) enableTextField:(UITextField *) tf

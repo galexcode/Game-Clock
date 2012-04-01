@@ -1,10 +1,19 @@
+// Copyright 2012 Josh Guffin
 //
-//  TimerSupply.m
-//  Game Timer
+// This file is part of Game Timer
 //
-//  Created by Josh Guffin on 3/24/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+// Game Timer is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free
+// Software Foundation, either version 3 of the License, or (at your option)
+// any later version.
 //
+// Game Timer is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// Game Timer. If not, see http://www.gnu.org/licenses/.
 
 #import "TimerSupply.h"
 #import "TimerSettings.h"
@@ -46,17 +55,24 @@
 
     for (NSString *class in dict)
     {
-        NSDictionary * nameAndTimers = [dict objectForKey:class];
-        NSMutableDictionary * toAdd  = [[NSMutableDictionary alloc] initWithCapacity:[nameAndTimers count]];
         
-        // convert each dictionary to a timer and add it to 'timers'
-        for (NSString * name in nameAndTimers)
-        {
-            TimerSettings * theTimer = [[TimerSettings alloc] initWithDictionary:[nameAndTimers objectForKey:name]];
-            [toAdd setObject:theTimer forKey:name];
+        if ([class isEqualToString:@"Paused"]) {
+            // recover paused games
         }
-        [theTimers setObject:[NSDictionary dictionaryWithDictionary:toAdd]
-                      forKey:class];
+        else {
+            // recover stored timers (History/Builtin/Favorites)
+            NSDictionary * nameAndTimers = [dict objectForKey:class];
+            NSMutableDictionary * toAdd  = [[NSMutableDictionary alloc] initWithCapacity:[nameAndTimers count]];
+            
+            // convert each dictionary to a timer and add it to 'timers'
+            for (NSString * name in nameAndTimers)
+            {
+                TimerSettings * theTimer = [[TimerSettings alloc] initWithDictionary:[nameAndTimers objectForKey:name]];
+                [toAdd setObject:theTimer forKey:name];
+            }
+            [theTimers setObject:[NSDictionary dictionaryWithDictionary:toAdd]
+                          forKey:class];
+        }
     }
     
     timers = [[NSDictionary alloc] initWithDictionary:theTimers];
@@ -74,6 +90,7 @@
         keys = [NSArray arrayWithObjects:@"Builtins",
                 @"Favorites",
                 @"History",
+                @"Paused",
                 nil];
     }
     
@@ -170,11 +187,13 @@
                                                                     builtins,
                                                                     [NSArray array],
                                                                     [NSArray array],
+                                                                    [NSArray array],
                                                                     nil]
                                                            forKeys:[NSArray arrayWithObjects:
                                                                     @"Builtins",
                                                                     @"Favorites",
                                                                     @"History",
+                                                                    @"Paused",
                                                                     nil]];
     
     // store in prefs

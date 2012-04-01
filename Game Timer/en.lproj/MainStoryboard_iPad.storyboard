@@ -234,6 +234,7 @@
                                     <segment title="Built-in"/>
                                     <segment title="Favorites"/>
                                     <segment title="History"/>
+                                    <segment title="Paused Timers" enabled="NO"/>
                                 </segments>
                                 <connections>
                                     <action selector="segmentedClick:" destination="KyB-Qi-HDW" eventType="valueChanged" id="ENP-C1-7ZC"/>
