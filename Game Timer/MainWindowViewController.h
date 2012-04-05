@@ -50,7 +50,8 @@
     // Buttons
     IBOutlet UIButton * saveButton;
     IBOutlet UIButton * launchButton;
-
+    IBOutlet UIButton * alertButton;
+    
     // upper table view
     IBOutlet UITableView * timerTypesTable;
 
@@ -68,18 +69,25 @@
     AppDelegate * appDelegate;
 
     BOOL settingsDirty_;
+    BOOL settingsValid_;
 }
+
+- (IBAction)launchTimer:(id)sender;
+- (IBAction)saveSettings:(id)sender;
 - (IBAction)textFieldNextButton:(id) sender;
+- (IBAction)invalidSettingsReason:(id) sender;
 - (IBAction)segmentedClick:(UISegmentedControl *) sender;
 
+
 // helpers for interaction management
-- (void)updatePickersFromTextField:(UITextField *) textField;
-- (void) timeSettingsChanged;
+- (void) updatePickersFromTextField:(UITextField *) textField changeSettings:(BOOL) alter;
+- (void) alterTimerSettingsAccordingToUI;
 - (void) selectAndRespond:(UITextField *) tf;
-- (void) timerSetFromStoredType;
+- (void) updateInterfaceToReflectNonDirtySettings;
 - (void) selectType:(TimerType) type period:(BOOL) pEnabled overtime:(BOOL) oEnabled;
 - (void) populateSettings:(TimerSettings *) settings;
-- (void)textFieldDidChange:(UITextField *) textField;
+- (void) textFieldDidChange:(UITextField *) textField;
+- (void) selectExisting:(NSArray *) existing;
 
 // enable/disable controls based on timer type
 - (void) enableDisableOvertime:(TimerType) type;
@@ -88,8 +96,9 @@
 - (void) enablePeriodControls;
 - (void) enableOvertimeControls;
 
-- (void) enableTextField:(UITextField *) tf;
-- (void) disableTextField:(UITextField *) tf;
+- (void) enable:(id) uiElement;
+- (void) disable:(id) uiElement;
+- (void) disable:(id) uiElement withAlpha:(CGFloat) alpha;
 - (void) enablePicker:(UIPickerView *) pv;
 - (void) disablePicker:(UIPickerView *) pv;
 

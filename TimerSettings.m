@@ -150,13 +150,35 @@
 
 
 /**
+ * Returns settings with the irrelevant bits removed.  Used for saving, launching, comparing, etc.
+ */
+- (TimerSettings *) effectiveSettings
+{
+    TimerSettings * newCopy = [[TimerSettings alloc] initWithDictionary:[self toDictionary]];
+    
+    if (type == Absolute || type == Hourglass) {
+        overtimeMinutes = 0;
+        overtimeSeconds = 0;
+        overtimePeriods = 0;
+    }
+    else if (type == Bronstein || type == Fischer) {
+        overtimePeriods = 0;
+    }
+    
+    return newCopy;
+}
+
+
+/**
  * Give a plain-text description of the timer settings.
  */
 - (NSString *) description
 {
     NSString * unpadded     = [TimerSettings StringForType:type];
     NSMutableString * title = [NSMutableString stringWithString:unpadded];
-
+    
+    [title appendString:@" "];
+    
     // pretty print the main time
     if (hours == 0 && minutes == 0 && seconds == 0)
         [title appendString:@"0"];
@@ -179,9 +201,11 @@
     // for time settings with overtime, pretty print that data
     if (type == Canadian || type == ByoYomi)
         [title appendFormat:@"%d × ", overtimePeriods];
-
+    
     if (overtimeMinutes > 0)
         [title appendFormat:@"%02d:", overtimeMinutes];
+    
+    [title appendFormat:@"%02d", overtimeSeconds];
 
     if (type == Fischer || type == Bronstein)
         [title appendString:@"/move:"];

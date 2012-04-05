@@ -19,19 +19,37 @@
 #define TimerSupply_h_included
 
 #import <Foundation/Foundation.h>
+@class TimerSettings;
+@class MainWindowViewController;
+@class AppDelegate;
 
-@interface TimerSupply : NSObject
+@interface TimerSupply : NSObject <UIAlertViewDelegate>
 {
+    MainWindowViewController * mwvc;
+    AppDelegate * delegate;
     NSUserDefaults *prefs;
     NSDictionary * timers;
+    
+    // for the save confirmation dialogue
+    NSString * toBeConfirmedSaveName;
 }
 
+-(id)init:(MainWindowViewController *) _mwvc delegate:(AppDelegate *) _delegate;
+
+// save dialog delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+
+
+- (NSArray *) indexForItem:(NSString *) description inCollection:(NSString *) collection;
+- (TimerSettings *) timerForItem:(NSUInteger) row inComponent:(NSUInteger) component;
 - (void) createTimersFromDictionary:(NSDictionary *) dict;
 - (NSUInteger) rowsInComponent:(NSUInteger) component;
 - (NSString *) titleForItem:(NSUInteger) row inComponent:(NSUInteger) component;
 - (void) createInitialObjects;
+- (void) saveTimer:(TimerSettings *) timer withName:(NSString *)name;
 
 + (NSArray *) keys;
++ (BOOL) nameExists:(NSString *) name;
 
 @end
 

@@ -86,5 +86,32 @@
 
 }
 
+- (NSArray *) alreadyExists:(TimerSettings *) toCheck
+{
+    NSUserDefaults * prefs = [NSUserDefaults standardUserDefaults];
+    
+    // load preset timers
+    NSDictionary * referenceDict = [[toCheck effectiveSettings] toDictionary];
+    
+    NSDictionary * timersFromPrefs = [prefs dictionaryForKey:@"Timers"];
+    NSArray * keys  = [timersFromPrefs allKeys];
+    
+    for (NSString * key in keys) {
+        // consider each timer collection
+        NSDictionary * timerCollection = [timersFromPrefs objectForKey:key];
+        if ([timerCollection count] == 0)
+            continue;
+        
+        for (NSString * description in [timerCollection allKeys]) {
+            // each timer in the timer collection
+            NSDictionary * timer = [timerCollection objectForKey:description];
+            
+            if ([timer isEqualToDictionary:referenceDict])
+                return [NSArray arrayWithObjects:key, description,nil];
+        }
+    }
+    return nil;
+}
+
 
 @end

@@ -24,6 +24,7 @@
 		88408AE01519696D0035A6A7 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 88408ADC1519696C0035A6A7 /* play.png */; };
 		88408AE11519696D0035A6A7 /* preferences.png in Resources */ = {isa = PBXBuildFile; fileRef = 88408ADD1519696D0035A6A7 /* preferences.png */; };
 		88408AE3151969BB0035A6A7 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 88408AE2151969BB0035A6A7 /* plus.png */; };
+		88B52FAC152A85BE00CE8A84 /* Icon-warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B52FAB152A85BE00CE8A84 /* Icon-warning.png */; };
 		88D60B0415279A7F007B5C32 /* ActivatedTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D60B0315279A7F007B5C32 /* ActivatedTimer.m */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +53,7 @@
 		88408ADC1519696C0035A6A7 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		88408ADD1519696D0035A6A7 /* preferences.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preferences.png; sourceTree = "<group>"; };
 		88408AE2151969BB0035A6A7 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
+		88B52FAB152A85BE00CE8A84 /* Icon-warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-warning.png"; sourceTree = "<group>"; };
 		88D60B0215279A7F007B5C32 /* ActivatedTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivatedTimer.h; sourceTree = "<group>"; };
 		88D60B0315279A7F007B5C32 /* ActivatedTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivatedTimer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -132,6 +134,7 @@
 		88408ACF151968520035A6A7 /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				88B52FAB152A85BE00CE8A84 /* Icon-warning.png */,
 				88408ADA1519696C0035A6A7 /* camera.png */,
 				88408ADB1519696C0035A6A7 /* clock.png */,
 				88408ADC1519696C0035A6A7 /* play.png */,
@@ -201,6 +204,7 @@
 				88408AE01519696D0035A6A7 /* play.png in Resources */,
 				88408AE11519696D0035A6A7 /* preferences.png in Resources */,
 				88408AE3151969BB0035A6A7 /* plus.png in Resources */,
+				88B52FAC152A85BE00CE8A84 /* Icon-warning.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

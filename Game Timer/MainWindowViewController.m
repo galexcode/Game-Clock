@@ -32,41 +32,112 @@
 const int MAX_HOURS   = 10;
 const int MAX_PERIODS = 30;
 
+const float HIDDEN_ALPHA   = 0.0f;
 const float DISABLED_ALPHA = 0.3f;
 const float ENABLED_ALPHA  = 1.0f;
 
 @implementation MainWindowViewController
 
 
-- (void) timeSettingsChanged
+/**
+ * Something in the UI changed the settings.  Note that this method _ALTERS_
+ * the settings; it may set overtime min/sec to zero.  This is so that superfluous
+ * settings don't get counted as changes: i.e. selecting Byoyomi 10+3x10 and then
+ * selecting Absolute makes the 3x10 irrelevant, but we don't want to change the
+ * UI in case the user wants to change back.  
+ */
+- (void) alterTimerSettingsAccordingToUI
 {
+    TimerSettings * settings = [appDelegate settings];
 
-    TimerSettings * timer = [appDelegate settings];
-
-    [timer setHours:[mainHour.text intValue]];
-    [timer setMinutes:[mainMinute.text intValue]];
-    [timer setSeconds:[mainSecond.text intValue]];
+    [settings setHours:[mainHour.text intValue]];
+    [settings setMinutes:[mainMinute.text intValue]];
+    [settings setSeconds:[mainSecond.text intValue]];
 
     if (overtimePeriodPicker.userInteractionEnabled)
-        [timer setOvertimePeriods:[overtimePeriod.text intValue]];
+        [settings setOvertimePeriods:[overtimePeriod.text intValue]];
     else 
-        [timer setOvertimePeriods:0];
+        [settings setOvertimePeriods:0];
 
     if (overtimePeriodPicker.userInteractionEnabled) {
-        [timer setOvertimeMinutes:[overtimeMinute.text intValue]];
-        [timer setOvertimeSeconds:[overtimeSecond.text intValue]];
+        [settings setOvertimeMinutes:[overtimeMinute.text intValue]];
+        [settings setOvertimeSeconds:[overtimeSecond.text intValue]];
     }
     else {
-        [timer setOvertimeMinutes:0];
-        [timer setOvertimeSeconds:0];
+        [settings setOvertimeMinutes:0];
+        [settings setOvertimeSeconds:0];
     }
 
-    settingsDirty_ = YES;
-    [saveButton setEnabled:YES];
-    [saveButton setAlpha:ENABLED_ALPHA];
+    NSArray * existing = [appDelegate alreadyExists:settings];
+    settingsDirty_ = existing == nil;
+    settingsValid_ = [settings validateSettings] == nil;
+    
+    if (!settingsValid_) {
+        // notify the user that there's a problem
+        [self enable:alertButton];
+        [self disable:saveButton];
+        [self disable:launchButton];
+    }
+    else {
+        // enable save and launch buttons
+        if (settingsDirty_) {
+            [self enable:saveButton];
+            [savedTimersTable deselectRowAtIndexPath:[savedTimersTable indexPathForSelectedRow] animated:YES];
+        }
+        else {
+            NSArray * indices = [timerSupply indexForItem:[existing objectAtIndex:1]
+                                             inCollection:[existing objectAtIndex:0]];
+            [savedTimersTable reloadData];
+            [self disable:saveButton];
+
+            // TODO: VERIFY THIS IS WORKING
+            NSUInteger selectedSegment  = [[indices objectAtIndex:0] unsignedIntValue];
+            NSUInteger selectedTableRow = [[indices objectAtIndex:1] unsignedIntValue];
+            historySavedBuiltin.selectedSegmentIndex = selectedSegment;
+            [savedTimersTable selectRowAtIndexPath:[NSIndexPath indexPathForRow:selectedTableRow
+                                                                      inSection:0]
+                                          animated:YES scrollPosition:UITableViewScrollPositionNone];
+        }
+        
+        [self disable:alertButton withAlpha:HIDDEN_ALPHA];
+        [self enable:launchButton];
+    }
 }
 
-- (void) timerSetFromStoredType
+/**
+ * Popup an explanation of why the settings are invalid when the user clicks on
+ * the alert button.
+ */
+- (IBAction) invalidSettingsReason:(id) sender
+{
+    NSString * explanation = [[appDelegate settings] validateSettings];
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Settings problem!"
+                                                      message:explanation
+                                                     delegate:nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles:nil];
+    
+    [message show];
+}
+
+- (IBAction)launchTimer:(id)sender
+{
+    
+}
+
+- (IBAction)saveSettings:(id)sender
+{
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Save" 
+                                                     message:@"Please enter a name for the settings" 
+                                                    delegate:timerSupply
+                                           cancelButtonTitle:@"Cancel" 
+                                           otherButtonTitles:@"Save",nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alert show];
+}
+
+
+- (void) updateInterfaceToReflectNonDirtySettings
 {
     settingsDirty_ = NO;
     [saveButton setEnabled:NO];
@@ -79,6 +150,7 @@ const float ENABLED_ALPHA  = 1.0f;
  */
 - (void) populateSettings:(TimerSettings *) settings
 {
+
     // update the text fields
     [mainHour   setText:[NSString stringWithFormat:@"%d",   [settings hours]]];
     [mainMinute setText:[NSString stringWithFormat:@"%02d", [settings minutes]]];
@@ -89,21 +161,19 @@ const float ENABLED_ALPHA  = 1.0f;
     [overtimePeriod setText:[NSString stringWithFormat:@"%02d", [settings overtimePeriods]]];
 
     // update the time pickers
-    [self textFieldDidChange:mainHour];
-    [self textFieldDidChange:mainMinute];
-    [self textFieldDidChange:mainSecond];
-    [self textFieldDidChange:overtimePeriod];
-    [self textFieldDidChange:overtimeMinute];
-    [self textFieldDidChange:overtimeSecond];
+    [self updatePickersFromTextField:mainHour changeSettings:NO];
+    [self updatePickersFromTextField:mainMinute changeSettings:NO];
+    [self updatePickersFromTextField:mainSecond changeSettings:NO];
+    [self updatePickersFromTextField:overtimePeriod changeSettings:NO];
+    [self updatePickersFromTextField:overtimeMinute changeSettings:NO];
+    [self updatePickersFromTextField:overtimeSecond changeSettings:NO];
 
     // enable/disable overtime periods/time settings as appropriate,
     // and select the correct element in the type table
     TimerType type = [settings type];
 
     [self enableDisableOvertime:type];
-
-    [self timerSetFromStoredType];
-    [savedTimersTable reloadData];
+    [self updateInterfaceToReflectNonDirtySettings];
 }
 
 /**
@@ -120,10 +190,8 @@ const float ENABLED_ALPHA  = 1.0f;
                            scrollPosition:UITableViewScrollPositionNone];
     if (pEnabled)
         [self enablePeriodControls];
-    else {
+    else
         [self disablePeriodControls];
-        NSLog(@"Disabled period controls");
-    }
 
     if (oEnabled)
         [self enableOvertimeControls];
@@ -163,21 +231,19 @@ const float ENABLED_ALPHA  = 1.0f;
     NSInteger firstPlayer = [prefs integerForKey:@"First Player"];
     whiteBlack.selectedSegmentIndex = firstPlayer;
 
-    // the last selected timer table
-    selectedTableType = [prefs integerForKey:@"Last Timer Table Selection"];
-    historySavedBuiltin.selectedSegmentIndex = selectedTableType;
-
-    timerSupply = [[TimerSupply alloc] init];
+    timerSupply = [[TimerSupply alloc] init:self delegate:appDelegate];
     savedTimersTableHasData = YES;
 
     // last selected timer settings
     NSDictionary * lastTimerDict = [prefs dictionaryForKey:@"Last Timer Settings"];
     TimerSettings * lastTimer    = [[TimerSettings alloc] initWithDictionary:lastTimerDict];
-
+    
     [appDelegate setSettings:lastTimer];
     [self populateSettings:lastTimer];
     [savedTimersTable reloadData];
+    [self alterTimerSettingsAccordingToUI];
 }
+
 
 #undef ROUND_CORNER
 #undef ADD_NOTIFICATION
@@ -193,7 +259,6 @@ const float ENABLED_ALPHA  = 1.0f;
     }
     else {
         selectedTableType = historySavedBuiltin.selectedSegmentIndex;
-        [prefs setInteger:selectedTableType forKey:@"Last Timer Table Selection"];
         [savedTimersTable reloadData];
     }
     [prefs synchronize];
@@ -213,11 +278,10 @@ const float ENABLED_ALPHA  = 1.0f;
  */
 - (void)textFieldDidChange:(UITextField *) textField
 {
-    [self updatePickersFromTextField:textField];
-    [self timeSettingsChanged];
+    [self updatePickersFromTextField:textField changeSettings:YES];
 }
 
-- (void)updatePickersFromTextField:(UITextField *) textField
+- (void)updatePickersFromTextField:(UITextField *) textField changeSettings:(BOOL) alter
 {
     NSInteger value = [[textField text] intValue];
     if (value < 0) {
@@ -230,14 +294,8 @@ const float ENABLED_ALPHA  = 1.0f;
         [textField setText:@"59"];
     }
 
-    if (textField == mainHour) {
-        if (value > 59) {
-            value = 59;
-            [textField setText:@"59"];
-        }
-
+    if (textField == mainHour)
         [mainTimePicker selectRow:value inComponent:0 animated:NO];
-    }
     else if (textField == mainMinute)
         [mainTimePicker selectRow:value inComponent:1 animated:NO];
     else if (textField == mainSecond)
@@ -249,7 +307,8 @@ const float ENABLED_ALPHA  = 1.0f;
     else if (textField == overtimeSecond)
         [overtimeMinutesSeconds selectRow:value inComponent:1 animated:NO];
 
-    [self timeSettingsChanged];
+    if (alter)
+        [self alterTimerSettingsAccordingToUI];
 }
 
 // ========================== PICKER METHODS ====================================
@@ -281,7 +340,7 @@ const float ENABLED_ALPHA  = 1.0f;
         [overtimePeriod setText:[NSString stringWithFormat:@"%d", row]];
     }
 
-    [self timeSettingsChanged];
+    [self alterTimerSettingsAccordingToUI];
 }
 
 // Time picker datasource methods
@@ -378,18 +437,32 @@ const float ENABLED_ALPHA  = 1.0f;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSUInteger row = [indexPath indexAtPosition:1];
-    NSLog(@"Got %d", row);
     // TODO: Finish it!
     if (tableView == timerTypesTable) {
         TimerSettings * timer = [appDelegate settings];
         TimerType type = (TimerType) row;
-        [timer setType:type];
-        [self enableDisableOvertime:type];
-
-        NSLog(@"Selected %@",[TimerSettings StringForType:type]);
+        
+        // settings changed
+        if (type != [timer type]) {
+            [timer setType:type];
+            [self enableDisableOvertime:type];
+            [self alterTimerSettingsAccordingToUI];
+        }
     }
     else if (tableView == savedTimersTable) {
+        unsigned component = historySavedBuiltin.selectedSegmentIndex;
+        TimerSettings * selected = [timerSupply timerForItem:row inComponent:component];
+        if (selected == nil) 
+            NSLog(@"There was a nil selection at %d, %d", row, component);
+        else {
+            [appDelegate setSettings:selected];
+            [self populateSettings:[appDelegate settings]];
+        }
     }
+}
+
+- (void) selectExisting:(NSArray *) existing
+{
 }
 
 
@@ -453,16 +526,21 @@ const float ENABLED_ALPHA  = 1.0f;
 }
 
 
-- (void) enableTextField:(UITextField *) tf
+- (void) enable:(id) uiElement
 {
-    [tf setAlpha:ENABLED_ALPHA];
-    [tf setEnabled:YES];
+    [uiElement setAlpha:ENABLED_ALPHA];
+    [uiElement setEnabled:YES];
 }
 
-- (void) disableTextField:(UITextField *) tf
+- (void) disable:(id) uiElement withAlpha:(CGFloat) alpha
 {
-    [tf setAlpha:DISABLED_ALPHA];
-    [tf setEnabled:NO];
+    [uiElement setAlpha:alpha];
+    [uiElement setEnabled:NO];
+}
+
+- (void) disable:(id) uiElement
+{
+    [self disable:uiElement withAlpha:DISABLED_ALPHA];
 }
 
 - (void) enablePicker:(UIPickerView *) pv
@@ -479,29 +557,28 @@ const float ENABLED_ALPHA  = 1.0f;
 
 - (void) disablePeriodControls
 {
-    NSLog(@"Called %s", __FUNCTION__);
-    [self disableTextField:overtimePeriod];
+    [self disable:overtimePeriod];
     [self disablePicker:overtimePeriodPicker];
 }
 
 - (void) disableOvertimeControls
 {
-    [self disableTextField:overtimeMinute];
-    [self disableTextField:overtimeSecond];
+    [self disable:overtimeMinute];
+    [self disable:overtimeSecond];
 
     [self disablePicker:overtimeMinutesSeconds];
 }
 
 - (void) enablePeriodControls
 {
-    [self enableTextField:overtimePeriod];
+    [self enable:overtimePeriod];
     [self enablePicker:overtimePeriodPicker];
 }
 
 - (void) enableOvertimeControls
 {
-    [self enableTextField:overtimeMinute];
-    [self enableTextField:overtimeSecond];
+    [self enable:overtimeMinute];
+    [self enable:overtimeSecond];
 
     [self enablePicker:overtimeMinutesSeconds];
 }

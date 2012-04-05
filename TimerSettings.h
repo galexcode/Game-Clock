@@ -52,6 +52,7 @@ typedef enum  {
 - (NSString*) validateSettings;
 - (NSDictionary *) toDictionary;
 - (id) initWithDictionary:(NSDictionary *) dict;
+- (TimerSettings *) effectiveSettings;
 
 + (NSArray *) TimerTypes;
 + (NSString *) StringForType:(TimerType) type;

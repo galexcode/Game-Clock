@@ -21,6 +21,7 @@
 #import <UIKit/UIKit.h>
 #import "TimerSettings.h"
 @class ActivatedTimer;
+@class TimerSettings;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -28,6 +29,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (assign) BOOL timerActive;
 
+- (NSArray *) alreadyExists:(TimerSettings *) toCheck;
 - (void) storeCurrentSettings;
 - (void) tickOccurred:(ActivatedTimer *) timer;
 
