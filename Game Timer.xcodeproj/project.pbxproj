@@ -24,6 +24,10 @@
 		88408AE01519696D0035A6A7 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 88408ADC1519696C0035A6A7 /* play.png */; };
 		88408AE11519696D0035A6A7 /* preferences.png in Resources */ = {isa = PBXBuildFile; fileRef = 88408ADD1519696D0035A6A7 /* preferences.png */; };
 		88408AE3151969BB0035A6A7 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 88408AE2151969BB0035A6A7 /* plus.png */; };
+		885DC8DF152FC80B0050E70F /* timer.xcf in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8DA152FC80B0050E70F /* timer.xcf */; };
+		885DC8E2152FC8440050E70F /* timer.114.png in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8E1152FC8440050E70F /* timer.114.png */; };
+		885DC8E4152FC8520050E70F /* timer.57.png in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8E3152FC8520050E70F /* timer.57.png */; };
+		885DC8E6152FC8630050E70F /* timer.72.png in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8E5152FC8630050E70F /* timer.72.png */; };
 		88B52FAC152A85BE00CE8A84 /* Icon-warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B52FAB152A85BE00CE8A84 /* Icon-warning.png */; };
 		88D60B0415279A7F007B5C32 /* ActivatedTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D60B0315279A7F007B5C32 /* ActivatedTimer.m */; };
 /* End PBXBuildFile section */
@@ -53,6 +57,10 @@
 		88408ADC1519696C0035A6A7 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		88408ADD1519696D0035A6A7 /* preferences.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preferences.png; sourceTree = "<group>"; };
 		88408AE2151969BB0035A6A7 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
+		885DC8DA152FC80B0050E70F /* timer.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; path = timer.xcf; sourceTree = "<group>"; };
+		885DC8E1152FC8440050E70F /* timer.114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timer.114.png; path = ../../timer.114.png; sourceTree = "<group>"; };
+		885DC8E3152FC8520050E70F /* timer.57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timer.57.png; path = ../../timer.57.png; sourceTree = "<group>"; };
+		885DC8E5152FC8630050E70F /* timer.72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timer.72.png; path = ../../timer.72.png; sourceTree = "<group>"; };
 		88B52FAB152A85BE00CE8A84 /* Icon-warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-warning.png"; sourceTree = "<group>"; };
 		88D60B0215279A7F007B5C32 /* ActivatedTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivatedTimer.h; sourceTree = "<group>"; };
 		88D60B0315279A7F007B5C32 /* ActivatedTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivatedTimer.m; sourceTree = "<group>"; };
@@ -134,6 +142,7 @@
 		88408ACF151968520035A6A7 /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				885DC8D5152FC80B0050E70F /* timer-images */,
 				88B52FAB152A85BE00CE8A84 /* Icon-warning.png */,
 				88408ADA1519696C0035A6A7 /* camera.png */,
 				88408ADB1519696C0035A6A7 /* clock.png */,
@@ -143,6 +152,17 @@
 				88408AD0151968650035A6A7 /* Readme */,
 			);
 			name = Media;
+			sourceTree = "<group>";
+		};
+		885DC8D5152FC80B0050E70F /* timer-images */ = {
+			isa = PBXGroup;
+			children = (
+				885DC8E5152FC8630050E70F /* timer.72.png */,
+				885DC8E3152FC8520050E70F /* timer.57.png */,
+				885DC8E1152FC8440050E70F /* timer.114.png */,
+				885DC8DA152FC80B0050E70F /* timer.xcf */,
+			);
+			path = "timer-images";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,6 +225,10 @@
 				88408AE11519696D0035A6A7 /* preferences.png in Resources */,
 				88408AE3151969BB0035A6A7 /* plus.png in Resources */,
 				88B52FAC152A85BE00CE8A84 /* Icon-warning.png in Resources */,
+				885DC8DF152FC80B0050E70F /* timer.xcf in Resources */,
+				885DC8E2152FC8440050E70F /* timer.114.png in Resources */,
+				885DC8E4152FC8520050E70F /* timer.57.png in Resources */,
+				885DC8E6152FC8630050E70F /* timer.72.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
