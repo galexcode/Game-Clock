@@ -164,7 +164,7 @@ const float ENABLED_ALPHA  = 1.0f;
  */
 - (void) updateInterfaceAccordingToStoredSettings
 {
-    TimerSettings * settings = [AppDelegate settings];
+    TimerSettings * settings = [appDelegate settings];
 
     // update the text fields
     [mainHour       setText:[NSString stringWithFormat:@"%d",   [settings hours]]];
