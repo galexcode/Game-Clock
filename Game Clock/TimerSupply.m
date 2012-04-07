@@ -145,6 +145,7 @@
     NSString * timerKey  = [types objectAtIndex:row];
     TimerSettings * selec = [nAndT objectForKey:timerKey];
     
+    
     return [[TimerSettings alloc] initWithDictionary:[selec toDictionary]];
 }
 

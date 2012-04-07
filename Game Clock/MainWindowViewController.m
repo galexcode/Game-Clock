@@ -429,10 +429,12 @@ const float ENABLED_ALPHA  = 1.0f;
         cell.textLabel.text = [[TimerSettings TimerTypes] objectAtIndex:row];
     else {
         if (savedTimersTableHasData) {
-        NSString * text = [timerSupply titleForItem:row inComponent:selectedTableType];
-        cell.textLabel.text = text;
+            NSString * text = [timerSupply titleForItem:row inComponent:selectedTableType];
+            cell.textLabel.text = text;
+            timersTableHasRows_ = YES;
         }
         else {
+            timersTableHasRows_ = NO;
             NSString * table = [[TimerSupply keys] objectAtIndex:selectedTableType];
             cell.textLabel.text = [NSString stringWithFormat:@"No %@ items exist", table];
         }
@@ -483,6 +485,14 @@ const float ENABLED_ALPHA  = 1.0f;
             [self updateInterfaceAccordingToStoredSettings];
         }
     }
+}
+
+- (NSIndexPath *) tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (timersTableHasRows_)
+        return indexPath;
+
+    return nil;
 }
 
 

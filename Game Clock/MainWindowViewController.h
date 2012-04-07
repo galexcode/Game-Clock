@@ -70,6 +70,7 @@
 
     BOOL settingsDirty_;
     BOOL settingsValid_;
+    BOOL timersTableHasRows_;
 }
 
 - (IBAction)launchTimer:(id)sender;
