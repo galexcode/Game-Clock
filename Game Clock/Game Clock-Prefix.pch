@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'Game Timer' target in the 'Game Timer' project
+// Prefix header for all source files of the 'Game Clock' target in the 'Game Clock' project
 //
 
 #import <Availability.h>

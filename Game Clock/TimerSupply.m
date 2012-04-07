@@ -1,19 +1,19 @@
 // Copyright 2012 Josh Guffin
 //
-// This file is part of Game Timer
+// This file is part of Game Clock
 //
-// Game Timer is free software: you can redistribute it and/or modify it under
+// Game Clock is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free
 // Software Foundation, either version 3 of the License, or (at your option)
 // any later version.
 //
-// Game Timer is distributed in the hope that it will be useful, but WITHOUT
+// Game Clock is distributed in the hope that it will be useful, but WITHOUT
 // ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 // FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 // more details.
 //
 // You should have received a copy of the GNU General Public License along with
-// Game Timer. If not, see http://www.gnu.org/licenses/.
+// Game Clock. If not, see http://www.gnu.org/licenses/.
 
 #import "TimerSupply.h"
 #import "TimerSettings.h"
@@ -226,6 +226,10 @@
     [self createTimersFromDictionary:theTimers];
 }
 
+
+/**
+ * Handle save alert button clicks
+ */
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     // cancel button
@@ -264,7 +268,8 @@
     [self saveTimer:[delegate settings] withName:newName];
     
     // rewrite all fields with the new settings
-    [mwvc populateSettings:[delegate settings]];
+    [mwvc updateInterfaceAccordingToStoredSettings];
+
     // update save button status, select row, etc.
     [mwvc alterTimerSettingsAccordingToUI];
     toBeConfirmedSaveName = nil;

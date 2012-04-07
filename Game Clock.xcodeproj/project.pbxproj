@@ -29,6 +29,7 @@
 		885DC8E4152FC8520050E70F /* timer.57.png in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8E3152FC8520050E70F /* timer.57.png */; };
 		885DC8E6152FC8630050E70F /* timer.72.png in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8E5152FC8630050E70F /* timer.72.png */; };
 		88B52FAC152A85BE00CE8A84 /* Icon-warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B52FAB152A85BE00CE8A84 /* Icon-warning.png */; };
+		88CE214C152FDD2600832B07 /* timer.144.png in Resources */ = {isa = PBXBuildFile; fileRef = 88CE214B152FDD2600832B07 /* timer.144.png */; };
 		88D60B0415279A7F007B5C32 /* ActivatedTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D60B0315279A7F007B5C32 /* ActivatedTimer.m */; };
 /* End PBXBuildFile section */
 
@@ -39,14 +40,14 @@
 		88090F15151E7F2C00200A4D /* TimerSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimerSettings.m; path = ../TimerSettings.m; sourceTree = "<group>"; };
 		88090F17151EA19E00200A4D /* TimerSupply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerSupply.h; sourceTree = "<group>"; };
 		88090F18151EA19E00200A4D /* TimerSupply.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerSupply.m; sourceTree = "<group>"; };
-		88408AA8151964970035A6A7 /* Game Timer.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Game Timer.1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		88408AA8151964970035A6A7 /* Game Clock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Game Clock.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		88408AAC151964970035A6A7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		88408AAE151964970035A6A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		88408AB0151964970035A6A7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		88408AB4151964970035A6A7 /* Game Timer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Game Timer-Info.plist"; sourceTree = "<group>"; };
+		88408AB4151964970035A6A7 /* Game Clock-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Game Clock-Info.plist"; sourceTree = "<group>"; };
 		88408AB6151964970035A6A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		88408AB8151964970035A6A7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		88408ABA151964970035A6A7 /* Game Timer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Game Timer-Prefix.pch"; sourceTree = "<group>"; };
+		88408ABA151964970035A6A7 /* Game Clock-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Game Clock-Prefix.pch"; sourceTree = "<group>"; };
 		88408ABB151964970035A6A7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		88408ABC151964970035A6A7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		88408ABF151964970035A6A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
@@ -58,10 +59,11 @@
 		88408ADD1519696D0035A6A7 /* preferences.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preferences.png; sourceTree = "<group>"; };
 		88408AE2151969BB0035A6A7 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
 		885DC8DA152FC80B0050E70F /* timer.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; path = timer.xcf; sourceTree = "<group>"; };
-		885DC8E1152FC8440050E70F /* timer.114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timer.114.png; path = ../../timer.114.png; sourceTree = "<group>"; };
-		885DC8E3152FC8520050E70F /* timer.57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timer.57.png; path = ../../timer.57.png; sourceTree = "<group>"; };
-		885DC8E5152FC8630050E70F /* timer.72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timer.72.png; path = ../../timer.72.png; sourceTree = "<group>"; };
+		885DC8E1152FC8440050E70F /* timer.114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.114.png; sourceTree = "<group>"; };
+		885DC8E3152FC8520050E70F /* timer.57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.57.png; sourceTree = "<group>"; };
+		885DC8E5152FC8630050E70F /* timer.72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.72.png; sourceTree = "<group>"; };
 		88B52FAB152A85BE00CE8A84 /* Icon-warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-warning.png"; sourceTree = "<group>"; };
+		88CE214B152FDD2600832B07 /* timer.144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.144.png; sourceTree = "<group>"; };
 		88D60B0215279A7F007B5C32 /* ActivatedTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivatedTimer.h; sourceTree = "<group>"; };
 		88D60B0315279A7F007B5C32 /* ActivatedTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivatedTimer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -83,7 +85,7 @@
 		88408A9D151964970035A6A7 = {
 			isa = PBXGroup;
 			children = (
-				88408AB2151964970035A6A7 /* Game Timer */,
+				88408AB2151964970035A6A7 /* Game Clock */,
 				88408AAB151964970035A6A7 /* Frameworks */,
 				88408AA9151964970035A6A7 /* Products */,
 			);
@@ -92,7 +94,7 @@
 		88408AA9151964970035A6A7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				88408AA8151964970035A6A7 /* Game Timer.1.app */,
+				88408AA8151964970035A6A7 /* Game Clock.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -107,7 +109,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		88408AB2151964970035A6A7 /* Game Timer */ = {
+		88408AB2151964970035A6A7 /* Game Clock */ = {
 			isa = PBXGroup;
 			children = (
 				88408ABB151964970035A6A7 /* AppDelegate.h */,
@@ -125,16 +127,16 @@
 				88408AB3151964970035A6A7 /* Supporting Files */,
 				88408ACF151968520035A6A7 /* Media */,
 			);
-			path = "Game Timer";
+			path = "Game Clock";
 			sourceTree = "<group>";
 		};
 		88408AB3151964970035A6A7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				88408AB4151964970035A6A7 /* Game Timer-Info.plist */,
+				88408AB4151964970035A6A7 /* Game Clock-Info.plist */,
 				88408AB5151964970035A6A7 /* InfoPlist.strings */,
 				88408AB8151964970035A6A7 /* main.m */,
-				88408ABA151964970035A6A7 /* Game Timer-Prefix.pch */,
+				88408ABA151964970035A6A7 /* Game Clock-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -160,6 +162,7 @@
 				885DC8E5152FC8630050E70F /* timer.72.png */,
 				885DC8E3152FC8520050E70F /* timer.57.png */,
 				885DC8E1152FC8440050E70F /* timer.114.png */,
+				88CE214B152FDD2600832B07 /* timer.144.png */,
 				885DC8DA152FC80B0050E70F /* timer.xcf */,
 			);
 			path = "timer-images";
@@ -168,9 +171,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		88408AA7151964970035A6A7 /* Game Timer */ = {
+		88408AA7151964970035A6A7 /* Game Clock */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 88408AC9151964970035A6A7 /* Build configuration list for PBXNativeTarget "Game Timer" */;
+			buildConfigurationList = 88408AC9151964970035A6A7 /* Build configuration list for PBXNativeTarget "Game Clock" */;
 			buildPhases = (
 				88408AA4151964970035A6A7 /* Sources */,
 				88408AA5151964970035A6A7 /* Frameworks */,
@@ -180,9 +183,9 @@
 			);
 			dependencies = (
 			);
-			name = "Game Timer";
-			productName = "Game Timer";
-			productReference = 88408AA8151964970035A6A7 /* Game Timer.1.app */;
+			name = "Game Clock";
+			productName = "Game Clock";
+			productReference = 88408AA8151964970035A6A7 /* Game Clock.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -193,7 +196,7 @@
 			attributes = {
 				LastUpgradeCheck = 0420;
 			};
-			buildConfigurationList = 88408AA2151964970035A6A7 /* Build configuration list for PBXProject "Game Timer" */;
+			buildConfigurationList = 88408AA2151964970035A6A7 /* Build configuration list for PBXProject "Game Clock" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -205,7 +208,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				88408AA7151964970035A6A7 /* Game Timer */,
+				88408AA7151964970035A6A7 /* Game Clock */,
 			);
 		};
 /* End PBXProject section */
@@ -229,6 +232,7 @@
 				885DC8E2152FC8440050E70F /* timer.114.png in Resources */,
 				885DC8E4152FC8520050E70F /* timer.57.png in Resources */,
 				885DC8E6152FC8630050E70F /* timer.72.png in Resources */,
+				88CE214C152FDD2600832B07 /* timer.144.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,9 +333,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Game Timer/Game Timer-Prefix.pch";
-				INFOPLIST_FILE = "Game Timer/Game Timer-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME).1";
+				GCC_PREFIX_HEADER = "Game Clock/Game Clock-Prefix.pch";
+				INFOPLIST_FILE = "Game Clock/Game Clock-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -340,9 +344,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Game Timer/Game Timer-Prefix.pch";
-				INFOPLIST_FILE = "Game Timer/Game Timer-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME).1";
+				GCC_PREFIX_HEADER = "Game Clock/Game Clock-Prefix.pch";
+				INFOPLIST_FILE = "Game Clock/Game Clock-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -350,7 +354,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		88408AA2151964970035A6A7 /* Build configuration list for PBXProject "Game Timer" */ = {
+		88408AA2151964970035A6A7 /* Build configuration list for PBXProject "Game Clock" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				88408AC7151964970035A6A7 /* Debug */,
@@ -359,7 +363,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		88408AC9151964970035A6A7 /* Build configuration list for PBXNativeTarget "Game Timer" */ = {
+		88408AC9151964970035A6A7 /* Build configuration list for PBXNativeTarget "Game Clock" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				88408ACA151964970035A6A7 /* Debug */,

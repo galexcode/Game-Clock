@@ -1,19 +1,19 @@
 // Copyright 2012 Josh Guffin
 //
-// This file is part of Game Timer
+// This file is part of Game Clock
 //
-// Game Timer is free software: you can redistribute it and/or modify it under
+// Game Clock is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free
 // Software Foundation, either version 3 of the License, or (at your option)
 // any later version.
 //
-// Game Timer is distributed in the hope that it will be useful, but WITHOUT
+// Game Clock is distributed in the hope that it will be useful, but WITHOUT
 // ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 // FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 // more details.
 //
 // You should have received a copy of the GNU General Public License along with
-// Game Timer. If not, see http://www.gnu.org/licenses/.
+// Game Clock. If not, see http://www.gnu.org/licenses/.
 
 #import "TimerSettings.h"
 #import "ActivatedTimer.h"
@@ -22,6 +22,9 @@
 
 @synthesize hours, minutes, seconds, overtimePeriods, overtimeMinutes, overtimeSeconds, type;
 
+/**
+ * Serialization method
+ */
 - (NSDictionary *) toDictionary
 {
     return [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:
@@ -71,7 +74,7 @@
              seconds:(unsigned)_seconds
      overtimeMinutes:(unsigned)_overtimeMinutes
      overtimeSeconds:(unsigned)_overtimeSeconds
-             overtimePeriods:(unsigned)_overtimePeriods
+     overtimePeriods:(unsigned)_overtimePeriods
                 type:(TimerType)_type
 {
     self = [super init];
@@ -87,6 +90,10 @@
     return self;
 }
 
+
+/**
+ * Deserialization constructor
+ */
 - (id) initWithDictionary:(NSDictionary *) dict
 {
     self = [super init];
@@ -155,7 +162,7 @@
 - (TimerSettings *) effectiveSettings
 {
     TimerSettings * newCopy = [[TimerSettings alloc] initWithDictionary:[self toDictionary]];
-    
+
     if (type == Absolute || type == Hourglass) {
         overtimeMinutes = 0;
         overtimeSeconds = 0;
@@ -164,7 +171,7 @@
     else if (type == Bronstein || type == Fischer) {
         overtimePeriods = 0;
     }
-    
+
     return newCopy;
 }
 
@@ -176,9 +183,9 @@
 {
     NSString * unpadded     = [TimerSettings StringForType:type];
     NSMutableString * title = [NSMutableString stringWithString:unpadded];
-    
+
     [title appendString:@" "];
-    
+
     // pretty print the main time
     if (hours == 0 && minutes == 0 && seconds == 0)
         [title appendString:@"0"];
@@ -201,10 +208,10 @@
     // for time settings with overtime, pretty print that data
     if (type == Canadian || type == ByoYomi)
         [title appendFormat:@"%d × ", overtimePeriods];
-    
+
     if (overtimeMinutes > 0)
         [title appendFormat:@"%02d:", overtimeMinutes];
-    
+
     [title appendFormat:@"%02d", overtimeSeconds];
 
     if (type == Fischer || type == Bronstein)
