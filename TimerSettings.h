@@ -39,6 +39,8 @@ typedef enum  {
 @property (assign) unsigned hours, minutes, seconds, overtimePeriods, overtimeMinutes, overtimeSeconds;
 @property (assign) TimerType type;
 
+// constructors && helpers
+- (id) initWithDictionary:(NSDictionary *) dict;
 - (id) initWithHours:(unsigned)_hours
              minutes:(unsigned)_minutes
              seconds:(unsigned)_seconds
@@ -46,14 +48,14 @@ typedef enum  {
      overtimeSeconds:(unsigned)_overtimeSeconds
              overtimePeriods:(unsigned)_overtimePeriods
                 type:(TimerType)_type;
+- (void) populateDefaults;
 
 - (BOOL) isEqual:(TimerSettings *) other;
-- (void) populateDefaults;
 - (NSString*) validateSettings;
 - (NSDictionary *) toDictionary;
-- (id) initWithDictionary:(NSDictionary *) dict;
 - (TimerSettings *) effectiveSettings;
 
+// static methods
 + (NSArray *) TimerTypes;
 + (NSString *) StringForType:(TimerType) type;
 + (NSUInteger) IndexForType:(TimerType) type;

@@ -80,14 +80,19 @@
 
 
 // helpers for interaction management
-- (void) updatePickersFromTextField:(UITextField *) textField changeSettings:(BOOL) alter;
 - (void) alterTimerSettingsAccordingToUI;
-- (void) selectAndRespond:(UITextField *) tf;
 - (void) updateInterfaceToReflectNonDirtySettings;
+- (void) updateInterfaceAccordingToStoredSettings;
 - (void) selectType:(TimerType) type period:(BOOL) pEnabled overtime:(BOOL) oEnabled;
-- (void) populateSettings:(TimerSettings *) settings;
+
+// text field delegates/helpers
+- (void) selectAndRespond:(UITextField *) tf;
 - (void) textFieldDidChange:(UITextField *) textField;
-- (void) selectExisting:(NSArray *) existing;
+- (void) updatePickersFromTextField:(UITextField *) textField changeSettings:(BOOL) alter;
+
+// table element selection
+- (void) selectTableRowForStoredSettings:(NSArray *) existing
+- (void) selectTableRowForStoredSettings
 
 // enable/disable controls based on timer type
 - (void) enableDisableOvertime:(TimerType) type;
