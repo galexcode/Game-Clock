@@ -82,7 +82,6 @@ const unsigned PAUSED_TIMERS_INDEX;
 
 - (IBAction)launchTimer:(id)sender;
 - (IBAction)saveSettings:(id)sender;
-- (IBAction)textFieldNextButton:(id) sender;
 - (IBAction)invalidSettingsReason:(id) sender;
 - (IBAction)segmentedClick:(UISegmentedControl *) sender;
 
@@ -94,7 +93,6 @@ const unsigned PAUSED_TIMERS_INDEX;
 - (void) selectType:(TimerType) type period:(BOOL) pEnabled overtime:(BOOL) oEnabled;
 
 // text field delegates/helpers
-- (void) selectAndRespond:(UITextField *) tf;
 - (void) textFieldDidChange:(UITextField *) textField;
 - (void) updatePickersFromTextField:(UITextField *) textField changeSettings:(BOOL) alter;
 

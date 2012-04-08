@@ -17,17 +17,14 @@
 
 /*
  TODO:
- 1) define a TimerSettings object to manipulate with the pickers/table view
- 2) Make clicking on table elements select the timer (both timerTypesTable and selectedTimersTable
- 3) define more built-in timers
- 4) Periods cannot be zero for by/canadian; have type-specific maxima/minima
- 5)
+  - define more built-in timers
  */
 
 #import "MainWindowViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
 #import "TimerSupply.h"
+#import "ActivatedTimer.h"
 
 const int MAX_HOURS   = 10;
 const int MAX_PERIODS = 30;
@@ -148,7 +145,11 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
 
 - (IBAction)launchTimer:(id)sender
 {
-
+    Player first = (whiteBlack.selectedSegmentIndex == 0 ? White : Black);
+    [appDelegate launchWithPlayer:first];
+    
+    // load the timer window
+    [self performSegueWithIdentifier:@"Launch" sender:nil];
 }
 
 - (IBAction)saveSettings:(id)sender
@@ -540,37 +541,6 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
     }    
 }
 
-/**
- * Make navigation between text fields easy
- */
-- (IBAction) textFieldNextButton:(id) sender
-{
-    if (sender == mainHour) {
-        [self selectAndRespond:mainMinute];
-    }
-    else if (sender == mainMinute) {
-        [self selectAndRespond:mainSecond];
-    }
-    else if (sender == mainSecond) {
-        if (overtimePeriod.enabled)
-            [self selectAndRespond:overtimePeriod];
-        else if (overtimeMinute.enabled)
-            [self selectAndRespond:overtimeMinute];
-    }
-    else if (sender == overtimePeriod)
-        [self selectAndRespond:overtimeMinute];
-    else if (sender == overtimeSecond)
-        [sender resignFirstResponder];
-}
-
-/**
- * Helper for textFieldNextButton
- */
-- (void) selectAndRespond:(UITextField *) tf
-{
-    [tf selectAll:self];
-    [tf becomeFirstResponder];
-}
 
 // ========================== VISABILITY METHODS ====================================
 

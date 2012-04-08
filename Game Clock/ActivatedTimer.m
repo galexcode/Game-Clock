@@ -23,6 +23,7 @@
 @synthesize startingPlayer, whoseTurn, type;
 @synthesize whiteTime, blackTime;
 @synthesize hasExpired;
+@synthesize atvc;
 
 - (id) init:(TimerSettings *) _settings firstPlayer:(Player) player
 {
@@ -31,44 +32,59 @@
 
         // Connect the application's AppDelegate instance
         appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        [self zeroSettings];
 
         // initialize members
         settings   = _settings;
-        hasExpired = NO;
+        
+        unsigned mainDeciseconds = (([settings hours] * 60 + [settings minutes]) * 60 + [settings seconds]) * 10;
+        unsigned otDeciseconds   = ([settings overtimeMinutes] * 60 + [settings overtimeSeconds]) * 10;
 
-        unsigned mainSeconds = ([settings hours] * 60 + [settings minutes]) * 60 + [settings seconds];
-        unsigned otSeconds   = [settings overtimeMinutes] * 60 + [settings overtimeSeconds];
+        whiteTime.moves               = 0;
+        whiteTime.mainDeciseconds     = mainDeciseconds;
+        whiteTime.periods             = [settings overtimePeriods];
+        whiteTime.overtimeDeciseconds = otDeciseconds;
+        blackTime.moves               = 0;
+        blackTime.mainDeciseconds     = mainDeciseconds;
+        blackTime.periods             = [settings overtimePeriods];
+        blackTime.overtimeDeciseconds = otDeciseconds;
 
-        whiteTime.moves           = 0;
-        whiteTime.mainSeconds     = mainSeconds;
-        whiteTime.periods         = [settings overtimePeriods];
-        whiteTime.overtimeSeconds = otSeconds;
-        blackTime.moves           = 0;
-        blackTime.mainSeconds     = mainSeconds;
-        blackTime.periods         = [settings overtimePeriods];
-        blackTime.overtimeSeconds = otSeconds;
-
-        whoseTurn = startingPlayer
-            = player;
+        whoseTurn = startingPlayer = player;
         type      = [settings type];
-        ticker    = nil;
     }
     return self;
 }
 
+- (void) zeroSettings
+{
+    whiteTime.moves               = 0;
+    whiteTime.mainDeciseconds     = 0;
+    whiteTime.periods             = 0;
+    whiteTime.overtimeDeciseconds = 0;
+    blackTime.moves               = 0;
+    blackTime.mainDeciseconds     = 0;
+    blackTime.periods             = 0;
+    blackTime.overtimeDeciseconds = 0;
+    
+    hasExpired = NO;
+    atvc       = nil;
+}
+
 // simplify our lives using X macros
 #define VAR_TABLE \
-    X(whiteTime.moves           , wm)  \
-X(whiteTime.mainSeconds     , wms) \
-X(whiteTime.periods         , wp)  \
-X(whiteTime.overtimeSeconds , wos) \
-X(blackTime.moves           , bm)  \
-X(blackTime.mainSeconds     , bms) \
-X(blackTime.periods         , bp)  \
-X(blackTime.overtimeSeconds , bos) \
-Y(type                      , TimerType , type) \
-Y(whoseTurn                 , Player    , turn) \
-Y(startingPlayer            , Player    , start)
+\
+X(whiteTime.moves               , wm)  \
+X(whiteTime.mainDeciseconds     , wms) \
+X(whiteTime.periods             , wp)  \
+X(whiteTime.overtimeDeciseconds , wos) \
+X(blackTime.moves               , bm)  \
+X(blackTime.mainDeciseconds     , bms) \
+X(blackTime.periods             , bp)  \
+X(blackTime.overtimeDeciseconds , bos) \
+Y(type                          , TimerType , type) \
+Y(whoseTurn                     , Player    , turn) \
+Y(startingPlayer                , Player    , start)
 
 #define X(a,b) \
     a = [[dict valueForKey:@#b] intValue];
@@ -80,6 +96,9 @@ Y(startingPlayer            , Player    , start)
 {
     self = [super init];
     if (self) {
+        
+        [self zeroSettings];
+        
         VAR_TABLE
             /*
                whiteMoves           = [[dict valueForKey:@"wm"]               intValue];
@@ -94,6 +113,7 @@ Y(startingPlayer            , Player    , start)
                whoseTurn            = (Player)    [[dict valueForKey:@"turn"]    intValue];
                startingPlayer       = (Player)    [[dict valueForKey:@"start"]   intValue];
                */
+        
     }
     return self;
 }
@@ -110,9 +130,9 @@ Y(startingPlayer            , Player    , start)
 - (NSDictionary *) toDictionary
 {
     NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
-    VAR_TABLE
-
-        return [NSDictionary dictionaryWithDictionary:dict];
+    VAR_TABLE;
+    
+    return [NSDictionary dictionaryWithDictionary:dict];
 
     /*
        return [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:
@@ -146,39 +166,23 @@ nil]];
 #undef X
 #undef Y
 
-- (BOOL) isActive
-{
-    return [ticker isValid];
-}
-
-- (void) activate
-{
-    if (ticker && [ticker isValid])
-        return;
-
-    // start the ticker
-    ticker = [NSTimer scheduledTimerWithTimeInterval:1.0f
-                                              target:self
-                                            selector:@selector(tick:)
-                                            userInfo:nil
-                                             repeats:YES];
-}
 
 
 #define CASE(x) \
     case x: \
 hasExpired = [self decrement##x:data]; \
 break;
-#define SCASE(x) \
-    case x: \
-hasExpired = [ActivatedTimer decrement##x:data]; \
-break;
+
 #define OCASE(x) \
     case x: \
 hasExpired = [self decrement##x:data notMoving:other]; \
 break;
 
-- (void) tick:(NSTimer*)timer
+
+/**
+ * Update state
+ */
+- (void) tick
 {
     Player toMove    = whoseTurn;
     TimeData * data  = nil;
@@ -195,56 +199,48 @@ break;
 
     // decrement the timer and set hasExpired
     switch ([settings type]) {
-        SCASE(Absolute);
-        SCASE(Bronstein);
-        SCASE(Fischer);
+        CASE(Absolute);
+        CASE(Bronstein);
+        CASE(Fischer);
         CASE(ByoYomi);
         CASE(Canadian);
         OCASE(Hourglass);
     }
-
-
 }
 
 #undef CASE
 #undef OCASE
-#undef SCASE
 
-- (void) deactivate
-{
-    [ticker invalidate];
-    ticker = nil;
-}
 
 // Decrements the timer, returning YES if time has expired
-+ (BOOL) decrementAbsolute:(TimeData *) data
+- (BOOL) decrementAbsolute:(TimeData *) data
 {
-    if (data->mainSeconds == 0)
+    if (data->mainDeciseconds == 0)
         return YES;
 
-    data->mainSeconds--;
+    data->mainDeciseconds--;
     return NO;
 }
 
-+ (BOOL) decrementBronstein:(TimeData *) data
+- (BOOL) decrementBronstein:(TimeData *) data
 {
-    return [ActivatedTimer decrementAbsolute:data];
+    return [self decrementAbsolute:data];
 }
 
-+ (BOOL) decrementFischer:(TimeData *) data
+- (BOOL) decrementFischer:(TimeData *) data
 {
-    return [ActivatedTimer decrementAbsolute:data];
+    return [self decrementAbsolute:data];
 }
 
 - (BOOL) decrementByoYomi:(TimeData *) data
 {
     // main time has not expired
-    if (![ActivatedTimer decrementAbsolute:data])
+    if (![self decrementAbsolute:data])
         return NO;
 
     // overtime period time has not expired
-    if (data->overtimeSeconds > 0) {
-        data->overtimeSeconds--;
+    if (data->overtimeDeciseconds > 0) {
+        data->overtimeDeciseconds--;
         return NO;
     }
 
@@ -253,19 +249,19 @@ break;
         return YES;
 
     data->periods--;
-    data->overtimeSeconds = [settings overtimeMinutes] * 60 + [settings overtimeSeconds];
+    data->overtimeDeciseconds = [settings overtimeMinutes] * 600 + [settings overtimeSeconds] * 10;
     return NO;
 }
 
 - (BOOL) decrementCanadian:(TimeData *) data
 {
     // main time has not expired
-    if (![ActivatedTimer decrementAbsolute:data])
+    if (![self decrementAbsolute:data])
         return NO;
 
     // overtime period time has not expired
-    if (data->overtimeSeconds > 0) {
-        data->overtimeSeconds--;
+    if (data->overtimeDeciseconds > 0) {
+        data->overtimeDeciseconds--;
         return NO;
     }
 
@@ -274,11 +270,11 @@ break;
 
 - (BOOL) decrementHourglass:(TimeData *) one notMoving:(TimeData*) two
 {
-    if (one->mainSeconds == 0)
+    if (one->mainDeciseconds == 0)
         return YES;
 
-    one->mainSeconds--;
-    two->mainSeconds++;
+    one->mainDeciseconds--;
+    two->mainDeciseconds++;
     return NO;
 }
 

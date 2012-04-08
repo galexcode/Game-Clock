@@ -20,6 +20,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TimerSettings.h"
+#import "ActiveTimerViewController.h"
 
 @class AppDelegate;
 
@@ -29,7 +30,7 @@ typedef enum {
 } Player;
 
 typedef struct {
-    unsigned moves, mainSeconds, periods, overtimeSeconds;
+    unsigned moves, mainDeciseconds, periods, overtimeDeciseconds;
 } TimeData;
 
 @interface ActivatedTimer : NSObject
@@ -42,6 +43,7 @@ typedef struct {
 @property (readonly) TimeData whiteTime, blackTime;
 @property (readonly) TimerType type;
 @property (readonly) BOOL hasExpired;
+@property (assign) ActiveTimerViewController * atvc;
 
 // whose turn it currently is, and who had the first timer
 @property (readonly) Player startingPlayer;
@@ -51,15 +53,12 @@ typedef struct {
 - (id) init:(NSDictionary *) dict;
 - (NSDictionary *) toDictionary;
 
-- (BOOL) isActive;
-- (void) activate;
-- (void) deactivate;
-- (void) tick:(NSTimer*)theTimer;
+- (void) tick;
 
 // Decrements the timer, returning YES if time has expired
-+ (BOOL) decrementAbsolute:(TimeData *) data;
-+ (BOOL) decrementBronstein:(TimeData *) data;
-+ (BOOL) decrementFischer:(TimeData *) data;
+- (BOOL) decrementAbsolute:(TimeData *) data;
+- (BOOL) decrementBronstein:(TimeData *) data;
+- (BOOL) decrementFischer:(TimeData *) data;
 - (BOOL) decrementByoYomi:(TimeData *) data;
 - (BOOL) decrementCanadian:(TimeData *) data;
 - (BOOL) decrementHourglass:(TimeData *) one notMoving:(TimeData*) two;
