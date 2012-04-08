@@ -37,17 +37,23 @@
 -(id)init:(MainWindowViewController *) _mwvc delegate:(AppDelegate *) _delegate;
 
 // save dialog delegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 
-
-- (NSArray *) indexForItem:(NSString *) description inCollection:(NSString *) collection;
-- (TimerSettings *) timerForItem:(NSUInteger) row inComponent:(NSUInteger) component;
+// initial program load pref creation
 - (void) createTimersFromDictionary:(NSDictionary *) dict;
+- (void) createInitialObjects;
+
+// table view helpers
 - (NSUInteger) rowsInComponent:(NSUInteger) component;
 - (NSString *) titleForItem:(NSUInteger) row inComponent:(NSUInteger) component;
-- (void) createInitialObjects;
-- (void) saveTimer:(TimerSettings *) timer withName:(NSString *)name;
+- (NSArray *) indexForItem:(NSString *) description inCollection:(NSString *) collection;
+- (TimerSettings *) timerForItem:(NSUInteger) row inComponent:(NSUInteger) component;
 
+// save/delete timers
+- (void) saveTimer:(TimerSettings *) timer withName:(NSString *)name;
+- (void) deleteTimerAtIndexPath:(NSIndexPath *) indexPath inComponent:(NSUInteger) component;
+
+// statics
 + (NSArray *) keys;
 + (BOOL) nameExists:(NSString *) name;
 

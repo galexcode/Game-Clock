@@ -22,7 +22,7 @@
 
 /**
  * Furnishes a collection of timers with categories to the large lower table
- * in the main view
+ * in the main view.  Encapsulates access to the prefs item "Timers".
  */
 @implementation TimerSupply
 
@@ -62,18 +62,29 @@
     {
         
         if ([class isEqualToString:@"Paused"]) {
-            // recover paused games
+            // TODO: recover paused games
         }
         else {
             // recover stored timers (History/Builtin/Favorites/Saved)
             NSDictionary * nameAndTimers = [dict objectForKey:class];
             NSMutableDictionary * toAdd  = [[NSMutableDictionary alloc] initWithCapacity:[nameAndTimers count]];
             
-            // convert each dictionary to a timer and add it to 'timers'
-            for (NSString * name in nameAndTimers)
-            {
-                TimerSettings * theTimer = [[TimerSettings alloc] initWithDictionary:[nameAndTimers objectForKey:name]];
-                [toAdd setObject:theTimer forKey:name];
+            if ([class isEqualToString:@"History"]) {
+                for (NSDate * date in nameAndTimers)
+                {
+                    NSString * timerName     = [[nameAndTimers objectForKey:date] objectForKey:@"Name"];
+                    NSDictionary * timerDict = [[nameAndTimers objectForKey:date] objectForKey:@"Timer"];
+                    TimerSettings * theTimer = [[TimerSettings alloc] initWithDictionary:timerDict];
+                    [toAdd setObject:theTimer forKey:timerName];
+                }   
+            }
+            else {
+                // convert each dictionary to a timer and add it to 'timers'
+                for (NSString * name in nameAndTimers)
+                {
+                    TimerSettings * theTimer = [[TimerSettings alloc] initWithDictionary:[nameAndTimers objectForKey:name]];
+                    [toAdd setObject:theTimer forKey:name];
+                }
             }
             [theTimers setObject:[NSDictionary dictionaryWithDictionary:toAdd]
                           forKey:class];
@@ -123,6 +134,9 @@
     NSString * key       = [[TimerSupply keys] objectAtIndex:component];
     NSDictionary * nAndT = [timers objectForKey:key];
     NSArray * types      = [nAndT allKeys];
+    
+    if (component == HISTORY_TIMERS_INDEX)
+        return [[types objectAtIndex:row] objectForKey:@"Name"];
     return [types objectAtIndex:row];
 }
 
@@ -142,11 +156,19 @@
     NSString * key       = [[TimerSupply keys] objectAtIndex:component];
     NSDictionary * nAndT = [timers objectForKey:key];
     NSArray * types      = [nAndT allKeys];
-    NSString * timerKey  = [types objectAtIndex:row];
-    TimerSettings * selec = [nAndT objectForKey:timerKey];
+    
+    TimerSettings * sel  = nil;
+    if (component == HISTORY_TIMERS_INDEX) {
+        NSDate * date = [types objectAtIndex:row];
+        sel = [[nAndT objectForKey:date] objectForKey:@"Timer"];
+    }
+    else {
+        NSString * timerKey = [types objectAtIndex:row];
+        sel = [nAndT objectForKey:timerKey];
+    }
     
     
-    return [[TimerSettings alloc] initWithDictionary:[selec toDictionary]];
+    return [[TimerSettings alloc] initWithDictionary:[sel toDictionary]];
 }
 
 
@@ -297,18 +319,79 @@
     return NO;
 }
 
-// TODO: make it work correctly
+
 - (void) saveTimer:(TimerSettings *) timer withName:(NSString *)name
 {
-    NSDictionary * timersFromPrefs    = [prefs dictionaryForKey:@"Timers"];
-    NSMutableDictionary * savedTimers = [[timersFromPrefs objectForKey:@"Saved"] mutableCopy];
-
+    NSMutableDictionary * timersFromPrefs = [[prefs dictionaryForKey:@"Timers"] mutableCopy];
+    NSMutableDictionary * savedTimers     = [[timersFromPrefs objectForKey:@"Saved"] mutableCopy];
+    
+    // store item
     [savedTimers setValue:[timer toDictionary] forKey:name];
+    [timersFromPrefs setObject:savedTimers forKey:@"Saved"];
+    
+    // store prefs
     [prefs setObject:timersFromPrefs forKey:@"Timers"];
     [prefs synchronize];
     
+    // update data
     timers = nil;
     [self createTimersFromDictionary:timersFromPrefs];
+    [mwvc updateInterfaceAccordingToStoredSettings];
+}
+
+- (void) deleteTimerAtIndexPath:(NSIndexPath *) indexPath inComponent:(NSUInteger) component
+{
+    NSMutableDictionary * timersFromPrefs = [[prefs dictionaryForKey:@"Timers"] mutableCopy];
+    NSMutableDictionary * savedTimers     = [[timersFromPrefs objectForKey:@"Saved"] mutableCopy];
+    
+    unsigned row    = [indexPath indexAtPosition:1];
+    NSString * name = [self titleForItem:row inComponent:component];
+    
+    // remove item
+    [savedTimers removeObjectForKey:name];
+    [timersFromPrefs setObject:savedTimers forKey:@"Saved"];
+    
+    // update prefs
+    [prefs setObject:timersFromPrefs forKey:@"Timers"];
+    [prefs synchronize];
+    
+    // update data
+    timers = nil;
+    [self createTimersFromDictionary:timersFromPrefs];
+    [mwvc updateInterfaceAccordingToStoredSettings];
+}
+
+- (void) addHistoryTimer:(TimerSettings *) timer
+{
+    NSMutableDictionary * timersFromPrefs = [[prefs dictionaryForKey:@"Timers"] mutableCopy];
+    NSMutableDictionary * savedTimers     = [[timersFromPrefs objectForKey:@"History"] mutableCopy];
+
+    NSDictionary * timerDict = [timer toDictionary];
+    
+    // remove the item if it exists in history
+    for (NSDate * date in [savedTimers allKeys]) {
+        NSDictionary * nameAndTimer = [savedTimers objectForKey:date];
+        if ([[nameAndTimer objectForKey:@"Timer"] isEqualToDictionary:timerDict]) {
+            [savedTimers removeObjectForKey:date];
+            break;
+        }
+    }
+    
+    // add item to history
+    NSMutableDictionary * toStore = [[NSMutableDictionary alloc] initWithCapacity:2];
+    [toStore setObject:[timer description] forKey:@"Name"];
+    [toStore setObject:timerDict forKey:@"Timer"];
+    [savedTimers setObject:toStore forKey:[NSDate date]];
+    [timersFromPrefs setObject:savedTimers forKey:@"History"];
+    
+    // update prefs
+    [prefs setObject:timersFromPrefs forKey:@"Timers"];
+    [prefs synchronize];
+    
+    // update data
+    timers = nil;
+    [self createTimersFromDictionary:timersFromPrefs];
+    [mwvc updateInterfaceAccordingToStoredSettings];
 }
 
 
