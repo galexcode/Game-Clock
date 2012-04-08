@@ -36,6 +36,13 @@ const float HIDDEN_ALPHA   = 0.0f;
 const float DISABLED_ALPHA = 0.3f;
 const float ENABLED_ALPHA  = 1.0f;
 
+// indices
+const unsigned BUILTIN_TIMERS_INDEX  = 0;
+const unsigned FAVORITE_TIMERS_INDEX = 1;
+const unsigned HISTORY_TIMERS_INDEX  = 2;
+const unsigned SAVED_TIMERS_INDEX    = 3;
+const unsigned PAUSED_TIMERS_INDEX   = 4;
+
 @implementation MainWindowViewController
 
 
@@ -69,10 +76,14 @@ const float ENABLED_ALPHA  = 1.0f;
         [settings setOvertimeMinutes:0];
         [settings setOvertimeSeconds:0];
     }
-
+    
+    // enable save/launch/alert buttons
     NSArray * existing = [appDelegate alreadyExists:settings];
     settingsDirty_ = existing == nil;
     settingsValid_ = [settings validateSettings] == nil;
+    
+    // update top description text
+    [timerDescription setText:[settings description]];
 
     if (!settingsValid_) {
         // notify the user that there's a problem
@@ -105,13 +116,14 @@ const float ENABLED_ALPHA  = 1.0f;
     // find the correct row/segment
     NSArray * indices = [timerSupply indexForItem:[existing objectAtIndex:1]
                                      inCollection:[existing objectAtIndex:0]];
-    [savedTimersTable reloadData];
     [self disable:saveButton];
 
     // select the row/segment
     NSUInteger selectedSegment  = [[indices objectAtIndex:0] unsignedIntValue];
     NSUInteger selectedTableRow = [[indices objectAtIndex:1] unsignedIntValue];
     historySavedBuiltin.selectedSegmentIndex = selectedSegment;
+    [savedTimersTable reloadData];
+
     [savedTimersTable selectRowAtIndexPath:[NSIndexPath indexPathForRow:selectedTableRow
                                                               inSection:0]
                                   animated:YES scrollPosition:UITableViewScrollPositionNone];
@@ -147,6 +159,12 @@ const float ENABLED_ALPHA  = 1.0f;
                                            cancelButtonTitle:@"Cancel"
                                            otherButtonTitles:@"Save",nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField * alertField = [alert textFieldAtIndex:0];
+    [alertField setText:[[appDelegate settings] description]]; 
+
+    [UIMenuController sharedMenuController].menuVisible = NO;
+    [alertField selectAll:self];
+    
     [alert show];
 }
 
@@ -156,6 +174,7 @@ const float ENABLED_ALPHA  = 1.0f;
     settingsDirty_ = NO;
     [saveButton setEnabled:NO];
     [saveButton setAlpha:DISABLED_ALPHA];
+    [self selectTableRowForStoredSettings];
 }
 
 
@@ -186,6 +205,9 @@ const float ENABLED_ALPHA  = 1.0f;
     // enable/disable overtime periods/time settings as appropriate,
     // and select the correct element in the type table
     [self enableDisableOvertime:type];
+    
+    // update top description text
+    [timerDescription setText:[settings description]];
 
     [self updateInterfaceToReflectNonDirtySettings];
 }
@@ -246,7 +268,7 @@ const float ENABLED_ALPHA  = 1.0f;
     whiteBlack.selectedSegmentIndex = firstPlayer;
 
     timerSupply = [[TimerSupply alloc] init:self delegate:appDelegate];
-    savedTimersTableHasData = YES;
+    savedTimersTableHasData_ = YES;
     [self disable:alertButton withAlpha:0.0f];
 
     [self updateInterfaceAccordingToStoredSettings];
@@ -266,10 +288,8 @@ const float ENABLED_ALPHA  = 1.0f;
     if (sender == whiteBlack) {
         [prefs setInteger:[sender selectedSegmentIndex] forKey:@"First Player"];
     }
-    else {
-        selectedTableType = historySavedBuiltin.selectedSegmentIndex;
+    else
         [savedTimersTable reloadData];
-    }
     [prefs synchronize];
 }
 
@@ -428,14 +448,13 @@ const float ENABLED_ALPHA  = 1.0f;
     if (tableView == timerTypesTable)
         cell.textLabel.text = [[TimerSettings TimerTypes] objectAtIndex:row];
     else {
-        if (savedTimersTableHasData) {
-            NSString * text = [timerSupply titleForItem:row inComponent:selectedTableType];
+        if (savedTimersTableHasData_) {
+            NSString * text = [timerSupply titleForItem:row 
+                                            inComponent:historySavedBuiltin.selectedSegmentIndex];
             cell.textLabel.text = text;
-            timersTableHasRows_ = YES;
         }
         else {
-            timersTableHasRows_ = NO;
-            NSString * table = [[TimerSupply keys] objectAtIndex:selectedTableType];
+            NSString * table = [[TimerSupply keys] objectAtIndex:historySavedBuiltin.selectedSegmentIndex];
             cell.textLabel.text = [NSString stringWithFormat:@"No %@ items exist", table];
         }
     }
@@ -448,12 +467,12 @@ const float ENABLED_ALPHA  = 1.0f;
     if (tableView == timerTypesTable)
         return [[TimerSettings TimerTypes] count];
     if (tableView == savedTimersTable) {
-        NSInteger count = [timerSupply rowsInComponent:selectedTableType];
+        NSInteger count = [timerSupply rowsInComponent:historySavedBuiltin.selectedSegmentIndex];
         if (count == 0) {
-            savedTimersTableHasData = NO;
+            savedTimersTableHasData_ = NO;
             return 1;
         }
-        savedTimersTableHasData = YES;
+        savedTimersTableHasData_ = YES;
         return count;
     }
 
@@ -489,12 +508,37 @@ const float ENABLED_ALPHA  = 1.0f;
 
 - (NSIndexPath *) tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (timersTableHasRows_)
+    if (tableView == timerTypesTable)
+        return indexPath;
+    
+    if (savedTimersTableHasData_)
         return indexPath;
 
     return nil;
 }
 
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView == timerTypesTable)
+        return NO;
+    
+    return (savedTimersTableHasData_ &&
+            (historySavedBuiltin.selectedSegmentIndex == SAVED_TIMERS_INDEX ||
+             historySavedBuiltin.selectedSegmentIndex == FAVORITE_TIMERS_INDEX));
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // just in case
+    if (tableView == timerTypesTable)
+        return;
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        unsigned component = historySavedBuiltin.selectedSegmentIndex;
+        [timerSupply deleteTimerAtIndexPath:indexPath inComponent:component];
+        [tableView reloadData];
+    }    
+}
 
 /**
  * Make navigation between text fields easy

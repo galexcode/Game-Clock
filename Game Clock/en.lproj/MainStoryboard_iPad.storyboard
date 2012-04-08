@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="11D50b" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="KyB-Qi-HDW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.1" toolsVersion="2182" systemVersion="11D50b" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="KyB-Qi-HDW">
     <dependencies>
+        <deployment defaultVersion="1296" identifier="iOS"/>
         <development defaultVersion="4200" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="933"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
     </dependencies>
     <scenes>
+        <!--Main Window View Controller - Stuff-->
         <scene sceneID="lkE-dJ-ObM">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ium-TE-aKj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -14,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" id="Dxa-Gg-e3J">
-                                <rect key="frame" x="20" y="125" width="182" height="366"/>
+                                <rect key="frame" x="20" y="42" width="182" height="366"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" indicatorStyle="black" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Bvg-U9-ZGn">
@@ -37,7 +39,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" id="dmY-pb-182">
-                                <rect key="frame" x="210" y="125" width="240" height="366"/>
+                                <rect key="frame" x="210" y="42" width="240" height="366"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="uhY-1Z-CIB">
@@ -122,7 +124,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" id="Um9-I8-pM1">
-                                <rect key="frame" x="458" y="125" width="290" height="366"/>
+                                <rect key="frame" x="458" y="42" width="290" height="366"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text=":" lineBreakMode="tailTruncation" minimumFontSize="10" id="P8b-XA-A4k">
@@ -212,11 +214,11 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" id="DUr-uf-Kvt">
-                                <rect key="frame" x="20" y="550" width="728" height="383"/>
+                                <rect key="frame" x="20" y="467" width="728" height="466"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Qnt-qv-snS">
-                                        <rect key="frame" x="20" y="20" width="688" height="343"/>
+                                        <rect key="frame" x="20" y="20" width="688" height="426"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
@@ -242,7 +244,7 @@
                                 </connections>
                             </segmentedControl>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="inW-97-cjf">
-                                <rect key="frame" x="20" y="499" width="275" height="44"/>
+                                <rect key="frame" x="20" y="416" width="275" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="White Starts"/>
@@ -253,7 +255,7 @@
                                 </connections>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gSo-eH-Qc6">
-                                <rect key="frame" x="447" y="499" width="145" height="43"/>
+                                <rect key="frame" x="447" y="416" width="145" height="43"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Save Settings">
@@ -268,7 +270,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="oPa-ha-Mim">
-                                <rect key="frame" x="600" y="499" width="148" height="43"/>
+                                <rect key="frame" x="600" y="416" width="148" height="43"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Launch Timer">
@@ -283,14 +285,14 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ByoYomi, 1:00:00 + 3 x 15:00" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" id="NWD-7n-wCV">
-                                <rect key="frame" x="20" y="20" width="728" height="43"/>
+                                <rect key="frame" x="20" y="0.0" width="728" height="43"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="7eV-YK-h7m">
-                                <rect key="frame" x="342" y="499" width="48" height="48"/>
+                                <rect key="frame" x="342" y="416" width="48" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" image="Icon-warning.png">
@@ -327,6 +329,7 @@
                         <outlet property="overtimeView" destination="Um9-I8-pM1" id="V4h-to-FOb"/>
                         <outlet property="saveButton" destination="gSo-eH-Qc6" id="ZwQ-bm-Qgb"/>
                         <outlet property="savedTimersTable" destination="Qnt-qv-snS" id="m9p-88-Vy3"/>
+                        <outlet property="timerDescription" destination="NWD-7n-wCV" id="Kdf-Nk-Geb"/>
                         <outlet property="timerTablesView" destination="DUr-uf-Kvt" id="kDK-fR-SWs"/>
                         <outlet property="timerTypesTable" destination="Bvg-U9-ZGn" id="bNU-Bw-aLJ"/>
                         <outlet property="typesView" destination="Dxa-Gg-e3J" id="9f0-7m-Itw"/>
@@ -337,6 +340,7 @@
             </objects>
             <point key="canvasLocation" x="1635" y="198"/>
         </scene>
+        <!--View Controller-->
         <scene sceneID="vLT-Pi-RA4">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="twH-qG-FVV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -388,6 +392,7 @@
             </objects>
             <point key="canvasLocation" x="2824" y="174"/>
         </scene>
+        <!--View Controller-->
         <scene sceneID="0h2-wz-TeB">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q1r-LT-DsI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -461,6 +466,7 @@
                 <relationship kind="outlet" name="overtimeView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="saveButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="savedTimersTable" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="timerDescription" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="timerTablesView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="timerTypesTable" candidateClass="UITableView"/>
                 <relationship kind="outlet" name="typesView" candidateClass="UIView"/>

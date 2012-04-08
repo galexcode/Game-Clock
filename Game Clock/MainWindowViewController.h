@@ -24,6 +24,12 @@
 @class AppDelegate;
 @class TimerSupply;
 
+const unsigned BUILTIN_TIMERS_INDEX;
+const unsigned FAVORITE_TIMERS_INDEX;
+const unsigned HISTORY_TIMERS_INDEX;
+const unsigned SAVED_TIMERS_INDEX;
+const unsigned PAUSED_TIMERS_INDEX;
+
 @interface MainWindowViewController : UIViewController
 <UIPickerViewDelegate,
  UIPickerViewDataSource,
@@ -57,20 +63,21 @@
 
     // lower table view
     IBOutlet UITableView * savedTimersTable;
-    NSUInteger selectedTableType;
-    BOOL savedTimersTableHasData;
+    BOOL savedTimersTableHasData_;
 
     // TimerSupply handles the lower table view's data
     TimerSupply * timerSupply;
 
     IBOutlet UISegmentedControl * whiteBlack;
     IBOutlet UISegmentedControl * historySavedBuiltin;
-
+    
+    IBOutlet UILabel * timerDescription;
+    
+    // managed settings
     AppDelegate * appDelegate;
 
     BOOL settingsDirty_;
     BOOL settingsValid_;
-    BOOL timersTableHasRows_;
 }
 
 - (IBAction)launchTimer:(id)sender;
