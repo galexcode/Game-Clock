@@ -36,8 +36,8 @@
 /* Begin PBXFileReference section */
 		88090EF81519704600200A4D /* MainWindowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowViewController.h; sourceTree = "<group>"; };
 		88090EF91519704600200A4D /* MainWindowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowViewController.m; sourceTree = "<group>"; };
-		88090F14151E7F2C00200A4D /* TimerSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimerSettings.h; path = ../TimerSettings.h; sourceTree = "<group>"; };
-		88090F15151E7F2C00200A4D /* TimerSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimerSettings.m; path = ../TimerSettings.m; sourceTree = "<group>"; };
+		88090F14151E7F2C00200A4D /* TimerSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerSettings.h; sourceTree = "<group>"; };
+		88090F15151E7F2C00200A4D /* TimerSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerSettings.m; sourceTree = "<group>"; };
 		88090F17151EA19E00200A4D /* TimerSupply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerSupply.h; sourceTree = "<group>"; };
 		88090F18151EA19E00200A4D /* TimerSupply.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerSupply.m; sourceTree = "<group>"; };
 		88408AA8151964970035A6A7 /* Game Clock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Game Clock.app"; sourceTree = BUILT_PRODUCTS_DIR; };
