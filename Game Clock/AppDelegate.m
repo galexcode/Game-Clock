@@ -16,16 +16,15 @@
 // Game Clock. If not, see http://www.gnu.org/licenses/.
 
 #import "AppDelegate.h"
-#import "ActivatedTimer.h"
 
 @implementation AppDelegate
 
 @synthesize window = _window;
-@synthesize settings, timerActive;
+@synthesize settings, activeTimer;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    timerActive = NO;
+    activeTimer = nil;
 
     // set up the timer settings using the last
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -81,9 +80,10 @@
 
 }
 
-- (void) tickOccurred:(ActivatedTimer *) timer
+- (void) launchWithPlayer:(Player) first
 {
-
+    activeTimer = nil;
+    activeTimer = [[ActivatedTimer alloc] init:settings firstPlayer:first];
 }
 
 - (NSArray *) alreadyExists:(TimerSettings *) toCheck

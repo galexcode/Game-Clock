@@ -20,18 +20,19 @@
 
 #import <UIKit/UIKit.h>
 #import "TimerSettings.h"
-@class ActivatedTimer;
+#import "ActivatedTimer.h"
 @class TimerSettings;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (retain) TimerSettings * settings;
 @property (strong, nonatomic) UIWindow *window;
-@property (assign) BOOL timerActive;
+@property (retain) ActivatedTimer * activeTimer;
 
+
+- (void) launchWithPlayer:(Player) first;
 - (NSArray *) alreadyExists:(TimerSettings *) toCheck;
 - (void) storeCurrentSettings;
-- (void) tickOccurred:(ActivatedTimer *) timer;
 
 @end
 
