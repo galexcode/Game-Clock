@@ -38,6 +38,8 @@ typedef struct {
     AppDelegate * appDelegate;
     TimerSettings * settings;
     NSTimer * ticker;
+    
+    NSUInteger timeExpendedThisTurn;
 }
 
 @property (readonly) TimeData whiteTime, blackTime;
@@ -54,6 +56,9 @@ typedef struct {
 - (NSDictionary *) toDictionary;
 
 - (void) tick;
+- (void) swapPlayer;
+
+- (NSString *) description;
 
 // Decrements the timer, returning YES if time has expired
 - (BOOL) decrementAbsolute:(TimeData *) data;

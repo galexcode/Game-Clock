@@ -13,6 +13,7 @@
 		<string>timer.114.png</string>
 		<string>timer.57.png</string>
 		<string>timer.72.png</string>
+		<string>timer.144.png</string>
 	</array>
 	<key>CFBundleIcons</key>
 	<dict>
@@ -23,9 +24,8 @@
 				<string>timer.114.png</string>
 				<string>timer.57.png</string>
 				<string>timer.72.png</string>
+				<string>timer.144.png</string>
 			</array>
-			<key>UIPrerenderedIcon</key>
-			<false/>
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>

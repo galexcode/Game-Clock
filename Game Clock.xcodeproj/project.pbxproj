@@ -30,13 +30,13 @@
 		885DC8E2152FC8440050E70F /* timer.114.png in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8E1152FC8440050E70F /* timer.114.png */; };
 		885DC8E4152FC8520050E70F /* timer.57.png in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8E3152FC8520050E70F /* timer.57.png */; };
 		885DC8E6152FC8630050E70F /* timer.72.png in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8E5152FC8630050E70F /* timer.72.png */; };
+		88B33C041539DF8D00A7018B /* timer.144.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B33C031539DF8D00A7018B /* timer.144.png */; };
 		88B52FAC152A85BE00CE8A84 /* Icon-warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B52FAB152A85BE00CE8A84 /* Icon-warning.png */; };
-		88CE214C152FDD2600832B07 /* timer.144.png in Resources */ = {isa = PBXBuildFile; fileRef = 88CE214B152FDD2600832B07 /* timer.144.png */; };
 		88D60B0415279A7F007B5C32 /* ActivatedTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D60B0315279A7F007B5C32 /* ActivatedTimer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		88090EF81519704600200A4D /* MainWindowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowViewController.h; sourceTree = "<group>"; };
+		88090EF81519704600200A4D /* MainWindowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MainWindowViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		88090EF91519704600200A4D /* MainWindowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowViewController.m; sourceTree = "<group>"; };
 		88090F14151E7F2C00200A4D /* TimerSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerSettings.h; sourceTree = "<group>"; };
 		88090F15151E7F2C00200A4D /* TimerSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerSettings.m; sourceTree = "<group>"; };
@@ -60,15 +60,15 @@
 		88408ADC1519696C0035A6A7 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		88408ADD1519696D0035A6A7 /* preferences.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preferences.png; sourceTree = "<group>"; };
 		88408AE2151969BB0035A6A7 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
-		884530F41531EC1D00C3C4B9 /* ActiveTimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveTimerViewController.h; sourceTree = "<group>"; };
-		884530F51531EC1D00C3C4B9 /* ActiveTimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActiveTimerViewController.m; sourceTree = "<group>"; };
+		884530F41531EC1D00C3C4B9 /* ActiveTimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ActiveTimerViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		884530F51531EC1D00C3C4B9 /* ActiveTimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ActiveTimerViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		884530F81531F68100C3C4B9 /* templates */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = folder; path = templates; sourceTree = "<group>"; };
 		885DC8DA152FC80B0050E70F /* timer.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; path = timer.xcf; sourceTree = "<group>"; };
 		885DC8E1152FC8440050E70F /* timer.114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.114.png; sourceTree = "<group>"; };
 		885DC8E3152FC8520050E70F /* timer.57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.57.png; sourceTree = "<group>"; };
 		885DC8E5152FC8630050E70F /* timer.72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.72.png; sourceTree = "<group>"; };
+		88B33C031539DF8D00A7018B /* timer.144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.144.png; sourceTree = "<group>"; };
 		88B52FAB152A85BE00CE8A84 /* Icon-warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-warning.png"; sourceTree = "<group>"; };
-		88CE214B152FDD2600832B07 /* timer.144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.144.png; sourceTree = "<group>"; };
 		88D60B0215279A7F007B5C32 /* ActivatedTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivatedTimer.h; sourceTree = "<group>"; };
 		88D60B0315279A7F007B5C32 /* ActivatedTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivatedTimer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -178,7 +178,7 @@
 				885DC8E5152FC8630050E70F /* timer.72.png */,
 				885DC8E3152FC8520050E70F /* timer.57.png */,
 				885DC8E1152FC8440050E70F /* timer.114.png */,
-				88CE214B152FDD2600832B07 /* timer.144.png */,
+				88B33C031539DF8D00A7018B /* timer.144.png */,
 				885DC8DA152FC80B0050E70F /* timer.xcf */,
 			);
 			path = "timer-images";
@@ -248,8 +248,8 @@
 				885DC8E2152FC8440050E70F /* timer.114.png in Resources */,
 				885DC8E4152FC8520050E70F /* timer.57.png in Resources */,
 				885DC8E6152FC8630050E70F /* timer.72.png in Resources */,
-				88CE214C152FDD2600832B07 /* timer.144.png in Resources */,
 				884530F91531F68100C3C4B9 /* templates in Resources */,
+				88B33C041539DF8D00A7018B /* timer.144.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -18,9 +18,16 @@
     NSTimer * ticker;
     
     NSString * templateString;
+    NSString * timerDescription;
     
-    IBOutlet UIWebView * upper;
-    IBOutlet UIWebView * lower;
+    IBOutlet UIView * white;
+    IBOutlet UIView * black;
+    
+    IBOutlet UILabel * whiteMain;
+    IBOutlet UILabel * whiteStatus;
+    IBOutlet UILabel * blackMain;
+    IBOutlet UILabel * blackStatus;
+    
 }
 
 - (void) tick:(NSTimer*)sender;

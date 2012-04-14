@@ -30,6 +30,8 @@
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSDictionary * lastTimerDict = [prefs dictionaryForKey:@"Last Timer Settings"];
     settings = [[TimerSettings alloc] initWithDictionary:lastTimerDict];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 
     return YES;
 }

@@ -99,21 +99,14 @@ Y(startingPlayer                , Player    , start)
         
         [self zeroSettings];
         
-        VAR_TABLE
-            /*
-               whiteMoves           = [[dict valueForKey:@"wm"]               intValue];
-               whiteMainSeconds     = [[dict valueForKey:@"wms"]              intValue];
-               whitePeriods         = [[dict valueForKey:@"wp"]               intValue];
-               whiteOvertimeSeconds = [[dict valueForKey:@"wos"]              intValue];
-               blackMoves           = [[dict valueForKey:@"bm"]               intValue];
-               blackMainSeconds     = [[dict valueForKey:@"bms"]              intValue];
-               blackPeriods         = [[dict valueForKey:@"bp"]               intValue];
-               blackOvertimeSeconds = [[dict valueForKey:@"bos"]              intValue];
-               type                 = (TimerType) [[dict valueForKey:@"type"] intValue];
-               whoseTurn            = (Player)    [[dict valueForKey:@"turn"]    intValue];
-               startingPlayer       = (Player)    [[dict valueForKey:@"start"]   intValue];
-               */
+        VAR_TABLE;
         
+        if (type == ByoYomi) {
+            blackTime.mainDeciseconds = 0;
+            whiteTime.mainDeciseconds = 0;
+        }
+        
+        timeExpendedThisTurn = 0;
     }
     return self;
 }
@@ -133,35 +126,6 @@ Y(startingPlayer                , Player    , start)
     VAR_TABLE;
     
     return [NSDictionary dictionaryWithDictionary:dict];
-
-    /*
-       return [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:
-                            [NSNumber numberWithInt:whiteMoves],
-                            [NSNumber numberWithInt:whiteMainSeconds],
-                            [NSNumber numberWithInt:whitePeriods],
-                            [NSNumber numberWithInt:whiteOvertimeSeconds],
-                            [NSNumber numberWithInt:blackMoves],
-                            [NSNumber numberWithInt:blackMainSeconds],
-                            [NSNumber numberWithInt:blackPeriods],
-                            [NSNumber numberWithInt:blackOvertimeSeconds],
-                            [NSNumber numberWithInt:type],
-                            [NSNumber numberWithInt:whoseTurn],
-                            [NSNumber numberWithInt:startingPlayer],
-                            nil]
-forKeys:[NSArray arrayWithObjects:
-@"wm",
-@"wms",
-@"wp",
-@"wos",
-@"bm",
-@"bms",
-@"bp",
-@"bos",
-@"type",
-@"turn",
-@"start",
-nil]];
-*/
 }
 #undef X
 #undef Y
@@ -184,11 +148,10 @@ break;
  */
 - (void) tick
 {
-    Player toMove    = whoseTurn;
     TimeData * data  = nil;
     TimeData * other = nil;
 
-    if (toMove == Black) {
+    if (whoseTurn == Black) {
         data  = &blackTime;
         other = &whiteTime;
     }
@@ -206,11 +169,41 @@ break;
         CASE(Canadian);
         OCASE(Hourglass);
     }
+    
+    timeExpendedThisTurn++;
 }
 
 #undef CASE
 #undef OCASE
 
+
+- (void) swapPlayer
+{
+    TimeData * data = nil;
+    if (whoseTurn == Black) {
+        whoseTurn = White;
+        data      = &blackTime;
+    }
+    else {
+        whoseTurn = Black;
+        data      = &whiteTime;
+    }
+    
+    NSUInteger otds = data->overtimeDeciseconds;
+    
+    // increase type for the player who moved
+    if (type == Fischer)
+        data->mainDeciseconds += otds;
+    else if (type == Bronstein) {
+        if (timeExpendedThisTurn >= otds)
+            data->mainDeciseconds += otds;
+        else
+            data->mainDeciseconds += otds - timeExpendedThisTurn;
+    }
+    
+    timeExpendedThisTurn = 0;
+    
+}
 
 // Decrements the timer, returning YES if time has expired
 - (BOOL) decrementAbsolute:(TimeData *) data
@@ -250,6 +243,7 @@ break;
 
     data->periods--;
     data->overtimeDeciseconds = [settings overtimeMinutes] * 600 + [settings overtimeSeconds] * 10;
+    data->overtimeDeciseconds--;
     return NO;
 }
 
@@ -276,6 +270,11 @@ break;
     one->mainDeciseconds--;
     two->mainDeciseconds++;
     return NO;
+}
+
+- (NSString *) description
+{
+    return [settings description];
 }
 
 @end

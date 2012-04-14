@@ -84,9 +84,14 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
 
     if (!settingsValid_) {
         // notify the user that there's a problem
-        [self enable:alertButton];
+        
         [self disable:saveButton];
         [self disable:launchButton];
+        
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:0.2f];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [self enable:alertButton];
     }
     else {
         // enable save and launch buttons
@@ -97,8 +102,12 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
         else
             [self selectTableRowForStoredSettings:existing];
 
-        [self disable:alertButton withAlpha:HIDDEN_ALPHA];
         [self enable:launchButton];
+        
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:0.2f];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [self disable:alertButton withAlpha:HIDDEN_ALPHA];
     }
 }
 
