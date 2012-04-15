@@ -82,11 +82,19 @@ const float DECISECOND_SIZE  = 75.0;
     BOOL expired = [timer hasExpired];
     if (expired)
         [self deactivate];
+    
+    static BOOL update = false;
+    update = !update;
 
-    if ([timer whoseTurn] == White)
+    // update for both players because some timers update both times
+    if ([timer whoseTurn] == White) {
         [self updateViewForPlayer:White hasExpired:expired];
-    else
+        [self updateViewForPlayer:Black hasExpired:NO];
+    }
+    else {
         [self updateViewForPlayer:Black hasExpired:expired];
+        [self updateViewForPlayer:White hasExpired:NO];
+    }
 }
 
 
@@ -131,6 +139,8 @@ const float DECISECOND_SIZE  = 75.0;
         playerString = @"Black";
     }
     
+    BOOL isActive = player == [timer whoseTurn];
+    
     TimerType type = [timer type];
     unsigned remaining = data.mainDeciseconds;
     
@@ -143,7 +153,7 @@ const float DECISECOND_SIZE  = 75.0;
     }
     
     NSString * statString = [NSString stringWithFormat:@"%@ - %@", playerString, timerDescription];
-    NSAttributedString * mainString = [self attributedString:remaining periods:periods];
+    NSAttributedString * mainString = [self attributedString:remaining periods:periods isActive:isActive];
     
     [main setAttributedText:mainString];
     [main setTextAlignment:UITextAlignmentCenter];
@@ -194,7 +204,9 @@ const float DECISECOND_SIZE  = 75.0;
     }
 }
 
-- (NSAttributedString *) attributedString:(unsigned) deciseconds periods:(int) periods
+- (NSAttributedString *) attributedString:(unsigned) deciseconds 
+                                  periods:(int) periods
+                                 isActive:(BOOL)isActive
 {
     // find the time remaining in hours/minutes/seconds
     unsigned decisec = (deciseconds % 10);
@@ -212,15 +224,30 @@ const float DECISECOND_SIZE  = 75.0;
     
     NSString * deciString = [NSString stringWithFormat:@".%d", decisec];
     
+    static UIFont * mainDisplayFont = nil;
+    static UIFont * decisecondFont  = nil;
+    static UIFont * periodsFont     = nil;
+    static UIColor * activeColor    = nil;
+    static UIColor * inactiveColor  = nil;
+    if (!mainDisplayFont) {
+        mainDisplayFont = [UIFont systemFontOfSize:MAIN_TEXT_SIZE];
+        decisecondFont  = [UIFont systemFontOfSize:DECISECOND_SIZE];
+        periodsFont     = [UIFont systemFontOfSize:OVER_PERIOD_SIZE];
+        activeColor     = [UIColor colorWithRed:0 green:0.6 blue:0 alpha:1.0];
+        inactiveColor   = [UIColor whiteColor];
+    }
+    
+    UIColor * fontcolor = (isActive && ticker != nil ? activeColor : inactiveColor);
+    
     NSMutableAttributedString * fancyMain = 
     [[NSMutableAttributedString alloc] initWithString:mainString];
-    [fancyMain setFont:[UIFont systemFontOfSize:MAIN_TEXT_SIZE]];
-    [fancyMain setTextColor:[UIColor whiteColor]];
+    [fancyMain setFont:mainDisplayFont];
+    [fancyMain setTextColor:fontcolor];
     
     NSMutableAttributedString * fancyDeci = 
     [[NSMutableAttributedString alloc] initWithString:deciString];
-    [fancyDeci setFont:[UIFont systemFontOfSize:DECISECOND_SIZE]];
-    [fancyDeci setTextColor:[UIColor whiteColor]];
+    [fancyDeci setFont:decisecondFont];
+    [fancyDeci setTextColor:fontcolor];
     
     [fancyMain appendAttributedString:fancyDeci];
     
@@ -229,14 +256,14 @@ const float DECISECOND_SIZE  = 75.0;
         
         NSMutableAttributedString * fancyTimes = 
         [[NSMutableAttributedString alloc] initWithString:@"    ×"];
-        [fancyTimes setFont:[UIFont systemFontOfSize:DECISECOND_SIZE]];
-        [fancyTimes setTextColor:[UIColor whiteColor]];
+        [fancyTimes setFont:decisecondFont];
+        [fancyTimes setTextColor:fontcolor];
         
         NSString * periodString = [NSString stringWithFormat:@"%d", periods];
         NSMutableAttributedString * fancyPeriods = 
         [[NSMutableAttributedString alloc] initWithString:periodString];
-        [fancyPeriods setFont:[UIFont systemFontOfSize:OVER_PERIOD_SIZE]];
-        [fancyPeriods setTextColor:[UIColor whiteColor]];
+        [fancyPeriods setFont:periodsFont];
+        [fancyPeriods setTextColor:fontcolor];
         
         
         [fancyMain appendAttributedString:fancyTimes];
