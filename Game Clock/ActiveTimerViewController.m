@@ -1,10 +1,18 @@
+// Copyright 2012 Josh Guffin
 //
-//  ActiveTimerViewController.m
-//  Game Clock
+// This file is part of Game Clock
 //
-//  Created by Josh Guffin on 4/8/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
 //
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #import "ActiveTimerViewController.h"
 #import "AppDelegate.h"
@@ -208,6 +216,10 @@ const float DECISECOND_SIZE  = 75.0;
                                   periods:(int) periods
                                  isActive:(BOOL)isActive
 {
+    static NSString * separator = nil;
+    if (!separator)
+        separator = [AppDelegate timeComponentSeparator];
+    
     // find the time remaining in hours/minutes/seconds
     unsigned decisec = (deciseconds % 10);
     unsigned seconds = (deciseconds / 10) % 60;
@@ -218,9 +230,9 @@ const float DECISECOND_SIZE  = 75.0;
     NSString * mainString;
     
     if (hours > 0)
-        mainString = [NSString stringWithFormat:@"%d:%02d:%02d", hours, minutes, seconds];
+        mainString = [NSString stringWithFormat:@"%d%@%02d%@%02d", hours, separator, minutes, separator, seconds];
     else
-        mainString = [NSString stringWithFormat:@"%d:%02d", minutes, seconds];
+        mainString = [NSString stringWithFormat:@"%d%@%02d", minutes, separator, seconds];
     
     NSString * deciString = [NSString stringWithFormat:@".%d", decisec];
     

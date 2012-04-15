@@ -19,17 +19,13 @@
 		88408AC0151964970035A6A7 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88408ABE151964970035A6A7 /* MainStoryboard_iPhone.storyboard */; };
 		88408AC3151964970035A6A7 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88408AC1151964970035A6A7 /* MainStoryboard_iPad.storyboard */; };
 		88408AD1151968650035A6A7 /* Readme in Resources */ = {isa = PBXBuildFile; fileRef = 88408AD0151968650035A6A7 /* Readme */; };
-		88408ADE1519696D0035A6A7 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 88408ADA1519696C0035A6A7 /* camera.png */; };
-		88408ADF1519696D0035A6A7 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 88408ADB1519696C0035A6A7 /* clock.png */; };
-		88408AE01519696D0035A6A7 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 88408ADC1519696C0035A6A7 /* play.png */; };
-		88408AE11519696D0035A6A7 /* preferences.png in Resources */ = {isa = PBXBuildFile; fileRef = 88408ADD1519696D0035A6A7 /* preferences.png */; };
-		88408AE3151969BB0035A6A7 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 88408AE2151969BB0035A6A7 /* plus.png */; };
 		884530F61531EC1D00C3C4B9 /* ActiveTimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 884530F51531EC1D00C3C4B9 /* ActiveTimerViewController.m */; };
 		884530F91531F68100C3C4B9 /* templates in Resources */ = {isa = PBXBuildFile; fileRef = 884530F81531F68100C3C4B9 /* templates */; };
 		885DC8DF152FC80B0050E70F /* timer.xcf in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8DA152FC80B0050E70F /* timer.xcf */; };
 		885DC8E2152FC8440050E70F /* timer.114.png in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8E1152FC8440050E70F /* timer.114.png */; };
 		885DC8E4152FC8520050E70F /* timer.57.png in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8E3152FC8520050E70F /* timer.57.png */; };
 		885DC8E6152FC8630050E70F /* timer.72.png in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8E5152FC8630050E70F /* timer.72.png */; };
+		88A991E8153B6375000467A2 /* TODOs in Resources */ = {isa = PBXBuildFile; fileRef = 88A991E7153B6375000467A2 /* TODOs */; };
 		88B33C041539DF8D00A7018B /* timer.144.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B33C031539DF8D00A7018B /* timer.144.png */; };
 		88B33C0A1539EC6E00A7018B /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B33C071539EC6E00A7018B /* NSAttributedString+Attributes.m */; };
 		88B33C0B1539EC6E00A7018B /* OHAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B33C091539EC6E00A7018B /* OHAttributedLabel.m */; };
@@ -58,11 +54,6 @@
 		88408ABF151964970035A6A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		88408AC2151964970035A6A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		88408AD0151968650035A6A7 /* Readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme; sourceTree = "<group>"; };
-		88408ADA1519696C0035A6A7 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
-		88408ADB1519696C0035A6A7 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
-		88408ADC1519696C0035A6A7 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
-		88408ADD1519696D0035A6A7 /* preferences.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preferences.png; sourceTree = "<group>"; };
-		88408AE2151969BB0035A6A7 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
 		884530F41531EC1D00C3C4B9 /* ActiveTimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ActiveTimerViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		884530F51531EC1D00C3C4B9 /* ActiveTimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ActiveTimerViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		884530F81531F68100C3C4B9 /* templates */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = folder; path = templates; sourceTree = "<group>"; };
@@ -70,6 +61,7 @@
 		885DC8E1152FC8440050E70F /* timer.114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.114.png; sourceTree = "<group>"; };
 		885DC8E3152FC8520050E70F /* timer.57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.57.png; sourceTree = "<group>"; };
 		885DC8E5152FC8630050E70F /* timer.72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.72.png; sourceTree = "<group>"; };
+		88A991E7153B6375000467A2 /* TODOs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODOs; sourceTree = "<group>"; };
 		88B33C031539DF8D00A7018B /* timer.144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.144.png; sourceTree = "<group>"; };
 		88B33C061539EC6E00A7018B /* NSAttributedString+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributedString+Attributes.h"; path = "OHAttributedLabel/NSAttributedString+Attributes.h"; sourceTree = SOURCE_ROOT; };
 		88B33C071539EC6E00A7018B /* NSAttributedString+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributedString+Attributes.m"; path = "OHAttributedLabel/NSAttributedString+Attributes.m"; sourceTree = SOURCE_ROOT; };
@@ -99,6 +91,7 @@
 		88408A9D151964970035A6A7 = {
 			isa = PBXGroup;
 			children = (
+				88A991E7153B6375000467A2 /* TODOs */,
 				88408AB2151964970035A6A7 /* Game Clock */,
 				88B33C051539EC0600A7018B /* OHAttributedLabel */,
 				88408AAB151964970035A6A7 /* Frameworks */,
@@ -162,11 +155,6 @@
 			children = (
 				885DC8D5152FC80B0050E70F /* timer-images */,
 				88B52FAB152A85BE00CE8A84 /* Icon-warning.png */,
-				88408ADA1519696C0035A6A7 /* camera.png */,
-				88408ADB1519696C0035A6A7 /* clock.png */,
-				88408ADC1519696C0035A6A7 /* play.png */,
-				88408ADD1519696D0035A6A7 /* preferences.png */,
-				88408AE2151969BB0035A6A7 /* plus.png */,
 				88408AD0151968650035A6A7 /* Readme */,
 			);
 			name = Media;
@@ -261,11 +249,6 @@
 				88408AC0151964970035A6A7 /* MainStoryboard_iPhone.storyboard in Resources */,
 				88408AC3151964970035A6A7 /* MainStoryboard_iPad.storyboard in Resources */,
 				88408AD1151968650035A6A7 /* Readme in Resources */,
-				88408ADE1519696D0035A6A7 /* camera.png in Resources */,
-				88408ADF1519696D0035A6A7 /* clock.png in Resources */,
-				88408AE01519696D0035A6A7 /* play.png in Resources */,
-				88408AE11519696D0035A6A7 /* preferences.png in Resources */,
-				88408AE3151969BB0035A6A7 /* plus.png in Resources */,
 				88B52FAC152A85BE00CE8A84 /* Icon-warning.png in Resources */,
 				885DC8DF152FC80B0050E70F /* timer.xcf in Resources */,
 				885DC8E2152FC8440050E70F /* timer.114.png in Resources */,
@@ -273,6 +256,7 @@
 				885DC8E6152FC8630050E70F /* timer.72.png in Resources */,
 				884530F91531F68100C3C4B9 /* templates in Resources */,
 				88B33C041539DF8D00A7018B /* timer.144.png in Resources */,
+				88A991E8153B6375000467A2 /* TODOs in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
