@@ -191,14 +191,28 @@ break;
     
     NSUInteger otds = data->overtimeDeciseconds;
     
-    // increase type for the player who moved
-    if (type == Fischer)
+    if (type == Fischer) {
+        // increase time for player who moved
         data->mainDeciseconds += otds;
+    }
     else if (type == Bronstein) {
+        // increase time for player who moved
         if (timeExpendedThisTurn >= otds)
             data->mainDeciseconds += otds;
         else
             data->mainDeciseconds += otds - timeExpendedThisTurn;
+    }
+    else if (type == ByoYomi) {
+        if (data->mainDeciseconds == 0)
+            data->overtimeDeciseconds = settings.overtimeMinutes * 600 + settings.overtimeSeconds * 10;
+    }
+    else if (type == Canadian) {
+        data->periods--;
+        if (data->periods == 0) {
+            // player finished required moves in allotted time
+            data->overtimeDeciseconds = settings.overtimeMinutes * 600 + settings.overtimeSeconds * 10;
+            data->periods = settings.overtimePeriods;
+        }
     }
     
     timeExpendedThisTurn = 0;
