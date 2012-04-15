@@ -104,6 +104,10 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
 
         [self enable:launchButton];
         
+        // save as 'last settings'
+        [appDelegate storeCurrentSettings];
+        
+        // hide the alert button
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationDuration:0.2f];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -294,13 +298,13 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
  */
 - (IBAction)segmentedClick:(UISegmentedControl *) sender
 {
-    NSUserDefaults * prefs = [NSUserDefaults standardUserDefaults];
     if (sender == whiteBlack) {
+        NSUserDefaults * prefs = [NSUserDefaults standardUserDefaults];
         [prefs setInteger:[sender selectedSegmentIndex] forKey:@"First Player"];
+        [prefs synchronize];
     }
     else
         [savedTimersTable reloadData];
-    [prefs synchronize];
 }
 
 
@@ -513,9 +517,15 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
             [appDelegate setSettings:selected];
             [self updateInterfaceAccordingToStoredSettings];
         }
+        
+        [appDelegate storeCurrentSettings];
     }
 }
 
+
+/**
+ * Overridden so that we can display cells denoting empty data that are not selectable
+ */
 - (NSIndexPath *) tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView == timerTypesTable)
@@ -528,7 +538,8 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
 }
 
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
     if (tableView == timerTypesTable)
         return NO;
     

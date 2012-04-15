@@ -75,11 +75,12 @@
      */
 }
 
+
 - (void) storeCurrentSettings
 {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs setValue:[settings toDictionary] forKey:@"Last Timer Settings"];
-
+    [prefs synchronize];
 }
 
 - (void) launchWithPlayer:(Player) first
