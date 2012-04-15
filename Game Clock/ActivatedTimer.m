@@ -197,10 +197,7 @@ break;
     }
     else if (type == Bronstein) {
         // increase time for player who moved
-        if (timeExpendedThisTurn >= otds)
-            data->mainDeciseconds += otds;
-        else
-            data->mainDeciseconds += otds - timeExpendedThisTurn;
+        data->mainDeciseconds += MIN(timeExpendedThisTurn, otds);
     }
     else if (type == ByoYomi) {
         if (data->mainDeciseconds == 0)
