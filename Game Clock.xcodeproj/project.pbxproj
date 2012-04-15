@@ -31,6 +31,9 @@
 		885DC8E4152FC8520050E70F /* timer.57.png in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8E3152FC8520050E70F /* timer.57.png */; };
 		885DC8E6152FC8630050E70F /* timer.72.png in Resources */ = {isa = PBXBuildFile; fileRef = 885DC8E5152FC8630050E70F /* timer.72.png */; };
 		88B33C041539DF8D00A7018B /* timer.144.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B33C031539DF8D00A7018B /* timer.144.png */; };
+		88B33C0A1539EC6E00A7018B /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B33C071539EC6E00A7018B /* NSAttributedString+Attributes.m */; };
+		88B33C0B1539EC6E00A7018B /* OHAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B33C091539EC6E00A7018B /* OHAttributedLabel.m */; };
+		88B33C0D1539EF1400A7018B /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88B33C0C1539EF1300A7018B /* CoreText.framework */; };
 		88B52FAC152A85BE00CE8A84 /* Icon-warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B52FAB152A85BE00CE8A84 /* Icon-warning.png */; };
 		88D60B0415279A7F007B5C32 /* ActivatedTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D60B0315279A7F007B5C32 /* ActivatedTimer.m */; };
 /* End PBXBuildFile section */
@@ -68,6 +71,11 @@
 		885DC8E3152FC8520050E70F /* timer.57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.57.png; sourceTree = "<group>"; };
 		885DC8E5152FC8630050E70F /* timer.72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.72.png; sourceTree = "<group>"; };
 		88B33C031539DF8D00A7018B /* timer.144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.144.png; sourceTree = "<group>"; };
+		88B33C061539EC6E00A7018B /* NSAttributedString+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributedString+Attributes.h"; path = "OHAttributedLabel/NSAttributedString+Attributes.h"; sourceTree = SOURCE_ROOT; };
+		88B33C071539EC6E00A7018B /* NSAttributedString+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributedString+Attributes.m"; path = "OHAttributedLabel/NSAttributedString+Attributes.m"; sourceTree = SOURCE_ROOT; };
+		88B33C081539EC6E00A7018B /* OHAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OHAttributedLabel.h; path = OHAttributedLabel/OHAttributedLabel.h; sourceTree = SOURCE_ROOT; };
+		88B33C091539EC6E00A7018B /* OHAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OHAttributedLabel.m; path = OHAttributedLabel/OHAttributedLabel.m; sourceTree = SOURCE_ROOT; };
+		88B33C0C1539EF1300A7018B /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		88B52FAB152A85BE00CE8A84 /* Icon-warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-warning.png"; sourceTree = "<group>"; };
 		88D60B0215279A7F007B5C32 /* ActivatedTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivatedTimer.h; sourceTree = "<group>"; };
 		88D60B0315279A7F007B5C32 /* ActivatedTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivatedTimer.m; sourceTree = "<group>"; };
@@ -78,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88B33C0D1539EF1400A7018B /* CoreText.framework in Frameworks */,
 				88408AAD151964970035A6A7 /* UIKit.framework in Frameworks */,
 				88408AAF151964970035A6A7 /* Foundation.framework in Frameworks */,
 				88408AB1151964970035A6A7 /* CoreGraphics.framework in Frameworks */,
@@ -91,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				88408AB2151964970035A6A7 /* Game Clock */,
+				88B33C051539EC0600A7018B /* OHAttributedLabel */,
 				88408AAB151964970035A6A7 /* Frameworks */,
 				88408AA9151964970035A6A7 /* Products */,
 			);
@@ -107,6 +117,7 @@
 		88408AAB151964970035A6A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				88B33C0C1539EF1300A7018B /* CoreText.framework */,
 				88408AAC151964970035A6A7 /* UIKit.framework */,
 				88408AAE151964970035A6A7 /* Foundation.framework */,
 				88408AB0151964970035A6A7 /* CoreGraphics.framework */,
@@ -182,6 +193,18 @@
 				885DC8DA152FC80B0050E70F /* timer.xcf */,
 			);
 			path = "timer-images";
+			sourceTree = "<group>";
+		};
+		88B33C051539EC0600A7018B /* OHAttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				88B33C061539EC6E00A7018B /* NSAttributedString+Attributes.h */,
+				88B33C071539EC6E00A7018B /* NSAttributedString+Attributes.m */,
+				88B33C081539EC6E00A7018B /* OHAttributedLabel.h */,
+				88B33C091539EC6E00A7018B /* OHAttributedLabel.m */,
+			);
+			name = OHAttributedLabel;
+			path = "Game Clock";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,6 +290,8 @@
 				88090F19151EA19E00200A4D /* TimerSupply.m in Sources */,
 				88D60B0415279A7F007B5C32 /* ActivatedTimer.m in Sources */,
 				884530F61531EC1D00C3C4B9 /* ActiveTimerViewController.m in Sources */,
+				88B33C0A1539EC6E00A7018B /* NSAttributedString+Attributes.m in Sources */,
+				88B33C0B1539EC6E00A7018B /* OHAttributedLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

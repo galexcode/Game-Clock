@@ -1,0 +1,3 @@
+[submodule "OHAttributedLabel"]
+	path = OHAttributedLabel
+	url = git://github.com/greenisus/OHAttributedLabel.git

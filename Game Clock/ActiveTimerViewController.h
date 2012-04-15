@@ -10,6 +10,7 @@
 
 @class AppDelegate;
 @class ActivatedTimer;
+@class OHAttributedLabel;
 
 @interface ActiveTimerViewController : UIViewController
 {
@@ -23,9 +24,9 @@
     IBOutlet UIView * white;
     IBOutlet UIView * black;
     
-    IBOutlet UILabel * whiteMain;
+    IBOutlet OHAttributedLabel * whiteMain;
     IBOutlet UILabel * whiteStatus;
-    IBOutlet UILabel * blackMain;
+    IBOutlet OHAttributedLabel * blackMain;
     IBOutlet UILabel * blackStatus;
     
 }

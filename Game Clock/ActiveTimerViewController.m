@@ -10,6 +10,16 @@
 #import "AppDelegate.h"
 #import "ActivatedTimer.h"
 
+#import <QuartzCore/QuartzCore.h>
+#import <CoreText/CoreText.h>
+
+#import "OHAttributedLabel.h"
+#import "NSAttributedString+Attributes.h"
+
+const float MAIN_TEXT_SIZE   = 150.0;
+const float OVER_PERIOD_SIZE = 100.0;
+const float DECISECOND_SIZE  = 75.0;
+
 @interface ActiveTimerViewController ()
 
 @end
@@ -38,11 +48,6 @@
     [blackMain   setText:@""];
     [blackStatus setText:@""];
     
-    /*
-    [whiteMain setFont:[UIFont fontWithName:@"DBLCDTempBlack" size:150.0f]];
-    [blackMain setFont:[UIFont fontWithName:@"DBLCDTempBlack" size:150.0f]];
-    */
-    
     // Connect the application's AppDelegate instance to this view
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     timer       = [appDelegate activeTimer];
@@ -64,8 +69,8 @@
                                                      encoding:NSUTF8StringEncoding
                                                         error:nil];
     
-    [self updateViewForPlayer:White];
-    [self updateViewForPlayer:Black];
+    [self updateViewForPlayer:White hasExpired:NO];
+    [self updateViewForPlayer:Black hasExpired:NO];
     
     [self activate];
 }
@@ -73,18 +78,22 @@
 - (void) tick:(NSTimer*)sender
 {
     [timer tick];
+    
+    BOOL expired = [timer hasExpired];
+    if (expired)
+        [self deactivate];
+
     if ([timer whoseTurn] == White)
-        [self updateViewForPlayer:White];
+        [self updateViewForPlayer:White hasExpired:expired];
     else
-        [self updateViewForPlayer:Black];
+        [self updateViewForPlayer:Black hasExpired:expired];
 }
 
 
 - (void) activate
 {
-    [self tick:nil];
     // start the ticker
-    ticker = [NSTimer scheduledTimerWithTimeInterval:0.5f
+    ticker = [NSTimer scheduledTimerWithTimeInterval:0.1f
                                               target:self
                                             selector:@selector(tick:)
                                             userInfo:nil
@@ -99,12 +108,12 @@
 
 #define REPLACE(x,y,z) [x replaceOccurrencesOfString:@#y withString:z options:0 range:NSMakeRange(0,[x length])];
 
-- (void) updateViewForPlayer:(Player) player
+- (void) updateViewForPlayer:(Player) player hasExpired:(BOOL) expired
 {
     TimeData data;
     NSString * playerString = nil;
     UIView * view = nil;
-    UILabel * main = nil;
+    OHAttributedLabel * main = nil;
     UILabel * stat = nil;
     
     if (player == White) {
@@ -123,47 +132,26 @@
     }
     
     TimerType type = [timer type];
+    unsigned remaining = data.mainDeciseconds;
     
-    // find the time remaining in hours/minutes/seconds
-    unsigned decisec = (data.mainDeciseconds % 10);
-    unsigned seconds = (data.mainDeciseconds / 10) % 60;
-    unsigned minutes = (data.mainDeciseconds / 600) % 60;
-    unsigned hours   = (data.mainDeciseconds / 36000);
-
-    unsigned otdecisec = (data.overtimeDeciseconds % 10);
-    unsigned otseconds = (data.overtimeDeciseconds / 10) % 60;
-    unsigned otminutes = (data.overtimeDeciseconds / 600);
+    // Show remaining periods for ByoYomi/Canadian timers
+    int periods = -1;
+    if (remaining == 0) {
+        if (type == ByoYomi || type == Canadian)
+            periods = data.periods;
+        remaining = data.overtimeDeciseconds;
+    }
     
-    NSString * mainString = nil;
     NSString * statString = [NSString stringWithFormat:@"%@ - %@", playerString, timerDescription];
-
-    if (hours > 0)
-        mainString = [NSString stringWithFormat:@"%d:%02d:%02d.%d", hours, minutes, seconds, decisec];
-    else
-        mainString = [NSString stringWithFormat:@"%d:%02d.%d", minutes, seconds, decisec];
+    NSAttributedString * mainString = [self attributedString:remaining periods:periods];
     
-    if (type == Absolute || type == Hourglass) {
-        [main setText:mainString];
-        [stat setText:statString];
-        return;
-    }
-    
-    // The status line indicates additional time per move
-    if (type == Fischer || type == Bronstein) {
-        [main setText:mainString];
-        [stat setText:[NSString stringWithFormat:@"%@", statString]];
-        return;
-    }
-    
-    // ByoYomi/Canadian
-    if (data.mainDeciseconds == 0) {
-        mainString = [NSString stringWithFormat:@"%d:%02d.%d (%d)", otminutes, otseconds, otdecisec, data.periods];
-        [main setText:mainString];
-    }
-    else
-        [main setText:mainString];
-
+    [main setAttributedText:mainString];
+    [main setTextAlignment:UITextAlignmentCenter];
     [stat setText:statString];
+    
+    // time ran out
+    if (expired)
+        [main setBackgroundColor:[UIColor colorWithRed:0.5 green:0 blue:0 alpha:1.0]];
 }
 
 - (void)viewDidUnload
@@ -179,13 +167,22 @@
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    // timer is not active
+    if (ticker == nil)
+        return;
+    
     UITouch * tap = (UITouch *) [touches anyObject];
 
+    // user clicked for their move
     UIView * tapped = [tap view];
     if ((tapped == white && [timer whoseTurn] == White) ||
         (tapped == black && [timer whoseTurn] == Black))
     {
         [timer swapPlayer];
+        
+        // time may have changed due to ByoYomi, Hourglass, etc
+        [self updateViewForPlayer:White hasExpired:NO];
+        [self updateViewForPlayer:Black hasExpired:NO];
         
         // TODO: make flashing a preference
         [UIView beginAnimations:nil context:NULL];
@@ -195,6 +192,59 @@
         [tapped setBackgroundColor:[UIColor whiteColor]];
         [tapped setBackgroundColor:[UIColor blackColor]];
     }
+}
+
+- (NSAttributedString *) attributedString:(unsigned) deciseconds periods:(int) periods
+{
+    // find the time remaining in hours/minutes/seconds
+    unsigned decisec = (deciseconds % 10);
+    unsigned seconds = (deciseconds / 10) % 60;
+    unsigned minutes = (deciseconds / 600) % 60;
+    unsigned hours   = (deciseconds / 36000);
+    
+    // create attributed string for main time
+    NSString * mainString;
+    
+    if (hours > 0)
+        mainString = [NSString stringWithFormat:@"%d:%02d:%02d", hours, minutes, seconds];
+    else
+        mainString = [NSString stringWithFormat:@"%d:%02d", minutes, seconds];
+    
+    NSString * deciString = [NSString stringWithFormat:@".%d", decisec];
+    
+    NSMutableAttributedString * fancyMain = 
+    [[NSMutableAttributedString alloc] initWithString:mainString];
+    [fancyMain setFont:[UIFont systemFontOfSize:MAIN_TEXT_SIZE]];
+    [fancyMain setTextColor:[UIColor whiteColor]];
+    
+    NSMutableAttributedString * fancyDeci = 
+    [[NSMutableAttributedString alloc] initWithString:deciString];
+    [fancyDeci setFont:[UIFont systemFontOfSize:DECISECOND_SIZE]];
+    [fancyDeci setTextColor:[UIColor whiteColor]];
+    
+    [fancyMain appendAttributedString:fancyDeci];
+    
+    // show the remaining periods in Canadian/ByoYomi
+    if (periods >= 0) {
+        
+        NSMutableAttributedString * fancyTimes = 
+        [[NSMutableAttributedString alloc] initWithString:@"    ×"];
+        [fancyTimes setFont:[UIFont systemFontOfSize:DECISECOND_SIZE]];
+        [fancyTimes setTextColor:[UIColor whiteColor]];
+        
+        NSString * periodString = [NSString stringWithFormat:@"%d", periods];
+        NSMutableAttributedString * fancyPeriods = 
+        [[NSMutableAttributedString alloc] initWithString:periodString];
+        [fancyPeriods setFont:[UIFont systemFontOfSize:OVER_PERIOD_SIZE]];
+        [fancyPeriods setTextColor:[UIColor whiteColor]];
+        
+        
+        [fancyMain appendAttributedString:fancyTimes];
+        [fancyMain appendAttributedString:fancyPeriods];
+    }
+    
+    
+    return [fancyMain copy];
 }
 
 @end
