@@ -1,6 +1,6 @@
 Game Clock
 
-Released under the GPLv3; see "Game Clock/gpl.txt" for details.
+Released under the Apache License V2.0; see "Game Clock/LICENSE" for details.
 
 A game clock for go/chess.  Other iPad/iPhone clocks suck.  This one will
 not suck, and will be free.
