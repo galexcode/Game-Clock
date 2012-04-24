@@ -5,7 +5,7 @@
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
@@ -21,7 +21,7 @@
 
 @synthesize startingPlayer, whoseTurn, type;
 @synthesize whiteTime, blackTime;
-@synthesize hasExpired;
+@synthesize hasExpired, timerID;
 @synthesize atvc;
 
 - (id) init:(TimerSettings *) _settings firstPlayer:(Player) player
@@ -31,12 +31,12 @@
 
         // Connect the application's AppDelegate instance
         appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        
+
         [self zeroSettings];
 
         // initialize members
         settings   = _settings;
-        
+
         unsigned mainDeciseconds = (([settings hours] * 60 + [settings minutes]) * 60 + [settings seconds]) * 10;
         unsigned otDeciseconds   = ([settings overtimeMinutes] * 60 + [settings overtimeSeconds]) * 10;
 
@@ -51,6 +51,12 @@
 
         whoseTurn = startingPlayer = player;
         type      = [settings type];
+
+        // make a unique id for storing paused timers
+        NSUserDefaults * prefs = [NSUserDefaults standardUserDefaults];
+        timerID = [[prefs valueForKey:@"Timer ID"] unsignedIntValue];
+        timerID++;
+        [prefs setValue:[NSNumber numberWithUnsignedInt:timerID] forKey:@"Timer ID"];
     }
     return self;
 }
@@ -65,7 +71,7 @@
     blackTime.mainDeciseconds     = 0;
     blackTime.periods             = 0;
     blackTime.overtimeDeciseconds = 0;
-    
+
     hasExpired = NO;
     atvc       = nil;
 }
@@ -81,6 +87,7 @@ X(blackTime.moves               , bm)  \
 X(blackTime.mainDeciseconds     , bms) \
 X(blackTime.periods             , bp)  \
 X(blackTime.overtimeDeciseconds , bos) \
+X(timerID                       , id) \
 Y(type                          , TimerType , type) \
 Y(whoseTurn                     , Player    , turn) \
 Y(startingPlayer                , Player    , start)
@@ -88,6 +95,7 @@ Y(startingPlayer                , Player    , start)
 #define X(a,b) \
     a = [[dict valueForKey:@#b] intValue];
 
+// cast to type
 #define Y(a,b,c) \
     a = (b) [[dict valueForKey:@#c] intValue];
 
@@ -95,16 +103,16 @@ Y(startingPlayer                , Player    , start)
 {
     self = [super init];
     if (self) {
-        
+
         [self zeroSettings];
-        
+
         VAR_TABLE;
-        
+
         if (type == ByoYomi) {
             blackTime.mainDeciseconds = 0;
             whiteTime.mainDeciseconds = 0;
         }
-        
+
         timeExpendedThisTurn = 0;
     }
     return self;
@@ -123,7 +131,7 @@ Y(startingPlayer                , Player    , start)
 {
     NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
     VAR_TABLE;
-    
+
     return [NSDictionary dictionaryWithDictionary:dict];
 }
 #undef X
@@ -168,7 +176,7 @@ break;
         CASE(Canadian);
         OCASE(Hourglass);
     }
-    
+
     timeExpendedThisTurn++;
 }
 
@@ -187,9 +195,9 @@ break;
         whoseTurn = Black;
         data      = &whiteTime;
     }
-    
+
     NSUInteger otds = data->overtimeDeciseconds;
-    
+
     if (type == Fischer) {
         // increase time for player who moved
         data->mainDeciseconds += otds;
@@ -210,9 +218,9 @@ break;
             data->periods = settings.overtimePeriods;
         }
     }
-    
+
     timeExpendedThisTurn = 0;
-    
+
 }
 
 // Decrements the timer, returning YES if time has expired

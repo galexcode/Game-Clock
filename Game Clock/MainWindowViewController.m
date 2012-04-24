@@ -5,7 +5,7 @@
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
@@ -13,12 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-
-/*
- TODO:
-  - define more built-in timers
- */
 
 #import "MainWindowViewController.h"
 #import <QuartzCore/QuartzCore.h>
@@ -73,21 +67,21 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
         [settings setOvertimeMinutes:0];
         [settings setOvertimeSeconds:0];
     }
-    
+
     // enable save/launch/alert buttons
     NSArray * existing = [appDelegate alreadyExists:settings];
     settingsDirty_ = existing == nil;
     settingsValid_ = [settings validateSettings] == nil;
-    
+
     // update top description text
     [timerDescription setText:[settings description]];
 
     if (!settingsValid_) {
         // notify the user that there's a problem
-        
+
         [self disable:saveButton];
         [self disable:launchButton];
-        
+
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationDuration:0.2f];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -103,10 +97,10 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
             [self selectTableRowForStoredSettings:existing];
 
         [self enable:launchButton];
-        
+
         // save as 'last settings'
         [appDelegate storeCurrentSettings];
-        
+
         // hide the alert button
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationDuration:0.2f];
@@ -160,9 +154,14 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
 {
     Player first = (whiteBlack.selectedSegmentIndex == 0 ? White : Black);
     [appDelegate launchWithPlayer:first];
-    
+
     // load the timer window
     [self performSegueWithIdentifier:@"Launch" sender:nil];
+
+    // push to the history list
+    [timerSupply addHistoryTimer:[appDelegate activeTimer]];
+    historySavedBuiltin.selectedSegmentIndex = HISTORY_TIMERS_INDEX;
+    [savedTimersTable reloadData];
 }
 
 - (IBAction)saveSettings:(id)sender
@@ -174,11 +173,11 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
                                            otherButtonTitles:@"Save",nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     UITextField * alertField = [alert textFieldAtIndex:0];
-    [alertField setText:[[appDelegate settings] description]]; 
+    [alertField setText:[[appDelegate settings] description]];
 
     [UIMenuController sharedMenuController].menuVisible = NO;
     [alertField selectAll:self];
-    
+
     [alert show];
 }
 
@@ -219,7 +218,7 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
     // enable/disable overtime periods/time settings as appropriate,
     // and select the correct element in the type table
     [self enableDisableOvertime:type];
-    
+
     // update top description text
     [timerDescription setText:[settings description]];
 
@@ -464,7 +463,7 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
         cell.textLabel.text = [[TimerSettings TimerTypes] objectAtIndex:row];
     else {
         if (savedTimersTableHasData_) {
-            NSString * text = [timerSupply titleForItem:row 
+            NSString * text = [timerSupply titleForItem:row
                                             inComponent:historySavedBuiltin.selectedSegmentIndex];
             cell.textLabel.text = text;
         }
@@ -518,7 +517,8 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
             [appDelegate setSettings:selected];
             [self updateInterfaceAccordingToStoredSettings];
         }
-        
+
+    TODO: history!!!
         [appDelegate storeCurrentSettings];
     }
 }
@@ -531,7 +531,7 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
 {
     if (tableView == timerTypesTable)
         return indexPath;
-    
+
     if (savedTimersTableHasData_)
         return indexPath;
 
@@ -543,7 +543,7 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
 {
     if (tableView == timerTypesTable)
         return NO;
-    
+
     return (savedTimersTableHasData_ &&
             (historySavedBuiltin.selectedSegmentIndex == SAVED_TIMERS_INDEX ||
              historySavedBuiltin.selectedSegmentIndex == FAVORITE_TIMERS_INDEX));
@@ -554,12 +554,12 @@ const unsigned PAUSED_TIMERS_INDEX   = 4;
     // just in case
     if (tableView == timerTypesTable)
         return;
-    
+
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         unsigned component = historySavedBuiltin.selectedSegmentIndex;
         [timerSupply deleteTimerAtIndexPath:indexPath inComponent:component];
         [tableView reloadData];
-    }    
+    }
 }
 
 

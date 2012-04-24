@@ -5,7 +5,7 @@
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
@@ -57,7 +57,7 @@ const unsigned PAUSED_TIMERS_INDEX;
     IBOutlet UIButton * saveButton;
     IBOutlet UIButton * launchButton;
     IBOutlet UIButton * alertButton;
-    
+
     // upper table view
     IBOutlet UITableView * timerTypesTable;
 
@@ -70,9 +70,9 @@ const unsigned PAUSED_TIMERS_INDEX;
 
     IBOutlet UISegmentedControl * whiteBlack;
     IBOutlet UISegmentedControl * historySavedBuiltin;
-    
+
     IBOutlet UILabel * timerDescription;
-    
+
     // managed settings
     AppDelegate * appDelegate;
 

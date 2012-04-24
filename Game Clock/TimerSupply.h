@@ -21,6 +21,7 @@
 @class TimerSettings;
 @class MainWindowViewController;
 @class AppDelegate;
+@class ActivatedTimer;
 
 @interface TimerSupply : NSObject <UIAlertViewDelegate>
 {
@@ -51,6 +52,7 @@
 // save/delete timers
 - (void) saveTimer:(TimerSettings *) timer withName:(NSString *)name;
 - (void) deleteTimerAtIndexPath:(NSIndexPath *) indexPath inComponent:(NSUInteger) component;
+- (void) addHistoryTimer:(ActivatedTimer *) timer;
 
 // statics
 + (NSArray *) keys;

@@ -5,7 +5,7 @@
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
@@ -33,18 +33,18 @@
         delegate = _delegate;
         mwvc  = _mwvc;
         prefs = [NSUserDefaults standardUserDefaults];
-        
+
         // load preset timers
-        
+
         NSDictionary * timersFromPrefs = [prefs dictionaryForKey:@"Timers"];
         NSArray * keys  = [timersFromPrefs allKeys];
-        
+
         if ([keys count] == 0)
             [self createInitialObjects];
         else
             [self createTimersFromDictionary:timersFromPrefs];
-        
-        
+
+
     }
     return self;
 }
@@ -53,13 +53,13 @@
 {
     if (timers)
         return;
-    
+
     // insert into mutable dictionary, and then transfer to timers
     NSMutableDictionary * theTimers = [[NSMutableDictionary alloc] initWithCapacity:[[dict allKeys] count]];
 
     for (NSString *class in dict)
     {
-        
+
         if ([class isEqualToString:@"Paused"]) {
             // TODO: recover paused games
         }
@@ -67,7 +67,7 @@
             // recover stored timers (History/Builtin/Favorites/Saved)
             NSDictionary * nameAndTimers = [dict objectForKey:class];
             NSMutableDictionary * toAdd  = [[NSMutableDictionary alloc] initWithCapacity:[nameAndTimers count]];
-            
+
             if ([class isEqualToString:@"History"]) {
                 for (NSDate * date in nameAndTimers)
                 {
@@ -75,7 +75,7 @@
                     NSDictionary * timerDict = [[nameAndTimers objectForKey:date] objectForKey:@"Timer"];
                     TimerSettings * theTimer = [[TimerSettings alloc] initWithDictionary:timerDict];
                     [toAdd setObject:theTimer forKey:timerName];
-                }   
+                }
             }
             else {
                 // convert each dictionary to a timer and add it to 'timers'
@@ -89,7 +89,7 @@
                           forKey:class];
         }
     }
-    
+
     timers = [[NSDictionary alloc] initWithDictionary:theTimers];
 }
 
@@ -100,7 +100,7 @@
 + (NSArray *) keys
 {
 	static NSArray * keys = nil;
-    if (!keys) 
+    if (!keys)
     {
         keys = [NSArray arrayWithObjects:@"Builtins",
                 @"Favorites",
@@ -109,7 +109,7 @@
                 @"Paused",
                 nil];
     }
-    
+
 	return keys;
 }
 
@@ -133,9 +133,9 @@
     NSString * key       = [[TimerSupply keys] objectAtIndex:component];
     NSDictionary * nAndT = [timers objectForKey:key];
     NSArray * types      = [nAndT allKeys];
-    
+
     if (component == HISTORY_TIMERS_INDEX)
-        return [[types objectAtIndex:row] objectForKey:@"Name"];
+        return [types objectAtIndex:row];
     return [types objectAtIndex:row];
 }
 
@@ -155,7 +155,7 @@
     NSString * key       = [[TimerSupply keys] objectAtIndex:component];
     NSDictionary * nAndT = [timers objectForKey:key];
     NSArray * types      = [nAndT allKeys];
-    
+
     TimerSettings * sel  = nil;
     if (component == HISTORY_TIMERS_INDEX) {
         NSDate * date = [types objectAtIndex:row];
@@ -165,8 +165,8 @@
         NSString * timerKey = [types objectAtIndex:row];
         sel = [nAndT objectForKey:timerKey];
     }
-    
-    
+
+
     return [[TimerSettings alloc] initWithDictionary:[sel toDictionary]];
 }
 
@@ -176,7 +176,7 @@
  */
 - (void) createInitialObjects
 {
-    
+
     // create default timers
     TimerSettings * byoyomi30x5  = [[TimerSettings alloc] init];
     TimerSettings * by3x10blitz  = [[TimerSettings alloc] initWithHours:0
@@ -207,7 +207,7 @@
                                                         overtimeSeconds:0
                                                         overtimePeriods:0
                                                                    type:Absolute];
-    
+
     // aggregate them in an array
     NSDictionary * builtins = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
                                                               [by3x10blitz  toDictionary],
@@ -223,7 +223,7 @@
                                                               @"Absolute 15 minutes",
                                                               @"Absolute 10 minutes",
                                                               nil]];
-    
+
     // create 'Timers' preference entry
     NSDictionary * theTimers = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
                                                                     builtins,
@@ -239,11 +239,11 @@
                                                                     @"Saved",
                                                                     @"Paused",
                                                                     nil]];
-    
+
     // store in prefs
     [prefs setObject:theTimers forKey:@"Timers"];
     [prefs synchronize];
-    
+
     // create TimerSetting objects
     [self createTimersFromDictionary:theTimers];
 }
@@ -257,15 +257,15 @@
     // cancel button
     if (buttonIndex == 0)
         return;
-    
+
     NSString * newName = nil;
-    
+
     // save dialogue
     if ([[alertView title] isEqualToString:@"Save"]) {
-        NSString * saveName = [[alertView textFieldAtIndex:0] text]; 
-        
+        NSString * saveName = [[alertView textFieldAtIndex:0] text];
+
         NSLog(@"clicked button %d => %@", buttonIndex, saveName);
-        
+
         // timer with that name exists, ask if confirmed to overwrite
         if ([TimerSupply nameExists:saveName]) {
             // alert to user
@@ -275,7 +275,7 @@
                                                              delegate:self
                                                     cancelButtonTitle:@"No"
                                                     otherButtonTitles:@"Overwrite",nil];
-            
+
             [confirm show];
             toBeConfirmedSaveName = [[NSString alloc] initWithString:saveName];
             return;
@@ -284,18 +284,18 @@
     }
     else // the confirmation dialogue
         newName = toBeConfirmedSaveName;
-    
+
     // Either the user clicked yes in the confirm dialogue (launched above), or entered
     // a nonexistant name
     [self saveTimer:[delegate settings] withName:newName];
-    
+
     // rewrite all fields with the new settings
     [mwvc updateInterfaceAccordingToStoredSettings];
 
     // update save button status, select row, etc.
     [mwvc alterTimerSettingsAccordingToUI];
     toBeConfirmedSaveName = nil;
-    
+
 }
 
 + (BOOL) nameExists:(NSString *) name
@@ -303,13 +303,13 @@
     NSUserDefaults * prefs = [NSUserDefaults standardUserDefaults];
     NSDictionary * timersFromPrefs = [prefs dictionaryForKey:@"Timers"];
     NSArray * keys  = [timersFromPrefs allKeys];
-    
+
     for (NSString * key in keys) {
         // consider each timer collection
         NSDictionary * timerCollection = [timersFromPrefs objectForKey:key];
         if ([timerCollection count] == 0)
             continue;
-        
+
         for (NSString * description in [timerCollection allKeys]) {
             if ([description isEqualToString:name])
                 return YES;
@@ -323,15 +323,15 @@
 {
     NSMutableDictionary * timersFromPrefs = [[prefs dictionaryForKey:@"Timers"] mutableCopy];
     NSMutableDictionary * savedTimers     = [[timersFromPrefs objectForKey:@"Saved"] mutableCopy];
-    
+
     // store item
     [savedTimers setValue:[timer toDictionary] forKey:name];
     [timersFromPrefs setObject:savedTimers forKey:@"Saved"];
-    
+
     // store prefs
     [prefs setObject:timersFromPrefs forKey:@"Timers"];
     [prefs synchronize];
-    
+
     // update data
     timers = nil;
     [self createTimersFromDictionary:timersFromPrefs];
@@ -342,51 +342,51 @@
 {
     NSMutableDictionary * timersFromPrefs = [[prefs dictionaryForKey:@"Timers"] mutableCopy];
     NSMutableDictionary * savedTimers     = [[timersFromPrefs objectForKey:@"Saved"] mutableCopy];
-    
+
     unsigned row    = [indexPath indexAtPosition:1];
     NSString * name = [self titleForItem:row inComponent:component];
-    
+
     // remove item
     [savedTimers removeObjectForKey:name];
     [timersFromPrefs setObject:savedTimers forKey:@"Saved"];
-    
+
     // update prefs
     [prefs setObject:timersFromPrefs forKey:@"Timers"];
     [prefs synchronize];
-    
+
     // update data
     timers = nil;
     [self createTimersFromDictionary:timersFromPrefs];
     [mwvc updateInterfaceAccordingToStoredSettings];
 }
 
-- (void) addHistoryTimer:(TimerSettings *) timer
+- (void) addHistoryTimer:(ActivatedTimer *) timer
 {
     NSMutableDictionary * timersFromPrefs = [[prefs dictionaryForKey:@"Timers"] mutableCopy];
     NSMutableDictionary * savedTimers     = [[timersFromPrefs objectForKey:@"History"] mutableCopy];
 
     NSDictionary * timerDict = [timer toDictionary];
-    
+
     // remove the item if it exists in history
-    for (NSDate * date in [savedTimers allKeys]) {
-        NSDictionary * nameAndTimer = [savedTimers objectForKey:date];
+    for (NSString * timerID in [savedTimers allKeys]) {
+        NSDictionary * nameAndTimer = [savedTimers objectForKey:timerID];
         if ([[nameAndTimer objectForKey:@"Timer"] isEqualToDictionary:timerDict]) {
-            [savedTimers removeObjectForKey:date];
+            [savedTimers removeObjectForKey:timerID];
             break;
         }
     }
-    
+
     // add item to history
     NSMutableDictionary * toStore = [[NSMutableDictionary alloc] initWithCapacity:2];
-    [toStore setObject:[timer description] forKey:@"Name"];
-    [toStore setObject:timerDict forKey:@"Timer"];
-    [savedTimers setObject:toStore forKey:[NSDate date]];
-    [timersFromPrefs setObject:savedTimers forKey:@"History"];
-    
+    [toStore         setObject:[timer description] forKey:@"Name"];
+    [toStore         setObject:timerDict           forKey:@"Timer"];
+    [savedTimers     setObject:toStore             forKey:[NSString stringWithFormat:@"%d", [timer timerID]]];
+    [timersFromPrefs setObject:savedTimers         forKey:@"History"];
+
     // update prefs
     [prefs setObject:timersFromPrefs forKey:@"Timers"];
     [prefs synchronize];
-    
+
     // update data
     timers = nil;
     [self createTimersFromDictionary:timersFromPrefs];
